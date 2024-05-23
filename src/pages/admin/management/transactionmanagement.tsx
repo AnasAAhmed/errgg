@@ -1,4 +1,4 @@
-import { FaArrowLeft, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaSpinner, FaTrash } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
@@ -12,6 +12,7 @@ import { RootState, server } from "../../../redux/store";
 import { Order, OrderItem } from "../../../types/types";
 import { responseToast } from "../../../utils/features";
 import {CopyText} from "../../../utils/function";
+import { useState } from "react";
 
 const defaultData: Order = {
   shippingInfo: {
@@ -34,7 +35,8 @@ const defaultData: Order = {
 
 const TransactionManagement = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
-
+const [loadDel,setLoadDel]=useState(false)
+const [loadUp,setLoadUp]=useState(false)
   const params = useParams();
   const navigate = useNavigate();
 
@@ -56,18 +58,22 @@ const TransactionManagement = () => {
   const [deleteOrder] = useDeleteOrderMutation();
 
   const updateHandler = async () => {
+    setLoadUp(true);
     const res = await updateOrder({
       userId: user?._id!,
       orderId: data?.order._id!,
     });
+    setLoadUp(false);
     responseToast(res, navigate, "/admin/transaction");
   };
 
   const deleteHandler = async () => {
+    setLoadDel(true);
     const res = await deleteOrder({
       userId: user?._id!,
       orderId: data?.order._id!,
     });
+    setLoadDel(false);
     responseToast(res, navigate, "/admin/transaction");
   };
 
@@ -88,7 +94,7 @@ const TransactionManagement = () => {
         <section className="w-full px-2">
           <h2 className="text-2xl font-bold mb-4">Order Items</h2>
           <button className="text-white bg-black p-2 rounded-full mb-4" onClick={deleteHandler}>
-            <FaTrash />
+          {loadDel ? <FaSpinner className='animate-spin' /> :<FaTrash />} 
           </button>
           <div className="space-y-4">
             {orderItems.map((i) => (
@@ -129,9 +135,7 @@ const TransactionManagement = () => {
           <p className={status === "Delivered" ? "text-purple-500" : status === "Shipped" ? "text-green-500" : "text-red-500"}>
             Status: {status}
           </p>
-          <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" onClick={updateHandler}>
-            Process Status
-          </button>
+          <button className="bg-blue-500 w-56 h-10 my-11 flex justify-center items-center text-white text-lg rounded-md font-semibold" onClick={updateHandler}>{loadUp ? <FaSpinner className='animate-spin text-2xl mx-3 ' /> : "Process Status"}</button>
         </article>
       </>
     )}

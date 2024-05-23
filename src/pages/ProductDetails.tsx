@@ -9,11 +9,10 @@ import { server } from "../redux/store";
 import { CartItem } from "../types/types";
 import { addToCart } from "../redux/reducer/cartReducer";
 import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef,MouseEvent } from "react";
 import ProductReview from "../components/ProductReviews";
 import StarRatings from "../components/StarsRatings";
 import Footer from "../components/Footer";
-import ImageZoom from "../components/ImageZoom";
 
 const ProductDetails = () => {
   const [loading, setLoading] = useState(false);
@@ -88,8 +87,8 @@ const ProductDetails = () => {
           ) : (
             <>
               <section className="sec1 flex-1 flex-shrink-0 w-full md:w-72 mr-10 mb-10">
-                <img src={`${server}/${photo}`} alt={name} className="w-full shadow-md md:hidden md:h-[400px] h-[250px] object-cover" />
-                <ImageZoom src={`${server}/${photo}`} alt={name} />
+                <img src={`${server}/${photo}`} alt={name} className="w-full shadow-md md:hidden md:h-[400px] h-[250px] object-cover" />           
+                <ImageZoom src={`${server}/${photo}`} alt={name} />              
               </section>
               <article className="sec2 flex-1 w-full  md:w-96">
                 <p className="min-h-16 text-2xl font-semibold mb-4">{name}</p>
@@ -113,7 +112,7 @@ const ProductDetails = () => {
                       <>
                         <button
                           key={index}
-                          className={`${color === item ? "ring-4" : ""} rounded-full h-6 w-6 mx-1`}
+                          className={`${color === item ? "ring-4" : ""} border-gray-500 border rounded-full h-6 w-6 mx-1`}
                           style={{ backgroundColor: item }}
                           onClick={() => { setColor(item); stockColorHandler(index) }}
                         ></button>
@@ -176,7 +175,55 @@ const ProductDetails = () => {
 
 export default ProductDetails;
 
+interface ImageZoomProps {
+    src: string;
+    alt: string;
+}
 
+const ImageZoom = ({ src, alt }: ImageZoomProps) => {
+    const [isZoomed, setIsZoomed] = useState(false);
+    const [backgroundPosition, setBackgroundPosition] = useState('0% 0%');
+    const imgRef = useRef<HTMLImageElement>(null);
+
+    const handleMouseEnter = () => setIsZoomed(true);
+    const handleMouseLeave = () => setIsZoomed(false);
+
+    const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+        if (imgRef.current && isZoomed) {
+            const { left, top, width, height } = imgRef.current.getBoundingClientRect();
+            const x = ((e.clientX - left) / width) * 100;
+            const y = ((e.clientY - top) / height) * 100;
+            setBackgroundPosition(`${x}% ${y}%`);
+        }
+    };
+    const formattedSrc = src.replace(/\\/g, '/');
+    
+
+    return (
+        <div
+            className="relative max-md:hidden w-full md:h-[400px] h-[250px]"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onMouseMove={handleMouseMove}
+        >
+            {isZoomed &&
+                <div
+                    className={`absolute top-0 left-0 w-full md:h-[400px] h-[250px] bg-no-repeat transition-transform duration-300 `}
+                    style={{
+                        backgroundImage: `url(${formattedSrc})`,
+                        backgroundPosition: isZoomed ? backgroundPosition : 'center',
+                    }}
+                />}
+            <img
+                ref={imgRef}
+                src={src}
+                alt={alt}
+                className={`absolute top-0 left-0 w-full md:h-[400px] h-[250px] ${isZoomed ? 'opacity-0 ' : 'opacity-100'}`}
+            />
+        </div>
+
+    );
+};
 
 
 

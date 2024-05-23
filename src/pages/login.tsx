@@ -13,6 +13,7 @@ import Footer from "../components/Footer";
 const Login = () => {
   const dispatch = useDispatch();
   const [gender, setGender] = useState("");
+  const [loading, setLoading] = useState(0);
   const [phone, setPhone] = useState(0);
   const [date, setDate] = useState("");
   const [toggler, setToggler] = useState(false);
@@ -21,20 +22,10 @@ const Login = () => {
 
   const loginHandler = async () => {
     try {
+      setLoading(20)
       const provider = new GoogleAuthProvider();
       const { user } = await signInWithPopup(auth, provider);
-
-      // console.log({
-      //   name: user.displayName!,
-      //   email: user.email!,
-      //   photo: user.photoURL!,
-      //   gender,
-      // phone,
-      //   role: "user",
-      //   dob: date,
-      //   _id: user.uid,
-      // });
-
+      setLoading(50)
       const res = await login({
         name: user.displayName!,
         email: user.email!,
@@ -45,7 +36,7 @@ const Login = () => {
         dob: date,
         _id: user.uid,
       });
-
+      setLoading(100)
       if ("data" in res) {
         toast.success(res.data.message);
         const data = await getUser(user.uid);
@@ -64,7 +55,8 @@ const Login = () => {
 
   return (
     <>
-    <div className="h-[90vh] " >
+    <div className={`h-[3px] bg-blue-500 animate-pulse  ${loading ===100?"hidden":""}`} style={{width:`${loading}%`}}></div>
+    <div className="h-[90vh] " > 
       <div className={toggler ? "hidden" : " mt-24 flex flex-col items-center justify-center"}>
         <main className=" w-full h-80 max-w-md p-8 flex flex-col items-center">
           <h1 className="text-3xl font-bold mb-8">Login</h1>
@@ -72,6 +64,7 @@ const Login = () => {
             <button onClick={loginHandler} className="w-3/4 h-12 bg-white border border-gray-400 rounded-md flex items-center justify-center">
             <FcGoogle className="w-1/3 h-full bg-white" />
               <span>Sign in with Google</span>
+
             </button>
             <p className="cursor-pointer text-blue-500 mt-8" onClick={() => setToggler(true)}>Don't have an Account!</p>
           </div>
