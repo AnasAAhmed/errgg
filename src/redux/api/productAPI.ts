@@ -24,21 +24,21 @@ export const productAPI = createApi({
   tagTypes: ["product"],
   endpoints: (builder) => ({
     latestProducts: builder.query<AllProductsResponse, string>({
-        query: () => "latest",
-        providesTags: ["product"],
-      }),
+      query: () => "latest",
+      providesTags: ["product"],
+    }),
     latestCategoryProducts: builder.query<AllProductsResponse, { category?: string }>({
       query: ({ category }) => `latest/${category}`, // Fetch latest products by category
       providesTags: ["product"],
     }),
-    latestCollectionsProducts: builder.query<CollectionProductsResponse, { collection: string,limit?:number }>({
-      query: ({ collection ,limit}) =>{  
+    latestCollectionsProducts: builder.query<CollectionProductsResponse, { collection: string, limit?: number }>({
+      query: ({ collection, limit }) => {
         let base = `allcollections/${collection}`;
 
-      if (limit) base += `&limit=${limit}`;
+        if (limit) base += `&limit=${limit}`;
 
-      return base;
-    }, // Fetch latest products by collection
+        return base;
+      }, // Fetch latest products by collection
       providesTags: ["product"],
     }),
     allProducts: builder.query<AllProductsResponse, string>({
@@ -102,15 +102,14 @@ export const productAPI = createApi({
     }),
     //Reviews
     fetchProductReviews: builder.query<ReviewsResponse, string>({
-      query: (productId) => `reviews/${productId}`,
+      query: (productId) => `reviews?id=${productId}`,
       providesTags: ["product"],
     }),
-
     createProductReview: builder.mutation<MessageResponse, ReviewRequest>({
-      query: ({ rating, comment, email, name, userId, productId }) => ({
+      query: ({ rating, comment, photo, email, name, userId, productId }) => ({
         url: `new-reviews/${productId}`,
         method: "POST",
-        body: { rating, comment, email, name, userId },
+        body: { rating, comment, photo, email, name, userId },
       }),
       invalidatesTags: ["product"],
     }),
@@ -123,7 +122,7 @@ export const productAPI = createApi({
       invalidatesTags: ["product"],
     }),
   }),
-});
+})
 
 export const {
   useLatestProductsQuery,
@@ -136,7 +135,7 @@ export const {
   useNewProductMutation,
   useProductDetailsQuery,
   useUpdateProductMutation,
-  useDeleteProductMutation, 
+  useDeleteProductMutation,
   useFetchProductReviewsQuery,
   useCreateProductReviewMutation,
   useDeleteProductReviewMutation,

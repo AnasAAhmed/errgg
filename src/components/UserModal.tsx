@@ -93,7 +93,7 @@ const UserModal = ({ user, logoutHandler, heading, children }: UserModalType) =>
                                         </div>
 
                                     </>
-                                )}
+                                 )} 
                             </div>
 
                         </div>

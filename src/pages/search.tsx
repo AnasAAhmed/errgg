@@ -22,8 +22,8 @@ const Search = () => {
   } = useCategoriesQuery("");
 
 
-  const [search, setSearch] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [maxPriceValue, setMaxPriceValue] = useState(100000);
   const [maxPrice, setMaxPrice] = useState(100000);
@@ -48,17 +48,21 @@ const Search = () => {
 
   useEffect(() => {
     setLoading(true);
+  }, [search, sort, category, maxPrice]);
+
+  useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 400);
   }, [searchedData])
 
 
-  const handleKeyPressForPrice = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPressForMaxPrice = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault(); // Prevent the default behavior of the Enter key
       setMaxPrice(maxPriceValue);
     }
+
   };
   const handleKeyPressForSearch = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -92,7 +96,7 @@ const Search = () => {
               className="w-full outline-none  bg-gray-200"
               onKeyDown={handleKeyPressForSearch}
             />
-            <button className="h-full text-gray-600 bg-gray-200" onClick={() => setSearch(searchValue)}><FaSearch size={"1.2rem"} /></button>
+            <button className="h-full text-gray-600 px-2 bg-gray-100" onClick={() => setSearch(searchValue)}><FaSearch size={"1.2rem"} /></button>
           </div>
 
           <div className="flex flex-row">
@@ -130,11 +134,11 @@ const Search = () => {
               min={1}
               max={100000}
               value={maxPriceValue}
-              onKeyDown={handleKeyPressForPrice}
+              onKeyDown={handleKeyPressForMaxPrice}
               onChange={(e) => setMaxPriceValue(Number(e.target.value))}
               className="w-60 h-[35px]"
             />
-            <button className="bg-blue-300 px-3 text-white rounded-lg" onClick={() => setMaxPrice(maxPriceValue)}>Go</button>
+            <button className="bg-blue-300 px-3 mx-3 text-white rounded-lg" onClick={() => setMaxPrice(maxPriceValue)}>Go</button>
           </div>
           <h1 className="text-2xl font-semibold ">Products</h1>
           <h1 className="text-2xl font-semibold ">{search !== "" && `Result For ${search}`}</h1>
@@ -154,7 +158,7 @@ const Search = () => {
                       productId={i._id}
                       name={i.name}
                       price={i.price}
-                      photo={i.photo}
+                      photo={i.photos[0]}
                       numOfReviews={i.numOfReviews}
                       ratings={i.ratings}
                       cutPrice={i.cutPrice}

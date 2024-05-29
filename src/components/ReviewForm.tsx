@@ -1,22 +1,31 @@
 import { FormEvent, useState } from "react";
 import { useCreateProductReviewMutation } from "../redux/api/productAPI";
 import { onlyResponseToast } from "../utils/features";
-import { FaSpinner } from "react-icons/fa";
+import { FaEdit, FaSpinner } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import { User } from "../types/types";
 
+type ReviewFormProps = {
+    isEditing?: boolean;
+    oldRating?: number,
+    oldComment?: string,
+    productId: string,
+    user: User | null
+}
 
-const ReviewForm = ({productId,user}:{ productId: string, user: User|null }) => {
+const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: ReviewFormProps) => {
 
-    const [rating, setRating] = useState(0);
-    const [comment, setComment] = useState('');
+    const [rating, setRating] = useState(oldRating || 0);
+    const [comment, setComment] = useState(oldComment || "");
     const [modalOpen, setModalOpen] = useState(false);
+  
+
     const [createReview, { isLoading: isCreatingReview }] = useCreateProductReviewMutation();
 
     const handleCreateReview = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const res = await createReview({ rating, comment, email: user!.email, name: user!.name, userId: user!._id, productId });
+            const res = await createReview({ rating, photo: user!.photo, comment, email: user!.email, name: user!.name, userId: user!._id, productId });
 
             if (!isCreatingReview) setModalOpen(false);
             onlyResponseToast(res);
@@ -34,10 +43,10 @@ const ReviewForm = ({productId,user}:{ productId: string, user: User|null }) => 
             closeModal();
         }
     };
-  return (
-    <div className="p-4">
-       <div className='flex flex-col items-center'>
-                 <button onClick={openModal} className="bg-blue-500 text-white px-2 py-1 rounded-full mb-1">Submit Review</button>
+    return (
+        <div className="">
+            <div className='flex flex-col items-center'>
+                {isEditing ? <button className="text-[0.7rem] sm:text-sm px-1 py-1 rounded-md " onClick={openModal}><FaEdit /></button> : <button onClick={openModal} className="bg-blue-500 text-white px-2 py-1 rounded-full mb-1">Submit Review</button>}
             </div>
             {modalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50" onClick={handleBackdropClick}>
@@ -60,8 +69,10 @@ const ReviewForm = ({productId,user}:{ productId: string, user: User|null }) => 
                     </div>
                 </div>
             )}
-    </div>
-  )
+        </div>
+    )
 }
 
 export default ReviewForm
+
+

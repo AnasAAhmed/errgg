@@ -94,6 +94,22 @@ $color3: rgb(0, 104, 136);
   animation: slideIn 0.3s ease-out forwards;
 }
 
+@keyframes slide-in {
+  from {
+    transform: translateX(+20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-menu {
+  animation: slide-in 0.3s ease-out forwards;
+}
+
 .checkout-container {
   max-width: 400px;
   width: 100%;
@@ -161,7 +177,6 @@ $color3: rgb(0, 104, 136);
 .admin-container {
   @include grid(1fr 4fr, 2rem);
   height: 100vh;
-  background-color: rgb(247, 247, 247);
 
   >main {
     .bar {

@@ -63,7 +63,7 @@ const Products = () => {
     if (data)
       setRows(
         data.products.map((i) => ({
-          photo: <img src={`${server}/${i.photo}`} />,
+          photo: <img src={`${server}/${i.photos[0]}`} />,
           name: <Link to={`/product/${i._id}`} className="text-md font-medium line-clamp-2 hover:text-indigo-500">{i.name}</Link>,
           productId: <div className="line-clamp-2"><CopyText text={i._id}/>...</div>,
           price: i.price,

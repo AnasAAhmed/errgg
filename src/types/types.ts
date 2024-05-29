@@ -17,6 +17,9 @@ export type IShippingInfo ={
     pinCode: number;
 }
 
+export type LoadingBarProps={
+  setLoadingBar:React.Dispatch<React.SetStateAction<number>>
+}
 export type IOrderItem= {
     name: string;
     photo: string;
@@ -42,7 +45,8 @@ export type Review= {
   userId: string;
   email: string;
   rating: number;
-  date:number
+  date:number;
+  photo:string;
   comment: string;
 };
 
@@ -59,7 +63,7 @@ export type Product = {
   size: string[];
   style: string[];
   color: string[];
-  photo: string;
+  photos: string[];
   _id: string;
 };
 

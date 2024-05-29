@@ -21,8 +21,8 @@ const Productmanagement = () => {
 
   const { data, isLoading, isError } = useProductDetailsQuery(params.id!);
 
-  const { price, cutPrice, photo, description, name, stock, category, collections, size, color } = data?.product || {
-    photo: "",
+  const { price, cutPrice, photos, description, name, stock, category, collections, size, color } = data?.product || {
+    photos: [""],
     category: "",
     collections: "",
     name: "",
@@ -43,8 +43,8 @@ const Productmanagement = () => {
   const [collectionsUpdate, setCollectionsUpdate] = useState<string>(collections);
   const [sizeUpdate, setSizeUpdate] = useState<string[]>(size);
   const [colorUpdate, setColorUpdate] = useState<string[]>(color);
-  const [photoUpdate, setPhotoUpdate] = useState<string>("");
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoUpdates, setPhotoUpdates] = useState<string[]>([]);
+  const [photoFiles, setPhotoFiles] = useState<File[]>([]);
 
   const [load, setLoad] = useState<boolean>(false);
   const [loadDel, setLoadDel] = useState<boolean>(false);
@@ -52,21 +52,50 @@ const Productmanagement = () => {
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
 
+
+
   const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const file: File | undefined = e.target.files?.[0];
+    const files = e.target.files;
 
-    const reader: FileReader = new FileReader();
+    if (files) {
+      const newPhotoUpdates: string[] = [];
+      const newPhotoFiles: File[] = [];
 
-    if (file) {
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        if (typeof reader.result === "string") {
-          setPhotoUpdate(reader.result);
-          setPhotoFile(file);
-        }
-      };
+      Array.from(files).forEach((file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          if (typeof reader.result === "string") {
+            newPhotoUpdates.push(reader.result);
+            newPhotoFiles.push(file);
+            setPhotoUpdates([...photoUpdates, ...newPhotoUpdates]);
+            setPhotoFiles([...photoFiles, ...newPhotoFiles]);
+          }
+        };
+      });
     }
   };
+
+  const removePhoto = (index: number) => {
+    setPhotoUpdates(photoUpdates.filter((_, i) => i !== index));
+    setPhotoFiles(photoFiles.filter((_, i) => i !== index));
+  };
+
+  // const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const file: File | undefined = e.target.files?.[0];
+
+  //   const reader: FileReader = new FileReader();
+
+  //   if (file) {
+  //     reader.readAsDataURL(file);
+  //     reader.onloadend = () => {
+  //       if (typeof reader.result === "string") {
+  //         setPhotoUpdate(reader.result);
+  //         setPhotoFile(file);
+  //       }
+  //     };
+  //   }
+  // };
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -79,7 +108,6 @@ const Productmanagement = () => {
     if (priceUpdate) formData.set("price", priceUpdate.toString());
     if (cutpriceUpdate) formData.set("cutPrice", cutpriceUpdate.toString());
     if (stockUpdate !== undefined) formData.set("stock", stockUpdate.toString());
-    if (photoFile) formData.set("photo", photoFile);
     if (categoryUpdate) formData.set("category", categoryUpdate);
     if (collectionsUpdate) formData.set("collections", collectionsUpdate);
     if (sizeUpdate.length > 0) {
@@ -87,6 +115,12 @@ const Productmanagement = () => {
         formData.append(`size[${index}]`, s);
       });
     }
+    if (photoFiles.length > 0) {
+      photoFiles.forEach((file) => {
+        formData.append("photos", file);
+      });
+    };
+
     if (colorUpdate.length > 0) {
       colorUpdate.forEach((c, index) => {
         formData.append(`color[${index}]`, c);
@@ -157,7 +191,7 @@ const Productmanagement = () => {
               )}
 
               <button className="bg-red-500 my-3 sm:my-0 w-24 mt-2 h-10 text-white text-lg rounded-md mx-2 font-semibold" onClick={deleteHandler}>
-              {loadDel ? <FaSpinner className='animate-spin text-2xl mx-auto ' /> : "Delete"}
+                {loadDel ? <FaSpinner className='animate-spin text-2xl mx-auto ' /> : "Delete"}
               </button>
             </section>
             <article>
@@ -260,14 +294,29 @@ const Productmanagement = () => {
                 </div>
 
                 <div className="relative">
-                  <img src={`${server}/${photo}`} alt="New Image" className="w-24 border-2 h-24 object-cover" />
+                  {photos.map((photo) => (
+                    <img src={`${server}/${photo}`} alt="New Image" className="w-24 border-2 h-24 object-cover" />
+                  ))}
                   <span className="absolute top-1  bg-blue-500 text-white rounded-full px-2 text-xs">Old</span>
                 </div>
 
-                <div className="relative">
-                  <img src={photoUpdate ? photoUpdate : "https://raw.githubusercontent.com/AnasAAhmed/Imagerator/main/frontend/src/assets/preview.png"} alt="New Image" className="w-24 border-2 sm:ml-6 h-24 object-cover" />
-                  <span className="absolute top-1 bg-blue-500 text-white rounded-full px-2 text-xs">New</span>
-                  {photoUpdate ? <span className="absolute top-1 right-1 bg-red-500 text-white rounded-full px-4 py-2 text-xs cursor-pointer" onClick={() => { setPhotoUpdate(""); setPhotoFile(null) }}><FaTrash /></span> : ""}
+                <div className="flex flex-wrap">
+                  {photoUpdates.map((photoUpdate, index) => (
+                    <div key={index} className="relative m-2">
+                      <img
+                        src={photoUpdate}
+                        alt="New Image"
+                        className="w-24 border-2 h-24 object-cover"
+                      />
+                      <span className="absolute top-1 bg-blue-500 text-white rounded-full px-2 text-xs">New</span>
+                      <span
+                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full px-4 py-2 text-xs cursor-pointer"
+                        onClick={() => removePhoto(index)}
+                      >
+                        <FaTrash />
+                      </span>
+                    </div>
+                  ))}
                 </div>
                 <button type="submit" className="bg-blue-500 w-56 h-10 my-11 flex justify-center items-center text-white text-lg rounded-md font-semibold">{load ? <FaSpinner className='animate-spin text-2xl mx-3 ' /> : "Update"}</button>
 

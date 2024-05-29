@@ -58,7 +58,7 @@ const Home = () => {
                     productId={i._id}
                     name={i.name}
                     price={i.price}
-                    photo={i.photo}
+                    photo={i.photos[0]}
                     numOfReviews={i.numOfReviews}
                     ratings={i.ratings}
                     cutPrice={i.cutPrice}

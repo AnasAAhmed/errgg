@@ -100,7 +100,7 @@ const Cart = () => {
             <h1 className="text-2xl font-bold text-gray-800">No Items Added</h1>
           )}
         </main>
-        <aside>
+        <aside className="animate-menu">
           <div className="bg-white p-6 rounded-lg shadow-lg lg:fixed">
             <p className="text-lg font-semibold text-gray-800">Order Summary</p>
             <p className="mt-4">Subtotal: <span className="font-semibold">${subtotal}</span></p>

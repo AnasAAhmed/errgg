@@ -126,14 +126,21 @@ export type UpdateUserRequest = {
 
 export type ReviewRequest = {
   productId: string;
+  // formData:FormData;
   rating: number;
   comment: string;
   email: string;
   name: string;
+  photo:string;
   userId: string;
 };
+
+
 export type DeleteProductRequest = {
   userId: string;
+  productId: string;
+};
+export type GetProductRequest = {
   productId: string;
 };
 export type DeleteReviewRequest = {

@@ -77,7 +77,6 @@ const OrderDetails = () => {
                     price={i.price}
                     cutPrice={i.cutPrice}
                     size={i.size}
-                    style={i.style}
                     color={i.color}
                   />
                 ))}
@@ -118,7 +117,6 @@ const OrderProductCard = ({
   quantity,
   productId,
   size,
-  style,
   color,
 }: OrderItem) => {
   const { user } = useSelector((state: RootState) => state.userReducer);
@@ -133,11 +131,10 @@ const OrderProductCard = ({
         ${price} X {quantity} =${price * quantity}
       </span>
       <div className="flex flex-wrap justify-between items-center ml-2">
-        {size !== undefined && <span className="text-gray-500 ">Size: {size}</span>}
+        {size !== undefined && <span className="text-gray-500 mr-1">Size: {size}</span>}
 
         {color !== undefined && <span className="text-gray-500 ">Color:<span className="rounded-full ml-2 px-[11px] py-[0.5px] " style={{ backgroundColor: color }}></span></span>}
 
-        {style !== undefined && <span className="text-gray-500 ">Style: {style}</span>}
       </div>
       <div >
         <ReviewForm user={user} productId={productId} />

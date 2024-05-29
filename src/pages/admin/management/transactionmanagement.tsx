@@ -108,14 +108,13 @@ const [loadUp,setLoadUp]=useState(false)
                 price={i.price}
                 cutPrice={i.cutPrice}
                 size={i.size}
-                style={i.style}
                 color={i.color}
               />
             ))}
           </div>
         </section>
 
-        <article className="p-8 w-full bg-gray-100 rounded-lg">
+        <article className="p-8 w-full rounded-lg">
           <h1 className="text-2xl font-bold mb-4">Order Info</h1>
           <h5 className="font-bold mb-2">User Info</h5>
           <p>Name: {name}</p>
@@ -152,7 +151,6 @@ const OrderProductCard = ({
   quantity,
   productId,
   size,
-  style,
   color,
 }: OrderItem) => (
   <div className="flex flex-row justify-between items-center">
@@ -166,7 +164,6 @@ const OrderProductCard = ({
         <span className="rounded-full ml-1 px-2 py-0.5" style={{ backgroundColor: color }}></span>
       </span>
     )}
-    {style !== '' && <span className="text-gray-500">Style: {style}</span>}
   </div>
 </div>
 
