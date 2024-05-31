@@ -20,7 +20,7 @@ const NewProduct = () => {
   const [cutPrice, setCutPrice] = useState<number>(0);
   const [description, setDescription] = useState<string>("");
   const [stock, setStock] = useState<number>(1);
-  const [size, setSize] = useState<string[]>(["s", "m", "l", "xl", "xxl"]);
+  const [size, setSize] = useState<string[]>(["2","s", "3","m","1","l","2","xl", "0","xxl"]);
   const [color, setColor] = useState<string[]>([]);
   const [photoPrevs, setPhotoPrevs] = useState<string[]>([]);
   const [photos, setPhotos] = useState<File[]>([]);

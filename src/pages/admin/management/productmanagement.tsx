@@ -81,21 +81,7 @@ const Productmanagement = () => {
     setPhotoFiles(photoFiles.filter((_, i) => i !== index));
   };
 
-  // const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const file: File | undefined = e.target.files?.[0];
 
-  //   const reader: FileReader = new FileReader();
-
-  //   if (file) {
-  //     reader.readAsDataURL(file);
-  //     reader.onloadend = () => {
-  //       if (typeof reader.result === "string") {
-  //         setPhotoUpdate(reader.result);
-  //         setPhotoFile(file);
-  //       }
-  //     };
-  //   }
-  // };
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -290,7 +276,7 @@ const Productmanagement = () => {
                 </div>
                 <div>
                   <label className="font-semibold text-sm sm:text-lg block">Update Photo</label>
-                  <input type="file" onChange={changeImageHandler} />
+                  <input type="file" onChange={changeImageHandler} multiple/>
                 </div>
 
                 <div className="relative">

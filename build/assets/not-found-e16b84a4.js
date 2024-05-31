@@ -1,1 +1,0 @@
-import{j as o}from"./index-0f62f80c.js";import{a as r}from"./index.esm-cbc4486d.js";const a=()=>o.jsxs("div",{className:"container not-found",children:[o.jsx(r,{}),o.jsx("h1",{className:"text-3xl",children:"Page Not Found"})]});export{a as default};
