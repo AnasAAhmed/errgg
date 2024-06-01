@@ -38,9 +38,6 @@ const Collections = () => {
                                         numOfReviews={i.numOfReviews}
                                         ratings={i.ratings}
                                         cutPrice={i.cutPrice}
-                                        stock={i.stock}
-                                        size={i.size ? i.size[1] : ""}
-                                        color={i.color ? i.color[1] : ""}
                                     />
                                 ))}
                             </div>

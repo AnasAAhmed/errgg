@@ -162,9 +162,6 @@ const Search = () => {
                       numOfReviews={i.numOfReviews}
                       ratings={i.ratings}
                       cutPrice={i.cutPrice}
-                      size={i.size ? i.size[1] : ""}
-                      color={i.color ? i.color[1] : ""}
-                      stock={i.stock}
                     />
                   ))
                 )}
