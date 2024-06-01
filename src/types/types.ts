@@ -60,9 +60,8 @@ export type Product = {
   numOfReviews: number;
   category: string;
   collections: string;
-  size: string[];
-  style: string[];
-  color: string[];
+  sizes: Array<{ size: string; stock: number }>;
+  colors: Array<{ color: string; stock: number }>;
   photos: string[];
   _id: string;
 };
