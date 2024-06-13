@@ -118,7 +118,7 @@ function TableHOC<T extends Object>(
   data: T[],
   containerClassname: string,
   heading: string,
-  isLoading:boolean,
+  isLoading:boolean=false,
   showPagination:boolean=false,
 ) {
   return function HOC() {
