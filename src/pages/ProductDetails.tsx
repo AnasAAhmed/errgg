@@ -21,7 +21,7 @@
 //   const [colorStock, setColorStock] = useState("");
 //   const [sizeStock, setSizeStock] = useState("");
 //   const [mainImage, setMainImage] = useState("");
-  
+
 //   const params = useParams();
 //   const { data, isLoading, isError } = useProductDetailsQuery(params.id!);
 //   const { _id: productId, price, cutPrice, description, photos, ratings, numOfReviews, name, stock, category, size: sizes, color: colors } = data?.product || {
@@ -254,7 +254,7 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
   const [colorStock, setColorStock] = useState<number>(0);
   const [sizeStock, setSizeStock] = useState<number>(0);
   const [mainImage, setMainImage] = useState("");
-  
+
   const params = useParams();
   const { data, isLoading, isError } = useProductDetailsQuery(params.id!);
   const {
@@ -268,8 +268,9 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
     name,
     stock,
     category,
-     sizes,
-     colors
+    sizes,
+    colors,
+    reviews,
   } = data?.product || {
     _id: "",
     photos: [],
@@ -282,9 +283,10 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
     numOfReviews: 0,
     cutPrice: 0,
     sizes: [],
-    colors: []
+    colors: [],
+    reviews: []
   };
-  
+
   const dispatch = useDispatch();
 
   const addToCartHandler = (cartItem: CartItem) => {
@@ -307,14 +309,23 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
   }, [params.id]);
 
   useEffect(() => {
-    setLoadingBar(100);
+    setLoadingBar(99);
+    setTimeout(() => {
+      setLoadingBar(100);
+    }, 50)
     if (photos && photos.length > 0) {
       setMainImage(photos[0]);
     }
-    setSize(sizes[0]?.size)
-    setColor(colors[0]?.color)
-    setSizeStock(sizes[0]?.stock)
-    setColorStock(colors[0]?.stock)
+    const availableColor = colors.find(color => color.stock > 0);
+    if (availableColor) {
+      setColor(availableColor.color);
+      setColorStock(availableColor.stock);
+    }// Find the first size with quantity > 0
+    const availableSize = sizes.find(size => size.stock > 0);
+    if (availableSize) {
+      setSize(availableSize.size);
+      setSizeStock(availableSize.stock);
+    }
     window.scroll(0, 0);
   }, [data]);
 
@@ -322,8 +333,8 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
 
   return (
     <>
-      <div>
-        <main className="flex flex-col md:flex-row lsg:w-[70%] px-6 md:px-3 justify-center mt-8">
+      <div >
+        <main className="flex flex-col md:flex-row px-6 md:px-24 lg:px-44 justify-center mt-8">
           {isLoading ? (
             <ProductDetailsSkeleton />
           ) : (
@@ -397,20 +408,20 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
                   <span className="text-lg line-through text-red-500">{cutPrice > 0 ? `$${cutPrice}` : ""}</span>
                 </h3>
                 <button
-                  disabled={stock === 0 || colorStock === 0 || sizeStock === 0}
+                  disabled={stock < 1 || sizes.length > 0 && sizeStock < 1 || colors.length > 0 && colorStock < 1}
                   className='cart-button w-full mt-4 px-4 py-2 bg-yellow-500 rounded-md text-white text-lg font-semibold transition duration-300 ease-in-out hover:bg-yellow-600'
                   onClick={() =>
                     addToCartHandler({ productId, size, color, price, cutPrice, name, photo: photos![0], stock, quantity: 1 })
                   }
                 >
-                  {stock === 0 || colorStock === 0 || sizeStock === 0 ? "Not Available" : "Add to Cart"}
+                  {stock < 1 || sizes.length > 0 && sizeStock < 1 || colors.length > 0 && colorStock < 1 ? "Not Available" : "Add to Cart"}
                 </button>
               </article>
             </>
           )}
         </main>
         <div>
-          <ProductReview numOfReviews={numOfReviews} productId={productId} />
+          <ProductReview reviews={reviews} numOfReviews={numOfReviews} productId={productId} />
         </div>
         <div className="flex justify-center items-center">
           <RelatedProducts filteredProductId={productId} category={category} heading="Related Products" />
@@ -450,7 +461,7 @@ const ImageZoom = ({ src, alt }: ImageZoomProps) => {
   return (
     <>
       <div
-        className="relative w-full h-[500px] max-md:hidden"
+        className="relative w-full h-[400px] max-md:hidden"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseMove={handleMouseMove}

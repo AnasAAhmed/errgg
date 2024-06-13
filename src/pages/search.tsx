@@ -4,6 +4,7 @@ import {
   useCategoriesQuery,
   useSearchProductsQuery,
 } from "../redux/api/productAPI";
+
 import { CustomError } from "../types/api-types";
 import toast from "react-hot-toast";
 import { RiFilterFill } from "react-icons/ri";
@@ -13,7 +14,6 @@ import Footer from "../components/Footer";
 
 const Search = () => {
   const params = useParams()
-
   const {
     data: categoriesResponse,
     isLoading: loadingCategories,
@@ -48,13 +48,16 @@ const Search = () => {
 
   useEffect(() => {
     setLoading(true);
+    setPage(1)
   }, [search, sort, category, maxPrice]);
-
+  
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 400);
+    window.scroll(0,0)
   }, [searchedData])
+  
 
 
   const handleKeyPressForMaxPrice = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -162,6 +165,7 @@ const Search = () => {
                       numOfReviews={i.numOfReviews}
                       ratings={i.ratings}
                       cutPrice={i.cutPrice}
+                      sold={i.sold}
                     />
                   ))
                 )}
@@ -173,7 +177,7 @@ const Search = () => {
             <article className="flex justify-center items-center mt-4">
               <button
                 disabled={!isPrevPage}
-                onClick={() => { setPage((prev) => prev - 1); window.scroll(0, 0) }}
+                onClick={() => setPage((prev) => prev - 1)}
                 className={`px-4 py-2 ${isPrevPage ? 'bg-violet-500' : 'bg-gray-400'} text-white rounded mr-2`}
               >
                 Prev
@@ -183,7 +187,7 @@ const Search = () => {
               </span>
               <button
                 disabled={isNextPage}
-                onClick={() => { setPage((prev) => prev + 1); window.scroll(0, 0) }}
+                onClick={() => setPage((prev) => prev + 1)}
                 className={`px-4 py-2 ${!isNextPage ? 'bg-violet-500' : 'bg-gray-400'} text-white rounded ml-2`}
               >
                 Next

@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Column } from "react-table";
 import TableHOC from "../components/admin/TableHOC";
-import { Skeleton } from "../components/loader";
 import { useMyOrdersQuery } from "../redux/api/orderAPI";
 import { RootState } from "../redux/store";
 import { CustomError } from "../types/api-types";
@@ -58,7 +57,7 @@ const Orders = () => {
   }
 
   useEffect(() => {
-    if (data){
+    if (data) {
       setRows(
         data.orders.map((i) => ({
           _id: i._id,
@@ -71,17 +70,17 @@ const Orders = () => {
                 i.status === "Processing"
                   ? "red"
                   : i.status === "Shipped"
-                  ? "green"
-                  : "purple"
+                    ? "green"
+                    : "purple"
               }
             >
               {i.status}
             </span>
           ),
-            action: <Link className="text-md font-medium py-1 px-2 rounded-md hover:bg-black hover:text-white" to={`/order/${i._id}`}>Details</Link>,     
+          action: <Link className="text-md font-medium py-1 px-2 rounded-md hover:bg-black hover:text-white" to={`/order/${i._id}`}>Details</Link>,
         }))
       );
-  }
+    }
   }, [data]);
 
   const Table = TableHOC<DataType>(
@@ -89,11 +88,11 @@ const Orders = () => {
     rows,
     "dashboard-product-box",
     "My Orders",
-    rows.length > 6
+    isLoading
   )();
   return (
-    <div className="container min-h-[90vh]">
-      {isLoading ? <Skeleton length={20} /> : Table}
+    <div className="min-h-[90vh] mx-24">
+      {Table}
     </div>
   );
 };

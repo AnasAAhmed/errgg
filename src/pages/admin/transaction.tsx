@@ -8,8 +8,7 @@ import TableHOC from "../../components/admin/TableHOC";
 import { useAllOrdersQuery } from "../../redux/api/orderAPI";
 import { RootState } from "../../redux/store";
 import { CustomError } from "../../types/api-types";
-import {CopyText} from "../../utils/function";
-import { FaSpinner } from "react-icons/fa";
+import { CopyText } from "../../utils/function";
 
 interface DataType {
   user: string;
@@ -69,7 +68,7 @@ const Transaction = () => {
       setRows(
         data.orders.map((i) => ({
           user: i.user.name,
-          userId: <div className="line-clamp-2"><CopyText text={i.user._id}/>...</div>,
+          userId: <div className="line-clamp-2"><CopyText text={i.user._id} />...</div>,
           amount: i.total,
           discount: i.discount,
           quantity: i.orderItems.length,
@@ -79,8 +78,8 @@ const Transaction = () => {
                 i.status === "Processing"
                   ? "red"
                   : i.status === "Shipped"
-                  ? "green"
-                  : "purple"
+                    ? "green"
+                    : "purple"
               }
             >
               {i.status}
@@ -96,12 +95,13 @@ const Transaction = () => {
     rows,
     "dashboard-product-box",
     "Transactions",
-    rows.length > 6
+    isLoading,
+    true
   )();
   return (
     <div className="admin-container">
       <AdminSidebar />
-      <main>{isLoading ? <FaSpinner className="animate-spin h-44 w-44 my-40 mx-auto text-gray-500" /> : Table}</main>
+      <main>{Table}</main>
     </div>
   );
 };

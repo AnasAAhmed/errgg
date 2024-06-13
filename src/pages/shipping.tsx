@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { saveShippingInfo } from "../redux/reducer/cartReducer";
 import { RootState, server } from "../redux/store";
 import Footer from "../components/Footer";
+import { FaSpinner } from "react-icons/fa";
 
 const Shipping = () => {
   const { cartItems, total } = useSelector(
@@ -15,6 +16,7 @@ const Shipping = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false)
 
   const [shippingInfo, setShippingInfo] = useState({
     address: "",
@@ -34,7 +36,7 @@ const Shipping = () => {
     e.preventDefault();
 
     dispatch(saveShippingInfo(shippingInfo));
-
+    setIsLoading(true)
     try {
       const { data } = await axios.post(
         `${server}/api/v1/payment/create`,
@@ -55,6 +57,8 @@ const Shipping = () => {
       console.log(error);
       toast.error("Something went wrong");
     }
+    setIsLoading(false)
+
   };
 
   useEffect(() => {
@@ -122,7 +126,7 @@ const Shipping = () => {
             onChange={changeHandler}
           />
 
-          <button type="submit" className="py-3 px-6 rounded-lg uppercase text-lg font-semibold bg-blue-500 text-white shadow-md transition duration-300 ease-in-out hover:opacity-80">Pay Now</button>
+          <button type="submit" className="py-3 px-6 rounded-lg uppercase text-lg font-semibold bg-blue-500 text-white shadow-md transition duration-300 ease-in-out hover:opacity-80">{isLoading ? <FaSpinner className="animate-spin" /> : "Pay Now"}</button>
         </form>
       </div>
       <Footer />

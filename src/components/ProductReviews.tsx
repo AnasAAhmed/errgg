@@ -3,26 +3,28 @@ import { useSelector } from 'react-redux';
 import { FaChevronDown, FaChevronUp, FaSpinner, FaTrash } from 'react-icons/fa';
 import StarRatings from './StarsRatings';
 import { calculateTimeDifference } from '../utils/function';
-import { useDeleteProductReviewMutation, useFetchProductReviewsQuery } from '../redux/api/productAPI';
+import { useDeleteProductReviewMutation } from '../redux/api/productAPI';
 import { onlyResponseToast } from '../utils/features';
 import ReviewForm from './ReviewForm';
 import { RootState } from '../redux/store';
 import toast from 'react-hot-toast';
+import { Review } from '../types/types';
 
+type ProductReviews={
+    productId: string,
+     numOfReviews?: number
+     reviews:Review[];
+}
 
-const ProductReviews = ({ productId, numOfReviews }: { productId: string, numOfReviews?: number }) => {
+const ProductReviews = ({ productId,reviews, numOfReviews }:ProductReviews) => {
     const { user } = useSelector((state: RootState) => state.userReducer);
     const [viewAll, setViewAll] = useState(4); // Initial visible reviews
     const [isReviewed, setIsReviewed] = useState(false);
-
-    const { data, isLoading, error } = useFetchProductReviewsQuery(productId);
-    const reviews = Array.isArray(data?.reviews) ? data?.reviews : [];
-
     const [deleteReview, { isLoading: isDeletingReview }] = useDeleteProductReviewMutation();
 
     useEffect(() => {
         if (reviews) {
-            const userReview = reviews.find((review) => review.userId === user?._id);
+            const userReview = reviews.find((review:Review) => review.userId === user?._id);
             setIsReviewed(!!userReview);
         }
     }, [reviews, user]);
@@ -37,9 +39,6 @@ const ProductReviews = ({ productId, numOfReviews }: { productId: string, numOfR
         }
     };
 
-
-    if (error) return <p>Error Fetching review</p>;
-
     return (
         <div className="container mx-auto p-4">
             <div className="flex flex-col items-center">
@@ -48,7 +47,7 @@ const ProductReviews = ({ productId, numOfReviews }: { productId: string, numOfR
             </div>
             <ReviewForm productId={productId} user={user} />
             <div className="md:mx-12 mt-12 max-sm:border-2 ">
-                {isLoading ? (
+                {!reviews ? (
                     <div className="flex items-center justify-center h-[15.4rem]">
                         <FaSpinner className="animate-spin h-24 w-24 text-gray-500" />
                     </div>

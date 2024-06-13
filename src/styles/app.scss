@@ -121,6 +121,7 @@ $color3: rgb(0, 104, 136);
     >button {
       @include btn(1rem, $color3, $color1);
       width: 100%;
+      border-radius: 10px;
       font-size: 1.1rem;
     }
   }

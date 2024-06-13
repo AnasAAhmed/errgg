@@ -58,12 +58,14 @@ export type Product = {
   stock: number;
   ratings: number;
   numOfReviews: number;
+  sold: number;
   category: string;
   collections: string;
   sizes: Array<{ size: string; stock: number }>;
   colors: Array<{ color: string; stock: number }>;
   photos: string[];
   _id: string;
+  reviews:[]
 };
 
 export type ShippingInfo = {

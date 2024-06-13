@@ -14,7 +14,7 @@ import { resetCart } from "../redux/reducer/cartReducer";
 import { RootState } from "../redux/store";
 import { NewOrderRequest } from "../types/api-types";
 import { responseToast } from "../utils/features";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaSpinner } from "react-icons/fa";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
@@ -79,8 +79,8 @@ const CheckOutForm = () => {
     <div className="checkout-container">
       <form onSubmit={submitHandler}>
         <PaymentElement />
-        <button type="submit" disabled={isProcessing}>
-          {isProcessing ? "Processing..." : "Pay"}{"  "}${total}
+        <button type="submit" className="flex justify-center" disabled={isProcessing}>
+          {isProcessing ? <FaSpinner className="animate-spin h-6 w-6" /> : `Pay $${total}`}
         </button>
       </form>
     </div>

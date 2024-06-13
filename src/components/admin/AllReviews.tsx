@@ -36,7 +36,7 @@ const AllReviews = ({ productId }: { productId: string }) => {
                                         <p className='text-[0.5rem] xsm:text-[0.7rem] sm:text-sm font-semibold'>{calculateTimeDifference(review.date)}</p>
                                     </div>
                                 </div>
-                                <p className='text-[0.7rem] sm:text-sm'><CopyText text={review.email}/></p>
+                                <div className='text-[0.7rem] sm:text-sm'><CopyText text={review.email}/></div>
                                 <p><strong>Comment:</strong> {review.comment}</p>
                             </li>
                         ))}

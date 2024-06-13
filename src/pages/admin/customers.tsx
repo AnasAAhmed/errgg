@@ -27,10 +27,7 @@ interface DataType {
 }
 
 const columns: Column<DataType>[] = [
-  {
-    Header: "Avatar",
-    accessor: "avatar",
-  },
+  
   {
     Header: "Name",
     accessor: "name",
@@ -122,13 +119,12 @@ const Customers = () => {
         }))
       );
   }, [data]);
-
   const Table = TableHOC<DataType>(
     columns,
     rows,
     "dashboard-product-box",
     "Customers",
-    rows.length > 6
+    isLoading 
   )();
 
   return (
@@ -148,7 +144,8 @@ const Customers = () => {
             placeholder="Search By email"
           />
         </div>
-        {isLoading ? <FaSpinner className="animate-spin h-44 w-44 my-40 mx-auto text-gray-500" /> : Table}
+        {Table}
+        {/* {isLoading ? <FaSpinner className="animate-spin h-44 w-44 my-40 mx-auto text-gray-500" /> : Table} */}
       </main>
     </div>
   );

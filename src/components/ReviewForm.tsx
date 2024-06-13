@@ -4,6 +4,7 @@ import { onlyResponseToast } from "../utils/features";
 import { FaEdit, FaSpinner } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import { User } from "../types/types";
+import toast from "react-hot-toast";
 
 type ReviewFormProps = {
     isEditing?: boolean;
@@ -18,20 +19,22 @@ const ReviewForm = ({ isEditing, productId, user, oldRating, oldComment }: Revie
     const [rating, setRating] = useState(oldRating || 0);
     const [comment, setComment] = useState(oldComment || "");
     const [modalOpen, setModalOpen] = useState(false);
-  
+
 
     const [createReview, { isLoading: isCreatingReview }] = useCreateProductReviewMutation();
 
     const handleCreateReview = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const res = await createReview({ rating, photo: user!.photo, comment, email: user!.email, name: user!.name, userId: user!._id, productId });
+            const res = await createReview({ rating,email: user!.email, photo: user!.photo, comment,  name: user!.name, userId: user!._id, productId });
 
             if (!isCreatingReview) setModalOpen(false);
             onlyResponseToast(res);
 
         } catch (error) {
             console.error('Error creating review:', error);
+            toast.error(`Error creating review:${error}`);
+
         }
     };
 

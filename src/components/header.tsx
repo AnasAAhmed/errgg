@@ -91,25 +91,25 @@ const Header = ({ user, cartItemsLength }: PropsType) => {
           >
             <RiMenuLine size={"1.5rem"} />
           </button>
-          <dialog className="top-8 z-30 animate-menu border rounded-lg" open={isOpen} style={{ left: 'calc(100% - 100px)' }}>
-            <div className="flex m-2 p-2 flex-col">
-              <Link className="border-b mb-1 hover:text-gray-800 text-gray-800 font-semibold" onClick={() => setIsOpen(false)} to="/">
+          <dialog className="top-8 z-30  animate-menu border rounded-lg" open={isOpen} style={{ left: 'calc(100% - 150px)' }}>
+            <div className="flex m-7 flex-col">
+              <Link className="border-b text-2xl mb-1 hover:text-gray-800 text-gray-800 font-semibold" onClick={() => setIsOpen(false)} to="/">
                 Home
               </Link>
-              <Link className="border-b mb-1 hover:text-gray-800 text-gray-800 font-semibold" to="/">
+              <Link className="border-b text-2xl mb-1 hover:text-gray-800 text-gray-800 font-semibold" to="/">
                 About
               </Link>
-              <Link className="border-b mb-1 hover:text-gray-800 text-gray-800 font-semibold" to="/">
+              <Link className="border-b text-2xl mb-1 hover:text-gray-800 text-gray-800 font-semibold" to="/">
                 Contact
               </Link>
               {user?._id &&
                 <>
                   {user.role === "admin" && (
-                    <Link className="border-b mb-1 hover:text-gray-800 text-gray-800 font-semibold" onClick={() => setIsOpen(false)} to="/admin/dashboard">
+                    <Link className="border-b text-2xl mb-1 hover:text-gray-800 text-gray-800 font-semibold" onClick={() => setIsOpen(false)} to="/admin/dashboard">
                       Dashboard
                     </Link>
                   )}
-                  <Link className="border-b mb-1 hover:text-gray-800 text-gray-800 font-semibold" onClick={() => setIsOpen(false)} to="/orders">
+                  <Link className="border-b mb-1 text-2xl hover:text-gray-800 text-gray-800 font-semibold" onClick={() => setIsOpen(false)} to="/orders">
                     My Orders
                   </Link>
                 </>

@@ -248,7 +248,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
 import { useNewProductMutation } from "../../../redux/api/productAPI";
 import { RootState } from "../../../redux/store";
-import { responseToast } from "../../../utils/features";
+import { onlyResponseToast, responseToast } from "../../../utils/features";
 import { FaArrowLeft, FaSpinner, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 
@@ -267,6 +267,7 @@ const NewProduct = () => {
   const [photoPrevs, setPhotoPrevs] = useState<string[]>([]);
   const [photos, setPhotos] = useState<File[]>([]);
   const [load, setLoad] = useState<boolean>(false);
+  const [noRedirect, setNoRedirect] = useState<boolean>(false);
 
   const [newProduct] = useNewProductMutation();
   const navigate = useNavigate();
@@ -329,16 +330,16 @@ const NewProduct = () => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoad(true);
-    
+
     const totalSizesStock = sizes.reduce((acc, size) => acc + size.stock, 0);
     const totalColorsStock = colors.reduce((acc, color) => acc + color.stock, 0);
-    
+
     if (totalSizesStock > stock || totalColorsStock > stock) {
       toast.error("Colors/Sizes Total stock cannot be more than Overall stock");
       setLoad(false);
       return;
     }
-    
+
     if (!name || !price || stock < 0 || !category || !photos || !description || !collections || sizes.length > 5 || colors.length > 5) {
       toast.error("Validation failed OR Something is missing");
       setLoad(false);
@@ -368,17 +369,22 @@ const NewProduct = () => {
 
     const res = await newProduct({ id: user?._id!, formData });
     setLoad(false);
-
-    responseToast(res, navigate, "/admin/product");
+    noRedirect ?onlyResponseToast(res) :responseToast(res, navigate, "/admin/product");
   };
 
   return (
     <div className="admin-container">
       <AdminSidebar />
       <main>
-        <Link to={"/admin/product"} className="flex items-center text-blue-500 mb-4">
-          <FaArrowLeft className="mr-1" /> Back
-        </Link>
+        <div className="flex justify-between items-center mx-3">
+          <Link to={"/admin/product"} className="flex items-center text-blue-500 mb-4">
+            <FaArrowLeft className="mr-1" /> Back
+          </Link>
+          <div className="flex items-center">
+            <label htmlFor="NoRedirect" className="cursor-pointer mx-2">No-Redirect</label>
+            <input id='NoRedirect' type="checkbox" onChange={() => setNoRedirect(!noRedirect)} />
+          </div>
+        </div>
         <article>
           <h2 className="heading">New Product</h2>
           <form onSubmit={submitHandler} className="grid grid-cols-2 gap-2 sm:gap-4 mx-2">
@@ -563,9 +569,9 @@ const NewProduct = () => {
             <button
               type="submit"
               disabled={load}
-              className=" bg-blue-500 text-white rounded-md py-2 mt-4"
+              className=" bg-blue-500 text-white flex justify-center rounded-md py-2 mb-4"
             >
-              {load ? <FaSpinner className="animate-spin" /> : "Create Product"}
+              {load ? <FaSpinner className="animate-spin my-1" /> : "Create Product"}
             </button>
           </form>
         </article>

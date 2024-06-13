@@ -36,8 +36,10 @@ const Login = ({setLoadingBar}:LoadingBarProps) => {
         dob: date,
         _id: user.uid,
       });
-      setLoadingBar(96)
-      setLoadingBar(100)
+      setLoadingBar(99)
+      setTimeout(()=>{
+        setLoadingBar(100);
+      },200)
       if ("data" in res) {
         toast.success(res.data.message);
         const data = await getUser(user.uid);
