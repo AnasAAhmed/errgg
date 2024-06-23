@@ -78,42 +78,57 @@ $color3: rgb(0, 104, 136);
   }
 }
 
-@keyframes slideIn {
+@keyframes upScale {
   from {
-    transform: translateY(-50px);
+    transform: scale(0.97);
+    // transform: translateY(-50px);
     opacity: 0;
   }
 
   to {
-    transform: translateY(0);
+    transform: scale(1);
+    // transform: translateY(0);
     opacity: 1;
   }
 }
-
 .animate-modal {
-  animation: slideIn 0.3s ease-out forwards;
+  animation: upScale 0.2s ease-out forwards;
 }
-
-@keyframes slide-in {
+@keyframes link {
   from {
-    transform: translateX(+20px);
+    // transform: scale(0.97);
+    transform: translateX(+50px);
     opacity: 0;
   }
 
   to {
+    // transform: scale(1);
     transform: translateX(0);
     opacity: 1;
   }
 }
+.animate-link {
+  animation: link 0.2s ease-out forwards;
+}
+@keyframes menu {
+  from {
+    height: 0%;
+    opacity: 0;
+  }
 
+  to {
+   height: 37%;
+    opacity: 1;
+  }
+}
 .animate-menu {
-  animation: slide-in 0.3s ease-out forwards;
+  animation: menu 0.2s ease-out forwards;
 }
 
 .checkout-container {
   max-width: 400px;
   width: 100%;
-  margin: auto;
+  margin: 5rem auto;
 
   >form {
     @include flex(column, flex-start, stretch, 2rem);

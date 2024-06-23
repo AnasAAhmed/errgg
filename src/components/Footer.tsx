@@ -10,10 +10,9 @@ const Footer = () => {
                     <h1 className="uppercase mb-4 text-md md:text-lg md:font-semibold text-gray-300">Company</h1>
                     <ul className="text-md md:text-lg text-gray-400">
                         <li>About</li>
-                        <li>Mission</li>
+                        <li><Link className="text-gray-400" to={"/blog"} onClick={() => window.scroll(0, 0)}>Blog</Link></li>
                         <li>Services</li>
                         <li>Social</li>
-                        <li>Get in touch</li>
                     </ul>
                 </div>
                 <div className="w-1/2 lg:w-1/5 pt-8">
@@ -32,14 +31,14 @@ const Footer = () => {
                         <li><Link className="text-gray-400" to={"/"} onClick={() => window.scroll(0, 0)}>Home</Link></li>
                         <li><Link className="text-gray-400" to={"/search"} onClick={() => window.scroll(0, 0)}>Search</Link></li>
                         <li><Link className="text-gray-400" to={"/orders"} onClick={() => window.scroll(0, 0)}>Orders</Link></li>
-                        <li><Link className="text-gray-400" to={"cart"} onClick={() => window.scroll(0, 0)}>Cart</Link></li>
+                        <li><Link className="text-gray-400" to={"/cart"} onClick={() => window.scroll(0, 0)}>Cart</Link></li>
 
                     </ul>
                 </div>
                 <div className="w-1/2 lg:w-1/5 pt-8">
                     <h1 className="uppercase mb-4 text-md md:text-lg font-semibold text-gray-300">Support</h1>
                     <ul className="text-md md:text-lg text-gray-400">
-                        <li>Contact us</li>
+                    <li><Link className="text-gray-400" to={"/contact"} onClick={() => window.scroll(0, 0)}>Contact</Link></li>
                         <li>Web chat</li>
                         <li>Open ticket</li>
                     </ul>

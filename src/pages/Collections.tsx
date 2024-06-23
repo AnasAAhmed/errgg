@@ -25,7 +25,7 @@ const Collections = () => {
                 ) : (
                     <div className="flex flex-col gap-10 py-8 px-5">
                         {!data?.productCollection || data?.productCollection.length === 0 ? (
-                            <p className="text-body-bold">No products found</p>
+                            <p className="font-bold text-4xl">No products found</p>
                         ) : (
                             <div className="md:flex md:flex-wrap grid grid-cols-2 justify-center gap-4 md:gap-16 ">
                                 {data?.productCollection.map((i) => (

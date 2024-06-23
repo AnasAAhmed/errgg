@@ -22,7 +22,6 @@ const StarRatings = ({ rating }: { rating: number }) => {
     return (
         <div className="flex items-center ">
             {ratingStar}
-            {/* <span className="mx-1">({rating})</span> */}
         </div>
     );
 };

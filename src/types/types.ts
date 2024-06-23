@@ -9,44 +9,44 @@ export type User = {
   _id: string;
 };
 
-export type IShippingInfo ={
-    address: string;
-    city: string;
-    state: string;
-    country: string;
-    pinCode: number;
+export type IShippingInfo = {
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  pinCode: number;
 }
 
-export type LoadingBarProps={
-  setLoadingBar:React.Dispatch<React.SetStateAction<number>>
+export type LoadingBarProps = {
+  setLoadingBar: React.Dispatch<React.SetStateAction<number>>
 }
-export type IOrderItem= {
-    name: string;
-    photo: string;
-    price: number;
-    quantity: number;
-    productId: string; // Use `Types.ObjectId` for Mongoose ObjectId
-}
-
-export type IOrder  ={
-    shippingInfo: IShippingInfo;
-    user: string; // Assuming the user ID is a string
-    subtotal: number;
-    tax: number;
-    shippingCharges: number;
-    discount: number;
-    total: number;
-    status: 'Processing' | 'Shipped' | 'Delivered'; // Enum for status
-    orderItems: IOrderItem[];
+export type IOrderItem = {
+  name: string;
+  photo: string;
+  price: number;
+  quantity: number;
+  productId: string; // Use `Types.ObjectId` for Mongoose ObjectId
 }
 
-export type Review= {
+export type IOrder = {
+  shippingInfo: IShippingInfo;
+  user: string; // Assuming the user ID is a string
+  subtotal: number;
+  tax: number;
+  shippingCharges: number;
+  discount: number;
+  total: number;
+  status: 'Processing' | 'Shipped' | 'Delivered'; // Enum for status
+  orderItems: IOrderItem[];
+}
+
+export type Review = {
   name: string;
   userId: string;
   email: string;
   rating: number;
-  date:number;
-  photo:string;
+  date: number;
+  photo: string;
   comment: string;
 };
 
@@ -54,18 +54,24 @@ export type Product = {
   name: string;
   price: number;
   cutPrice: number;
-  description:string;
+  description: string;
   stock: number;
   ratings: number;
   numOfReviews: number;
   sold: number;
   category: string;
   collections: string;
-  sizes: Array<{ size: string; stock: number }>;
-  colors: Array<{ color: string; stock: number }>;
+  variants: [{
+    size: string;
+    color: string;
+    stock: number;
+   _id: string;
+  }];
+  // sizes: Array<{ size: string; stock: number }>;
+  // colors: Array<{ color: string; stock: number }>;
   photos: string[];
   _id: string;
-  reviews:[]
+  reviews: []
 };
 
 export type ShippingInfo = {
@@ -86,6 +92,7 @@ export type CartItem = {
   stock: number;
   size?: string;
   color?: string;
+  variantId?: string;
   style?: string;
 };
 export type OrderItem = Omit<CartItem, "stock"> & { _id: string };
@@ -102,7 +109,7 @@ export type Order = {
   user: {
     name: string;
     _id: string;
-   email: string;
+    email: string;
     phone: number;
   };
   _id: string;

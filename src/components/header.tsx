@@ -1,8 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  FaSearch,
-  FaShoppingBag,
-} from "react-icons/fa";
+import { FaSearch, FaShoppingBag } from "react-icons/fa";
 import { User } from "../types/types";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
@@ -10,115 +7,166 @@ import toast from "react-hot-toast";
 import UserModal from "./UserModal";
 import { useState } from "react";
 import { RiMenuLine } from "react-icons/ri";
+import Modal from "./Modal";
+
 interface PropsType {
   user?: User | null;
-  cartItemsLength: number
+  cartItemsLength: number;
 }
 
 const Header = ({ user, cartItemsLength }: PropsType) => {
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  // const [scrolled, setScrolled] = useState(false);
 
   const logoutHandler = async () => {
     try {
       await signOut(auth);
       toast.success("Sign Out Successfully");
     } catch (error) {
-      toast.error("Sign Out Fail");
+      toast.error("Sign Out Failed");
     }
   };
 
+  const closeModal = () => setIsOpen(false);
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const scrollTop = window.scrollY;
-  //     if (scrollTop > 100) {
-  //       setScrolled(true);
-  //     } else {
-  //       setScrolled(false);
-  //     }
-  //   };
+  const handleClick = (scrollTop = false) => {
+    if (scrollTop) window.scrollTo({ top: 0, behavior: "smooth" });
+    setIsOpen(false);
+  };
 
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, [])
 
   return (
+    <nav
+      className={`flex max-sm:sticky bg-white transition-all duration-500 top-0 w-full z-10 items-center justify-between px-4 py-2 shadow-md`}
+    >
+      <Link
+        to="/"
+        className="text-gray-800 ml-0 md:ml-2 hover:text-gray-500 text-2xl font-bold"
+        onClick={() => handleClick(true)}
+      >
+        LOGO.
+      </Link>
 
-    <nav className="flex bg-white transition-all duration-500 top-0 w-full z-30 items-center justify-between px-4 py-2">
-      {/* <nav className={`flex fixed ${scrolled ? "bg-gray-900" : "bg-transparent" } transition-all duration-500 top-0 w-full z-30 items-center justify-between px-4 py-2`}> */}
-      <Link to={"/"} className="text-gray-800 ml-0 md:ml-2 hover:text-gray-500 text-2xl font-bold" onClick={() => { setIsOpen(false); window.scroll(0, 0) }}>LOGO.</Link>
-
-      {/* Desltop Nav */}
-      <div className="flex items-center ">
+      <div className="flex items-center">
         <div className="hidden sm:flex justify-between gap-1 md:gap-3 ml-3">
-          <Link onClick={() => window.scroll(0, 0)} className="hover:bg-gray-200 text-gray-800 rounded-md px-2 py-1  font-semibold text-lg" to="/">
+          <Link
+            onClick={() => handleClick(true)}
+            className="hover:bg-gray-200 text-gray-800 rounded-md px-2 py-1 font-semibold text-lg"
+            to="/"
+          >
             Home
           </Link>
-          <Link className="hover:bg-gray-200 text-gray-800 rounded-md px-2 py-1  font-semibold text-lg" to="/">
-            About
+          <Link
+            className="hover:bg-gray-200 text-gray-800 rounded-md px-2 py-1 font-semibold text-lg"
+            to="/blog"
+            onClick={() => handleClick(true)}
+          >
+            Blog
           </Link>
-          <Link className="hover:bg-gray-200 text-gray-800 rounded-md px-2 py-1  font-semibold text-lg" to="/">
+          <Link
+            className="hover:bg-gray-200 text-gray-800 rounded-md px-2 py-1 font-semibold text-lg"
+            to="/contact"
+            onClick={() => handleClick(true)}
+          >
             Contact
           </Link>
           {user?._id && (
             <>
-              <Link className="hover:bg-gray-200 text-gray-800 rounded-md px-2 py-1  font-semibold text-lg" to="/orders">
+              <Link
+                className="hover:bg-gray-200 text-gray-800 rounded-md px-2 py-1 font-semibold text-lg"
+                to="/orders"
+              >
                 Orders
               </Link>
               {user.role === "admin" && (
-                <Link className="hover:bg-gray-200 text-gray-800 rounded-md px-2 py-1 font-semibold text-lg" to="/admin/dashboard">Dashboard
+                <Link
+                  className="hover:bg-gray-200 text-gray-800 rounded-md px-2 py-1 font-semibold text-lg"
+                  to="/admin/dashboard"
+                >
+                  Dashboard
                 </Link>
               )}
             </>
           )}
         </div>
-        <Link to={`/search`} className="px-3 items-center rounded-lg  hover:text-gray-800 text-gray-800" onClick={() => setIsOpen(false)} >
-          <FaSearch size={"1.2rem"} />
+
+        <Link
+          to="/search"
+          className="px-3 items-center rounded-lg hover:text-gray-800 text-gray-800"
+          onClick={() => handleClick(true)}
+        >
+          <FaSearch size="1.2rem" />
         </Link>
 
-        <Link to={"/cart"} onClick={() => setIsOpen(false)} className="mr-2 hover:text-gray-800 text-gray-800 relative">
-          <FaShoppingBag size={"1.3rem"} className=" hover:text-gray-800 text-gray-800" />
-          <span className="absolute -top-1 -right-2 bg-red-500 text-gray-100 rounded-full px-1 text-xs">{cartItemsLength > 0 ? cartItemsLength : ""}</span>
+        <Link
+          to="/cart"
+          onClick={() => handleClick(true)}
+          className="mr-2 hover:text-gray-800 text-gray-800 relative"
+        >
+          <FaShoppingBag size="1.3rem" className="hover:text-gray-800 text-gray-800" />
+          {cartItemsLength > 0 && (
+            <span className="absolute -top-1 -right-2 bg-red-500 text-gray-100 rounded-full px-1 text-xs">
+              {cartItemsLength}
+            </span>
+          )}
         </Link>
 
         <div className="flex sm:hidden relative">
           <button
             onClick={() => setIsOpen((prev) => !prev)}
-            className="mr-1 hover:text-gray-800 text-gray-800 "
+            className="mr-1 hover:text-gray-800 text-gray-800"
           >
-            <RiMenuLine size={"1.5rem"} />
+            <RiMenuLine size="1.5rem" />
           </button>
-          <dialog className="top-8 z-30  animate-menu border rounded-lg" open={isOpen} style={{ left: 'calc(100% - 150px)' }}>
-            <div className="flex m-7 flex-col">
-              <Link className="border-b text-2xl mb-1 hover:text-gray-800 text-gray-800 font-semibold" onClick={() => setIsOpen(false)} to="/">
+          <Modal isOpen={isOpen} onClose={closeModal} overLay={true}>
+            <div className="absolute animate-menu top-12 right-4 bg-white shadow-lg rounded-lg flex flex-col gasp-4">
+              <Link
+                className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold animate-link"
+                onClick={() => handleClick(true)}
+                to="/"
+              >
                 Home
               </Link>
-              <Link className="border-b text-2xl mb-1 hover:text-gray-800 text-gray-800 font-semibold" to="/">
-                About
+              <Link
+                className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold animate-link" to="/blog"
+                onClick={() => handleClick(true)}
+              >
+                Blog
               </Link>
-              <Link className="border-b text-2xl mb-1 hover:text-gray-800 text-gray-800 font-semibold" to="/">
+              <Link
+                className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold animate-link" to="/contact"
+                onClick={() => handleClick(true)}
+              >
                 Contact
               </Link>
-              {user?._id &&
+              {user?._id && (
                 <>
                   {user.role === "admin" && (
-                    <Link className="border-b text-2xl mb-1 hover:text-gray-800 text-gray-800 font-semibold" onClick={() => setIsOpen(false)} to="/admin/dashboard">
+                    <Link
+                      className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold animate-link" onClick={() => handleClick(true)}
+                      to="/admin/dashboard"
+                    >
                       Dashboard
                     </Link>
                   )}
-                  <Link className="border-b mb-1 text-2xl hover:text-gray-800 text-gray-800 font-semibold" onClick={() => setIsOpen(false)} to="/orders">
+                  <Link
+                    className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold animate-link" onClick={() => handleClick(true)}
+                    to="/orders"
+                  >
                     My Orders
                   </Link>
                 </>
-              }
+              )}
             </div>
-          </dialog>
+          </Modal>
         </div>
-        {user?._id ? (<UserModal user={user} logoutHandler={logoutHandler} />) : (
-          <Link to={"/login"} className=" ml-2 font-semibold inline-blockbg-indigo-500 bg-indigo-500 text-gray-200 px-4 py-1 rounded-lg hover:bg-indigo-600">
+
+        {user?._id ? (
+          <UserModal user={user} logoutHandler={logoutHandler} />
+        ) : (
+          <Link
+            to="/login"
+            className="ml-2 font-semibold bg-indigo-500 text-gray-200 px-4 py-1 rounded-lg hover:bg-indigo-600"
+          >
             <p className="cursor-pointer">Login</p>
           </Link>
         )}

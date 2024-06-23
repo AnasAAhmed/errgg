@@ -25,6 +25,7 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
+  const [sortField, setSortField] = useState('');
   const [maxPriceValue, setMaxPriceValue] = useState(100000);
   const [maxPrice, setMaxPrice] = useState(100000);
   const [category, setCategory] = useState(params.category!);
@@ -38,6 +39,7 @@ const Search = () => {
   } = useSearchProductsQuery({
     search,
     sort,
+    sortField,
     category,
     page,
     price: maxPrice,
@@ -50,14 +52,14 @@ const Search = () => {
     setLoading(true);
     setPage(1)
   }, [search, sort, category, maxPrice]);
-  
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 400);
-    window.scroll(0,0)
+    window.scroll(0, 0)
   }, [searchedData])
-  
+
 
 
   const handleKeyPressForMaxPrice = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -73,7 +75,11 @@ const Search = () => {
       setSearch(searchValue);
     }
   };
-
+  const handleSortChange = (e: any) => {
+    const [field, order] = e.target.value.split('|');
+    setSort(order);
+    setSortField(field);
+  };
   if (isError) {
     const err = error as CustomError;
     toast.error(err.data.message);
@@ -101,17 +107,19 @@ const Search = () => {
             />
             <button className="h-full text-gray-600 px-2 bg-gray-100" onClick={() => setSearch(searchValue)}><FaSearch size={"1.2rem"} /></button>
           </div>
-
           <div className="flex flex-row">
-
             <select
-              className=" h-9 outline-none px-2 max-sm:rounded-l-lg border-none bg-gray-200 "
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
+              className="h-9 outline-none px-2 max-sm:rounded-l-lg border-none bg-gray-200"
+              value={`${sortField}|${sort}`}
+              onChange={handleSortChange}
             >
               <option value="">Sort</option>
-              <option value="asc">Price (Low to High)</option>
-              <option value="dsc">Price (High to Low)</option>
+              <option value="price|asc">Price (Low to High)</option>
+              <option value="price|desc">Price (High to Low)</option>
+              <option value="sold|desc">Best-Selling</option>
+              <option value="createdAt|desc">Latest</option>
+              <option value="ratings|desc">Most-Rated</option>
+              <option value="ratings|asc">Less-Rated </option>
               <option value="">(None)</option>
             </select>
             <select

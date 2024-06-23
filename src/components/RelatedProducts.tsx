@@ -39,6 +39,7 @@ const RelatedProducts = ({ category, heading, filteredProductId }: CategoryProdu
                   numOfReviews={product.numOfReviews}
                   ratings={product.ratings}
                   cutPrice={product.cutPrice}
+                  sold={product.sold}
                 />
               ))
             )}

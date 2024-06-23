@@ -10,6 +10,7 @@ import { server } from "../redux/store";
   cutPrice: number;
   quantity: number;
   stock: number;
+  variantId?:string;
   size?: string;
   color?: string;
   style?: string;
@@ -28,7 +29,7 @@ const CartItem = ({
   decrementHandler,
   removeHandler,
 }: CartItemProps) => {
-  const { photo, productId, cutPrice, name, price, quantity, stock, color, size, style } = cartItem;
+  const { photo, productId, cutPrice, name, price, quantity, stock, color, size, variantId } = cartItem;
 
   return (
 
@@ -43,7 +44,7 @@ const CartItem = ({
 
           {!color ?"" :<span className="text-gray-500 ">Colour:<span className="rounded-full ml-2 px-[11px] py-[0.5px] " style={{ backgroundColor: color }}></span></span>}
 
-          {!style  ?"" :<span className="text-gray-500 ">Style: {style}</span>}
+          {!variantId  ?"" :<span className="text-gray-500 ">variantId: {variantId}</span>}
           <p className="text-gray-500">{`${stock < 6 ? `Only ${stock} items left` : ""}`}</p>
         </div>
       </div>

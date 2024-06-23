@@ -67,6 +67,7 @@ export type SearchProductsRequest = {
   category: string;
   search: string;
   sort: string;
+  sortField:string
 };
 export type ProductResponse = {
   success: boolean;

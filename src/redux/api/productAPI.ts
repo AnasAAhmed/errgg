@@ -28,7 +28,7 @@ export const productAPI = createApi({
       providesTags: ["product"],
     }),
     latestCategoryProducts: builder.query<AllProductsResponse, { category?: string }>({
-      query: ({ category }) => `latest/${category}`, // Fetch latest products by category
+      query: ({ category }) => `category-top?category=${category}`, // Fetch latest products by category
       providesTags: ["product"],
     }),
     latestCollectionsProducts: builder.query<CollectionProductsResponse, { collection: string, limit?: number }>({
@@ -58,9 +58,10 @@ export const productAPI = createApi({
       SearchProductsResponse,
       SearchProductsRequest
     >({
-      query: ({ price, search, sort, category, page }) => {
+      query: ({ price, search, sort, category, page ,sortField}) => {
         let base = `all?search=${search}&page=${page}`;
 
+        if (sortField) base += `&sortField=${sortField}`;
         if (price) base += `&price=${price}`;
         if (sort) base += `&sort=${sort}`;
         if (category) base += `&category=${category}`;
