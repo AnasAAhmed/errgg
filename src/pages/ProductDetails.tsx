@@ -175,7 +175,7 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
                     Combination Stock:{" "}
                     {variantStock > 0 ? (
                       variantStock < 6 ? (
-                        <span className="text-red-500">Low Stock {variantStock}</span>
+                        <span className="text-red-500">Only {variantStock} items left</span>
                       ) : (
                         <span className="text-green-500">Available</span>
                       )
@@ -188,7 +188,7 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
                   Overall Stock:{" "}
                   {stock > 0 ? (
                     stock < 6 ? (
-                      <span className="text-red-500">Low Stock {stock}</span>
+                      <span className="text-red-500">Only {stock} items left</span>
                     ) : (
                       <span className="text-green-500">Available</span>
                     )

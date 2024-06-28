@@ -8,7 +8,7 @@ import UserModal from "./UserModal";
 import { useState } from "react";
 import { RiMenuLine } from "react-icons/ri";
 import Modal from "./Modal";
-import { BiChevronDown } from "react-icons/bi";
+import DropDown from "./DropDown";
 
 interface PropsType {
   user?: User | null;
@@ -79,13 +79,7 @@ const Header = ({ user, cartItemsLength }: PropsType) => {
                 Orders
               </Link>
               {/* {user.role === "admin" && ( */}
-                {/* // <Link
-                //   className="hover:bg-gray-200 text-gray-800 rounded-md px-2 py-1 font-semibold text-lg"
-                //   to="/admin/dashboard"
-                // >
-                //   Dashboard
-                // </Link> */}
-                <DropSearch options={[
+                <DropDown options={[
                   {
                     key: "Dashboard",
                     value: "/admin/dashboard"
@@ -145,22 +139,22 @@ const Header = ({ user, cartItemsLength }: PropsType) => {
             <RiMenuLine size="1.5rem" />
           </button>
           <Modal isOpen={isOpen} onClose={closeModal} overLay={true}>
-            <div className="absolute animate-menu top-12 right-4 bg-white shadow-lg rounded-lg flex flex-col gasp-4">
+            <div className="absolute p-2 animate-modal top-12 right-4 bg-white shadow-lg rounded-lg flex flex-col ">
               <Link
-                className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold animate-link"
+                className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold "
                 onClick={() => handleClick(true)}
                 to="/"
               >
                 Home
               </Link>
               <Link
-                className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold animate-link" to="/blog"
+                className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold " to="/blog"
                 onClick={() => handleClick(true)}
               >
                 Blog
               </Link>
               <Link
-                className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold animate-link" to="/contact"
+                className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold " to="/contact"
                 onClick={() => handleClick(true)}
               >
                 Contact
@@ -169,14 +163,14 @@ const Header = ({ user, cartItemsLength }: PropsType) => {
                 <>
                   {user.role === "admin" && (
                     <Link
-                      className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold animate-link" onClick={() => handleClick(true)}
+                      className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold " onClick={() => handleClick(true)}
                       to="/admin/dashboard"
                     >
                       Dashboard
                     </Link>
                   )}
                   <Link
-                    className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold animate-link" onClick={() => handleClick(true)}
+                    className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold " onClick={() => handleClick(true)}
                     to="/orders"
                   >
                     My Orders
@@ -205,44 +199,5 @@ const Header = ({ user, cartItemsLength }: PropsType) => {
 export default Header;
 
 
-type DropSearchProps = {
-  options: 
-    {
-      key: string;
-      value: string;
-    }[]
 
-}
-
-const DropSearch = ({ options }: DropSearchProps) => {
-  const [open, setOpen] = useState(false);
-
-  const handleMouseEnter = () => setOpen(true);
-  const handleMouseLeave = () => setOpen(false);
-  const toggleOpen = () => setOpen(!open);
-
-  return (
-    <div className="relative" onMouseLeave={handleMouseLeave}>
-      <button
-        onMouseEnter={handleMouseEnter}
-        onClick={toggleOpen}
-        className="flex items-center space-x-1 px-2 py-1 font-semibold text-lg rounded-md focus:outline-none focus:ring focus:border-blue-400"
-      >
-        <span>Dashboard</span>
-        <BiChevronDown className={`transition-all duration-300 ${open && 'rotate-180'}`} />
-      </button>
-      {open && (
-        <div
-          className="absolute z-30 animate-modal w-44 origin-top-lebft bg-white border border-gray-300 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-        >
-          {options.map((option, index) => (
-            <Link key={index} to={option.value} className="block w-full border-b p-2 text-left text-md font-semibold text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-              {option.key}
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
 

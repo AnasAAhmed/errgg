@@ -79,11 +79,11 @@ const CheckOutForm = () => {
     <div className="checkout-container">
       <form onSubmit={submitHandler}>
         <PaymentElement />
-        <button type="submit" className="flex justify-center" disabled={isProcessing}>
+        <button type="submit" className="flex justify-center font-semibold" disabled={isProcessing}>
           {isProcessing ? <FaSpinner className="animate-spin h-[26px] w-[26px]" /> : `Pay $${total}`}
         </button>
       </form>
-    </div>
+    </div> 
   );
 };
 

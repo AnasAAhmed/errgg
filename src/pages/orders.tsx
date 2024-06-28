@@ -77,7 +77,7 @@ const Orders = () => {
               {i.status}
             </span>
           ),
-          action: <Link className="text-md font-medium py-1 px-2 rounded-md hover:bg-black hover:text-white" to={`/order/${i._id}`}>Details</Link>,
+          action: <Link className="text-md font-medium py-1 px-2 rounded-md bg-blue-200 hover:bg-blue-300" to={`/order/${i._id}`}>Details</Link>,
         }))
       );
     }

@@ -1,13 +1,13 @@
-import React, {  useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from "../redux/store";
-import { useDeleteSingleUserMutation, useUpdateUserMutation } from '../redux/api/userAPI';
+import { useUpdateUserMutation } from '../redux/api/userAPI';
 import toast from 'react-hot-toast';
 import { FaArrowLeft, FaSignOutAlt, FaSpinner, FaTrash } from 'react-icons/fa';
-import { signOut } from 'firebase/auth';
+import { signOut, deleteUser as firebaseDeleteUser } from 'firebase/auth';
 import { auth } from '../firebase';
 import { Link, useNavigate } from 'react-router-dom';
-import { responseToast } from '../utils/features';
+// import { responseToast } from '../utils/features';
 import { MdOutlineSaveAlt } from 'react-icons/md';
 
 const UserProfile = () => {
@@ -27,7 +27,7 @@ const UserProfile = () => {
     const [gender, setGender] = useState("");
     const [phone, setPhone] = useState(0);
 
-    
+
 
     useEffect(() => {
         if (user) {
@@ -72,24 +72,28 @@ const UserProfile = () => {
             setIsLoading(false);
         }
     };
-    const [deleteUser] = useDeleteSingleUserMutation();
+    // const [deleteUser] = useDeleteSingleUserMutation();
 
     const deleteHandler = async () => {
         try {
             setIsLoading2(true);
-            const res = await deleteUser({ userId: user!._id });
-            logoutHandler();
-            responseToast(res, navigate, "/");
+            const userFireB = auth.currentUser;
+            if (!userFireB) {
+                return toast.error("User not authenticated");
+            }
+            await firebaseDeleteUser(userFireB);
             setIsLoading2(false);
+            toast.success(`Account Deleted`);
+            navigate('/')
         } catch (error) {
-            toast.error("Failed to Delete Account");
+            toast.error(`Failed to Delete Account${error.message}`);
             setIsLoading2(false);
         }
 
     };
 
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center sm:mt-24">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
                 <div className="flex justify-between items-center mb-4">
                     <Link to="/" className="text-blue-500 flex items-center">
@@ -98,7 +102,7 @@ const UserProfile = () => {
                     <h3 className="text-xl font-semibold">Account</h3>
                     <h3 className="text-xl invisible font-semibold">Profile</h3>
                 </div>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="spacse-y-4">
                     <div className="flex flex-col items-center mb-6 ">
                         <img src={user?.photo} alt="user" className="w-16 h-16 rounded-full mb-4" />
                     </div>
@@ -206,7 +210,9 @@ const UserProfile = () => {
                         onClick={handleBackdropClick}
                     >
                         <div className="bg-white rounded-lg shadow-lg p-6 w-[80%] sm:w-[40%]">
-                            <p className="text-center mb-4">Are you sure you want to delete your account?</p>
+                            <p className="text-center font-semibold mb-4">Are you sure you want to delete your account?</p>
+                          <p className="text-center font-bold mb-4 flex items-center gap-2 text-red-500"> Note: Make sure there is no  Pending/Processing Order before deleting account your all data will be lose</p>
+
                             <div className="flex justify-center">
                                 <button
                                     type="button"

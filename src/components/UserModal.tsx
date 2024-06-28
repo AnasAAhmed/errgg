@@ -37,7 +37,7 @@ const UserModal = ({ user, logoutHandler, heading, children }: UserModalType) =>
 
             <Modal isOpen={isOpen} onClose={closeModal} overLay={true}>
 
-                <div className="bg-white py-4 px-2 xsm:px-7 rounded-lg shadow-lg animate-modal w-full ">
+                <div className="bg-white p-4 xsm:px-8 rounded-lg shadow-lg animate-modal w-[90vw] sm:w-[60vh] ">
                     <div className="flex justify-between items-center mb-2">
                         <h3 className="text-xl font-semibold">Profile</h3>
                         <button
@@ -61,7 +61,7 @@ const UserModal = ({ user, logoutHandler, heading, children }: UserModalType) =>
                             </div>
                             <div className="mb-2">
                                 <label className="font-semibold">Email:</label>
-                                <span className="ml-4">{user.email}</span>
+                                <span className="ml-4 ">{user.email}</span>
                             </div>
                             {currentUser?.role === "admin" && <div className="mb-2">
                                 <label className="font-semibold">Role:</label>

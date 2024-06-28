@@ -1,14 +1,15 @@
 import { MdEmail } from "react-icons/md";
 import Footer from "../components/Footer";
 import Services from "../components/Services";
+import Banner from '../assets/contactBanner.jpg'
 
 const Contact = () => {
     return (
         <>
             <div className="w-full bg-white overflow-hidden text-left text-black font-poppins">
-                <div className="relative w-full h-[300px]  sm:h-[400px] md:h-[600px] bg-cover bg-center" style={{ backgroundImage: 'url("https://figma-to-code-ecom-design.vercel.app/banner-image@2x.png")' }}>
+                <div className="relative w-full h-[300px]  sm:h-[400px] md:h-[600px] bg-cover bg-center" style={{ backgroundImage: `url(${Banner})` }}>
                     <div className="absolute inset-0 to-transparent opacity-60"></div>
-                    <div className="relative z-5 flex flex-col items-center justify-center h-full text-center text-black px-6 md:px-12 lg:px-24">
+                    <div className="relative z-5 flex flex-col items-center justify-center h-full text-center text-white px-6 md:px-12 lg:px-24">
                         <h1 className="text-3xl sm:text-5xl font-bold mb-6 leading-tight">
                             Contact
                         </h1>

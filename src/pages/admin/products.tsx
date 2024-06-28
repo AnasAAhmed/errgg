@@ -68,7 +68,7 @@ const Products = () => {
           productId: <div className="line-clamp-2"><CopyText text={i._id} />...</div>,
           price: i.price,
           stock: i.stock,
-          action: <Link className="text-md font-medium py-1 px-2 rounded-md hover:bg-black hover:text-white" to={`/admin/product/${i._id}`}>Manage</Link>,
+          action: <Link className="text-md font-medium py-1 px-2 rounded-md bg-blue-200 hover:bg-blue-300" to={`/admin/product/${i._id}`}>Manage</Link>,
         }))
       );
   }, [data]);

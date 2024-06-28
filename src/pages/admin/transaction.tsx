@@ -8,11 +8,10 @@ import TableHOC from "../../components/admin/TableHOC";
 import { useAllOrdersQuery } from "../../redux/api/orderAPI";
 import { RootState } from "../../redux/store";
 import { CustomError } from "../../types/api-types";
-import { CopyText } from "../../utils/function";
+import {DropDownAdmin} from "../../components/DropDown";
 
 interface DataType {
-  user: string;
-  userId: ReactElement;
+  user: ReactElement;
   amount: number;
   discount: number;
   quantity: number;
@@ -24,10 +23,6 @@ const columns: Column<DataType>[] = [
   {
     Header: "User",
     accessor: "user",
-  },
-  {
-    Header: "userId",
-    accessor: "userId",
   },
   {
     Header: "Amount",
@@ -67,8 +62,24 @@ const Transaction = () => {
     if (data)
       setRows(
         data.orders.map((i) => ({
-          user: i.user.name,
-          userId: <div className="line-clamp-2"><CopyText text={i.user._id} />...</div>,
+          user: <DropDownAdmin options={[{
+            key: "name",
+            value: i.user?.name 
+          },
+          {
+            key: "email",
+            value: i.user?.email 
+          },
+          {
+            key: "phone",
+            value: i.user?.phone
+          },
+          {
+            key: "_id",
+            value: i.user?._id 
+          },
+          ]} />,
+
           amount: i.total,
           discount: i.discount,
           quantity: i.orderItems.length,
@@ -85,7 +96,7 @@ const Transaction = () => {
               {i.status}
             </span>
           ),
-          action: <Link className="text-md font-medium py-1 px-2 rounded-md hover:bg-black hover:text-white" to={`/admin/transaction/${i._id}`}>Manage</Link>,
+          action: <Link className="text-md font-medium py-1 px-2 rounded-md bg-blue-200 hover:bg-blue-300" to={`/admin/transaction/${i._id}`}>Manage</Link>,
         }))
       );
   }, [data]);

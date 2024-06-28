@@ -1,4 +1,3 @@
-import { AiOutlineStar } from "react-icons/ai";
 
 const Loader = () => {
   return (
@@ -31,37 +30,36 @@ export const Skeleton = ({ width = "unset", length = 3 }: SkeletonProps) => {
 export const ProductDetailsSkeleton = () => {
   return (
     <>
-      <section className="sec1 flex-1 flex-shrink-0 w-full md:w-72 mr-10 mb-10">
-        <div className="animate-pulse w-full md:h-[400px] h-[300px] bg-gray-300"></div>
+     <section className="sec1 flex-1 flex-col md:flex-row flex flex-shrink-0 w-full md:w-72 mr-10 mb-10">
+        <div className="flex justify-center flex-col gap-3 w-full">
+          <div className="w-full h-[400px] bg-gray-200 animate-pulse rounded-lg"></div>
+          <div className="flex gap-2 overflow-auto">
+            {[...Array(4)].map((_, index) => (
+              <div key={index} className="w-20 h-20 bg-gray-200 animate-pulse rounded-lg"></div>
+            ))}
+          </div>
+        </div>
       </section>
       <article className="sec2 flex-1 w-full md:w-96">
-        <div className="animate-pulse mb-2 h-6 w-4/4 bg-gray-300"></div>
-        <div className="animate-pulse mb-4 h-6 w-4/4 bg-gray-300"></div>
-        <div className="animate-pulse flex mb-4">
-          <div className="h-8 w-10 bg-gray-300 rounded-md mr-2"></div>
-          <div className="h-8 w-10 bg-gray-300 rounded-md mr-2"></div>
-          <div className="h-8 w-10 bg-gray-300 rounded-md mr-2"></div>
-          <div className="h-8 w-10 bg-gray-300 rounded-md"></div>
+        <div className="min-h-12 h-8 bg-gray-200 animate-pulse mb-4 rounded"></div>
+        <div className="h-8 bg-gray-200 animate-pulse mb-4 rounded"></div>
+        <div className="h-6 bg-gray-200 animate-pulse mb-4 rounded"></div>
+        <div className="h-6 bg-gray-200 animate-pulse mb-4 rounded"></div>
+        <div className="h-24 bg-gray-200 animate-pulse mb-4 rounded"></div>
+        <div className="h-6 bg-gray-200 animate-pulse mb-4 rounded"></div>
+        <div className="h-6 bg-gray-200 animate-pulse mb-4 rounded"></div>
+        <div className="h-6 bg-gray-200 animate-pulse mb-4 rounded"></div>
+        <div className="flex gap-2 mb-4">
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="w-16 h-8 bg-gray-200 animate-pulse rounded"></div>
+          ))}
         </div>
-        <div className="animate-pulse flex mb-4">
-          <div className="h-6 w-6 bg-gray-300 rounded-full mx-1"></div>
-          <div className="h-6 w-6 bg-gray-300 rounded-full mx-1"></div>
-          <div className="h-6 w-6 bg-gray-300 rounded-full mx-1"></div>
-          <div className="h-6 w-6 bg-gray-300 rounded-full mx-1"></div>
+        <div className="flex gap-2 mb-4">
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="w-6 h-6 bg-gray-200 animate-pulse rounded-full"></div>
+          ))}
         </div>
-        <div className="animate-pulse flex mb-4">
-        <AiOutlineStar className="text-gray-300 text-[1.3rem]" />
-        <AiOutlineStar className="text-gray-300 text-[1.3rem]" />
-        <AiOutlineStar className="text-gray-300 text-[1.3rem]" />
-        <AiOutlineStar className="text-gray-300 text-[1.3rem]" />
-        <AiOutlineStar className="text-gray-300 text-[1.3rem]" />
-
-        </div>
-        <div className="animate-pulse mb-1 h-6 w-40 bg-gray-300"></div>
-        <div className="animate-pulse mb-4 h-6 w-20 bg-gray-300"></div>
-        <div className="animate-pulse mb-4 h-12 w-4/4 bg-gray-300"></div>
-        <div className="animate-pulse mb-4 h-6 w-20 bg-gray-300"></div>
-        <div className="animate-pulse h-12 w-full bg-gray-300 rounded-md"></div>
+        <div className="w-full h-10 bg-gray-200 animate-pulse rounded-md"></div>
       </article>
     </>
   )
