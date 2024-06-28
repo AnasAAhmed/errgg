@@ -86,7 +86,8 @@ const UserProfile = () => {
             toast.success(`Account Deleted`);
             navigate('/')
         } catch (error) {
-            toast.error(`Failed to Delete Account${error.message}`);
+            const typedError = error as Error;
+            toast.error(`Failed to Delete Account${typedError.message}`);
             setIsLoading2(false);
         }
 

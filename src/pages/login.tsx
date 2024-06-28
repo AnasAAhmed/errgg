@@ -100,7 +100,8 @@ const Login = ({ setLoadingBar }: LoadingBarProps) => {
       }
     } catch (error) {
       setLoadingBar(0);
-      toast.error(`Sign Up Failed: ${error.message}`);
+      const typedError = error as Error;
+      toast.error(`Sign Up Failed: ${typedError.message}`);
     }
   };
 
@@ -118,7 +119,8 @@ const Login = ({ setLoadingBar }: LoadingBarProps) => {
       toast.success("Login successful");
     } catch (error) {
       setLoadingBar(0);
-      toast.error(`Login Failed: ${error.message}`);
+      const typedError = error as Error;
+      toast.error(`Login Failed: ${typedError.message}`);
     }
   };
 
