@@ -420,7 +420,7 @@ const NewProduct = () => {
       return;
     }
 
-    if (!name || !price || stock < 0 || !category || !photos || !description ) {
+    if (!name || !price || stock < 0 || !category || !photos || !description) {
       toast.error("Validation failed OR Something is missing");
       setLoad(false);
       return;
@@ -616,7 +616,7 @@ const NewProduct = () => {
             <button
               type="submit"
               disabled={load}
-              className=" bg-blue-500 text-white flex justify-center rounded-md py-2 mb-4"
+              className="bg-blue-500 w-56 h-10 my-11 flex justify-center items-center text-white text-lg rounded-md font-semibold"
             >
               {load ? <FaSpinner className="animate-spin my-1" /> : "Create Product"}
             </button>

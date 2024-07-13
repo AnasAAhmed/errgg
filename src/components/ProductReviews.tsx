@@ -43,10 +43,10 @@ const ProductReviews = ({ productId,reviews, numOfReviews }:ProductReviews) => {
         <div className="container mx-auto p-4">
             <div className="flex flex-col items-center">
                 <h2 className="text-2xl font-semibold mb-4">Product Reviews ({numOfReviews})</h2>
-                <p className="text-sm font-medium text-gray-500">No one will be able to submit reviews here in Production Enviroment but can edit here this is for demo</p>
+                <p className="text-sm font-medium text-gray-500">this button can be removed .if want to only customer who odrer this product will be able review it </p>
             </div>
             <ReviewForm productId={productId} user={user} />
-            <div className="md:mx-12 mt-12 max-sm:border-2 ">
+            <div className="md:mx-12 mt-12  ">
                 {!reviews ? (
                     <div className="flex items-center justify-center h-[15.4rem]">
                         <FaSpinner className="animate-spin h-24 w-24 text-gray-500" />

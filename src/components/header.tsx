@@ -138,7 +138,7 @@ const Header = ({ user, cartItemsLength }: PropsType) => {
           >
             <RiMenuLine size="1.5rem" />
           </button>
-          <Modal isOpen={isOpen} onClose={closeModal} overLay={true}>
+          <Modal isOpen={isOpen} onClose={closeModal}>
             <div className="absolute p-2 animate-modal top-12 right-4 bg-white shadow-lg rounded-lg flex flex-col ">
               <Link
                 className="text-xl hover:bg-gray-200 px-4 py-2 rounded-md text-gray-800 font-semibold "

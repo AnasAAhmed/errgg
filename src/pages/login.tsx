@@ -1,7 +1,6 @@
 import {
   GoogleAuthProvider,
   signInWithPopup,
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword
 } from "firebase/auth";
 import { useState } from "react";
@@ -15,15 +14,20 @@ import { userExist, userNotExist } from "../redux/reducer/userReducer";
 import { useDispatch } from "react-redux";
 import Footer from "../components/Footer";
 import { LoadingBarProps } from "../types/types";
+import { z } from "zod";
+import { Link } from "react-router-dom";
+
+// Define Zod schemas
+const emailSchema = z.string().email();
+const passwordSchema = z.string().min(8, "Password must contain 8 or more characters");
 
 const Login = ({ setLoadingBar }: LoadingBarProps) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [gender, setGender] = useState("");
-  const [phone, setPhone] = useState<number>(0);
-  const [date, setDate] = useState("");
-  const [toggler, setToggler] = useState(false);
+
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const [login] = useLoginMutation();
 
@@ -31,16 +35,16 @@ const Login = ({ setLoadingBar }: LoadingBarProps) => {
     try {
       setLoadingBar(20);
       const provider = new GoogleAuthProvider();
-      const { user } = await signInWithPopup(auth, provider);
+      const { user } = await signInWithPopup(auth, provider);//getting user from firebase after login
       setLoadingBar(70);
       const res = await login({
-        name: user.displayName!,
+        name: '',//in Login there no of this field thats why i added falsy value
         email: user.email!,
-        photo: user.photoURL!,
-        gender,
-        phone,
-        role: "user",
-        dob: date,
+        photo: '',//in Login there no of this field thats why i added falsy value
+        gender: '',//in Login there no of this field thats why i added falsy value
+        phone: 0,//in Login there no of this field thats why i added falsy value
+        role: "",//in Login there no of this field thats why i added falsy value
+        dob: '',//in Login there no of this field thats why i added falsy value
         _id: user.uid,
       });
       setLoadingBar(99);
@@ -64,48 +68,28 @@ const Login = ({ setLoadingBar }: LoadingBarProps) => {
     }
   };
 
-  const emailSignUpHandler = async () => {
-    if (!gender || !phone || !date) {
-      toast.error("Please fill out all required fields.");
-      return;
-    }
-    try {
-      setLoadingBar(20);
-      const { user } = await createUserWithEmailAndPassword(auth, email, password);
-      setLoadingBar(70);
-      const res = await login({
-        name: user.email!.split('@')[0],
-        email: user.email!,
-        photo: "https://lh3.googleusercontent.com/a/ACg8ocLMa8FJhYEVUB-TzqqDoHePJyy7bTzJ8XLc9D8fKAjDmmDnH3g=s288-c-no",
-        gender,
-        phone,
-        role: "user",
-        dob: date,
-        _id: user.uid,
-      });
-      setLoadingBar(99);
-      setTimeout(() => {
-        setLoadingBar(100);
-      }, 200);
-      if ("data" in res) {
-        toast.success(res.data.message);
-        const data = await getUser(user.uid);
-        dispatch(userExist(data?.user!));
-      } else {
-        setLoadingBar(0);
-        const error = res.error as FetchBaseQueryError;
-        const message = (error.data as MessageResponse).message;
-        toast.error(message);
-        dispatch(userNotExist());
-      }
-    } catch (error) {
-      setLoadingBar(0);
-      const typedError = error as Error;
-      toast.error(`Sign Up Failed: ${typedError.message}`);
-    }
-  };
-
   const emailLoginHandler = async () => {
+    let hasError = false;
+
+    // Validate inputs
+    try {
+      emailSchema.parse(email);
+      setEmailError(null);
+    } catch (e: any) {
+      setEmailError(e.errors[0].message);
+      hasError = true;
+    }
+
+    try {
+      passwordSchema.parse(password);
+      setPasswordError(null);
+    } catch (e: any) {
+      setPasswordError(e.errors[0].message);
+      hasError = true;
+    }
+
+    if (hasError) return;
+
     try {
       setLoadingBar(20);
       const { user } = await signInWithEmailAndPassword(auth, email, password);
@@ -126,8 +110,8 @@ const Login = ({ setLoadingBar }: LoadingBarProps) => {
 
   return (
     <>
-      <div className="h-[700px] flex flex-col justify-center items-center">
-        <div className={`w-full max-w-md p-8 bg-white rounded-lg border-2 shadow-lg ${toggler ? "hidden" : "block"}`}>
+      <div className="h-[700px] flex flex-col justify-center items-center px-3">
+        <div className='w-full max-w-md sm:p-8 p-3 bg-white rounded-lg border-2 shadow-lg'>
           <h1 className="text-3xl font-bold mb-8 text-center">Login</h1>
           <div className="flex flex-col items-center">
             <button
@@ -136,93 +120,36 @@ const Login = ({ setLoadingBar }: LoadingBarProps) => {
             >
               <FcGoogle className="mr-2" /> Login with Google
             </button>
-              <span className="text-gray-400 font-medium text-lg my-2"> OR</span>
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                id="login"
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-12 border border-gray-300 px-4 rounded-md mb-4"
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                id="login"
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-12 border border-gray-300 px-4 rounded-md mb-4"
-              />
-              <button
-                onClick={emailLoginHandler}
-                className="w-full h-12 bg-indigo-500 text-white rounded-md mb-2 hover:bg-indigo-600 transition"
-              >
-                Login with Email
-              </button>
-            <p className="mt-4 text-blue-500 cursor-pointer" onClick={() => setToggler(true)}>
-              Don't have an account? Sign Up
-            </p>
-          </div>
-        </div>
-
-        <div className={`w-full max-w-md  p-8 bg-white rounded-lg border-2 shadow-lg ${toggler ? "block" : "hidden"}`}>
-          <h1 className="text-3xl font-bold mb-8 text-center">Sign Up</h1>
-          <div className="flex flex-col items-center ">
-            <select
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              className="w-full h-12 border border-gray-300 px-4 rounded-md mb-4"
-            >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-            <input
-              type="number"
-              placeholder="Phone Number"
-              value={phone}
-              onChange={(e) => setPhone(Number(e.target.value))}
-              className="w-full h-12 border border-gray-300 px-4 rounded-md mb-4"
-            />
-            <input
-              type="date"
-              placeholder="Date of Birth"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="w-full h-12 border border-gray-300 px-4 rounded-md mb-4"
-            />
-            <button
-              onClick={googleLoginHandler}
-              className="w-full h-12 bg-white border mt-1 border-gray-300 rounded-md flex items-center justify-center hover:bg-gray-100 transition"
-            >
-              <FcGoogle className="mr-2" /> Sign Up with Google
-            </button>
             <span className="text-gray-400 font-medium text-lg my-2"> OR</span>
             <input
               type="email"
               placeholder="Email"
               value={email}
-              id="sign-up"
+              id="login-email"
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-12 border border-gray-300 px-4 rounded-md mb-4"
+              name="login-email"
+              className="w-full h-12 border border-gray-300 px-4 rounded-md mb-1"
             />
+            {emailError && <p className="text-red-500 text-md">{emailError}</p>}
             <input
               type="password"
               placeholder="Password"
               value={password}
-              id="sign-up"
+              id="login-password"
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full h-12 border border-gray-300 px-4 rounded-md mb-4"
+              name="login-password"
+              className="w-full h-12 border border-gray-300 px-4 rounded-md mb-1"
             />
+            {passwordError && <p className="text-red-500 text-md">{passwordError}</p>}
             <button
-              onClick={emailSignUpHandler}
+              onClick={emailLoginHandler}
               className="w-full h-12 bg-indigo-500 text-white rounded-md mb-2 hover:bg-indigo-600 transition"
             >
-              Sign Up with Email
+              Login with Email
             </button>
-            <p className="mt-4 text-blue-500 cursor-pointer" onClick={() => setToggler(false)}>
-              Already have an account? Login
-            </p>
+            <Link to={'/sign-up'} className="mt-4 text-blue-500 cursor-pointer">
+              Don't have an account? Sign Up
+            </Link>
           </div>
         </div>
       </div>

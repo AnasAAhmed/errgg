@@ -131,7 +131,7 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
   return (
     <>
       <div>
-        <main className="flex flex-col md:flex-row px-6 md:px-24 lg:px-44 justify-center mt-8">
+        <main className="flex flex-col md:flex-row px-6 md:px-12 lg:px-44 justify-center mt-8">
           {isLoading ? (
             <ProductDetailsSkeleton />
           ) : (
@@ -200,7 +200,7 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
                 {variants?.length > 0 && (
                   <>
                     <div className="flex mb-4">
-                      {uniqueSizes.length>1 && uniqueSizes.map((size, index) => (
+                      {uniqueSizes.length > 0 && uniqueSizes.map((size, index) => (
                         <button
                           key={index}
                           className={`${selectedSize === size ? "bg-black text-white" : "bg-white text-gray-800"} border border-black text-gray-800 px-2 py-1 mr-2 rounded-md`}
@@ -209,7 +209,7 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
                       ))}
                     </div>
                     <div className="flex mb-4">
-                      {availableColors.length>1 && availableColors.map((color, index) => (
+                      {availableColors[0]!=='' && availableColors.map((color, index) => (
                         <button
                           key={index}
                           className={`${selectedColor === color ? "ring-4" : ""} border-gray-500 border rounded-full h-6 w-6 mx-1`}

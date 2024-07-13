@@ -32,7 +32,7 @@ export const ProductDetailsSkeleton = () => {
     <>
      <section className="sec1 flex-1 flex-col md:flex-row flex flex-shrink-0 w-full md:w-72 mr-10 mb-10">
         <div className="flex justify-center flex-col gap-3 w-full">
-          <div className="w-full h-[400px] bg-gray-200 animate-pulse rounded-lg"></div>
+          <div className="w-full h-[300px] md:h-[400px] bg-gray-200 animate-pulse rounded-lg"></div>
           <div className="flex gap-2 overflow-auto">
             {[...Array(4)].map((_, index) => (
               <div key={index} className="w-20 h-20 bg-gray-200 animate-pulse rounded-lg"></div>

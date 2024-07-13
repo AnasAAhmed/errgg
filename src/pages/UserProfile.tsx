@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from "../redux/store";
-import { useUpdateUserMutation } from '../redux/api/userAPI';
+import { useDeleteSingleUserMutation, useUpdateUserMutation } from '../redux/api/userAPI';
 import toast from 'react-hot-toast';
 import { FaArrowLeft, FaSignOutAlt, FaSpinner, FaTrash } from 'react-icons/fa';
 import { signOut, deleteUser as firebaseDeleteUser } from 'firebase/auth';
@@ -9,6 +9,7 @@ import { auth } from '../firebase';
 import { Link, useNavigate } from 'react-router-dom';
 // import { responseToast } from '../utils/features';
 import { MdOutlineSaveAlt } from 'react-icons/md';
+import Modal from '../components/Modal';
 
 const UserProfile = () => {
 
@@ -39,16 +40,7 @@ const UserProfile = () => {
     }, [user]);
 
     const closeModal = () => setIsOpen(false);
-    const openModal = () => setIsOpen(true);
     const closeModal2 = () => setIsOpen2(false);
-    const openModal2 = () => setIsOpen2(true);
-
-    const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target === e.currentTarget) {
-            closeModal();
-            closeModal2();
-        }
-    };
 
     const logoutHandler = async () => {
         try {
@@ -72,7 +64,7 @@ const UserProfile = () => {
             setIsLoading(false);
         }
     };
-    // const [deleteUser] = useDeleteSingleUserMutation();
+    const [deleteUser] = useDeleteSingleUserMutation();
 
     const deleteHandler = async () => {
         try {
@@ -81,6 +73,7 @@ const UserProfile = () => {
             if (!userFireB) {
                 return toast.error("User not authenticated");
             }
+            deleteUser({ userId: user!._id })
             await firebaseDeleteUser(userFireB);
             setIsLoading2(false);
             toast.success(`Account Deleted`);
@@ -159,14 +152,14 @@ const UserProfile = () => {
                     <div className="flex flex-wrap sm:flex-row justify-between items-center mt-6">
                         <button
                             type="button"
-                            onClick={openModal}
+                            onClick={() => setIsOpen(true)}
                             className="flex items-center mt-4 xsm:mt-0 bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600 focus:outline-none"
                         >
                             Save <MdOutlineSaveAlt className='ml-2' />
                         </button>
                         <button
                             type="button"
-                            onClick={openModal2}
+                            onClick={() => setIsOpen(true)}
                             className="flex items-center mt-4 xsm:mt-0 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none"
                         >
                             Delete <FaTrash className="ml-2" />
@@ -179,60 +172,51 @@ const UserProfile = () => {
                             Logout <FaSignOutAlt className="ml-2" />
                         </button>
                     </div>
-                    {isOpen && (
-                        <div
-                            className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
-                            onClick={handleBackdropClick}
-                        >
-                            <div className="bg-white rounded-lg shadow-lg p-6 w-[80%] sm:w-[40%]">
-                                <p className="text-center mb-4">Are you sure you want to update your profile?</p>
-                                <div className="flex justify-center">
-                                    <button
-                                        type="submit"
-                                        className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
-                                    >
-                                        {isLoading ? <FaSpinner className="animate-spin mx-[1.1rem]" /> : "Update"}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={closeModal}
-                                        className="ml-2 flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none"
-                                    >
-                                        No
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </form>
-                {isOpen2 && (
-                    <div
-                        className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
-                        onClick={handleBackdropClick}
-                    >
-                        <div className="bg-white rounded-lg shadow-lg p-6 w-[80%] sm:w-[40%]">
-                            <p className="text-center font-semibold mb-4">Are you sure you want to delete your account?</p>
-                          <p className="text-center font-bold mb-4 flex items-center gap-2 text-red-500"> Note: Make sure there is no  Pending/Processing Order before deleting account your all data will be lose</p>
-
+                    <Modal isOpen={isOpen} onClose={closeModal} overLay={true}>
+                        <div className="bg-white animate-modal rounded-lg shadow-lg p-6 w-full">
+                            <p className="text-center mb-4">Are you sure you want to update your profile?</p>
                             <div className="flex justify-center">
                                 <button
-                                    type="button"
-                                    onClick={deleteHandler}
+                                    type="submit"
                                     className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
                                 >
-                                    {isLoading2 ? <FaSpinner className="animate-spin mx-1" /> : "Yes"}
+                                    {isLoading ? <FaSpinner className="animate-spin mx-[1.1rem]" /> : "Update"}
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={closeModal2}
+                                    onClick={closeModal}
                                     className="ml-2 flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none"
                                 >
                                     No
                                 </button>
                             </div>
                         </div>
+                    </Modal>
+                </form>
+                <Modal isOpen={isOpen2} onClose={closeModal2} overLay={true}>
+
+                    <div className="bg-white animate-modal rounded-lg shadow-lg p-6 w-full">
+                        <p className="text-center font-semibold mb-4">Are you sure you want to delete your account?</p>
+                        <p className="text-center font-bold mb-4 flex items-center gap-2 text-red-500"> Note: Make sure there is no  Pending/Processing Order before deleting account your all data will be lose</p>
+
+                        <div className="flex justify-center">
+                            <button
+                                type="button"
+                                onClick={deleteHandler}
+                                className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
+                            >
+                                {isLoading2 ? <FaSpinner className="animate-spin mx-1" /> : "Yes"}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={closeModal2}
+                                className="ml-2 flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none"
+                            >
+                                No
+                            </button>
+                        </div>
                     </div>
-                )}
+                </Modal>
             </div>
         </div>
     );

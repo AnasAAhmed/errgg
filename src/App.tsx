@@ -20,6 +20,7 @@ const Cart = lazy(() => import("./pages/cart"));
 const ProductDetails = lazy(() => import("./pages/ProductDetails"));
 const Shipping = lazy(() => import("./pages/shipping"));
 const Login = lazy(() => import("./pages/login"));
+const SignUp = lazy(() => import("./pages/SignUp"));
 const Orders = lazy(() => import("./pages/orders"));
 const OrderDetails = lazy(() => import("./pages/orderDetails"));
 const Blog = lazy(() => import("./pages/Blog"));
@@ -88,6 +89,14 @@ const App = () => {
             element={
               <ProtectedRoute isAuthenticated={user ? false : true}>
                 <Login  setLoadingBar={setLoadingBar} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              <ProtectedRoute isAuthenticated={user ? false : true}>
+                <SignUp  setLoadingBar={setLoadingBar} />
               </ProtectedRoute>
             }
           />
