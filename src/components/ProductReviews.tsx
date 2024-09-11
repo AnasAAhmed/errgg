@@ -7,7 +7,6 @@ import { useDeleteProductReviewMutation } from '../redux/api/productAPI';
 import { onlyResponseToast } from '../utils/features';
 import ReviewForm from './ReviewForm';
 import { RootState } from '../redux/store';
-import toast from 'react-hot-toast';
 import { Review } from '../types/types';
 
 type ProductReviews = {

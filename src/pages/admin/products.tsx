@@ -92,7 +92,6 @@ const Products = () => {
       <Link to="/admin/product/new" className="fixed right-8 top-20 w-24 gap-2 h-10 flex items-center justify-center rounded-full bg-red-500 text-white hover:opacity-80">
         Create <FaPlus />
       </Link>
-    
     </div>
   );
 };
