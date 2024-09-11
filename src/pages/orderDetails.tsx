@@ -11,6 +11,7 @@ import { Order, OrderItem } from "../types/types";
 import { FaArrowLeft } from "react-icons/fa";
 import ReviewForm from "../components/ReviewForm";
 import { useSelector } from "react-redux";
+import { slugify } from "../utils/features";
 
 const defaultData: Order = {
   shippingInfo: {
@@ -126,7 +127,7 @@ const OrderProductCard = ({
 
     <div className="flex flex-col xsm:flex-row justify-between items-center border-b">
       <img src={photo} className="w-16 h-16 rounded-md mr-1 xsm:w-24 xsm:h-24" alt={name} />
-      <Link to={`/product/${productId}`} className="line-clamp-2 max-xsm:text-center w-[60%]">{name}</Link>
+      <Link to={`/product/${slugify(name)}?id=${productId}`} className="line-clamp-2 max-xsm:text-center w-[60%]">{name}</Link>
       <span>
         ${price} X {quantity} =${price * quantity}
       </span>

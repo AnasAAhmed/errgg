@@ -11,15 +11,12 @@ export const CopyText = ({ text, heading }: { text: any, heading?: string }) => 
     }
 
     return (
-        <div className="flex flex-row">
+        <abbr title="Copy" className="flex no-underline">
             <span className="text-black">{heading && heading} </span>
-            <button className="copy-text-btn" onClick={copyToClipboard}>
+            <button className="hover:text-blue-600  text-blue-400" onClick={copyToClipboard}>
                 {text}
-                <span>
-                 Copy 
-                </span>
             </button>
-        </div>
+        </abbr>
     );
 }
 

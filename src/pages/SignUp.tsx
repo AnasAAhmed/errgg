@@ -179,16 +179,16 @@ const SignUp = ({ setLoadingBar }: LoadingBarProps) => {
         } catch (error) {
             setLoadingBar(0);
             const typedError = error as Error;
-            toast.error(`Sign Up Failed: ${typedError.message}`);
+            toast.error(`SignUp ${typedError.message.replace('Firebase:','').trim()}`);
         }
     };
 
     return (
         < >
-        <div className="h-[700px] flex flex-col justify-center items-center px-3">
+        <div className="mt-10 flex flex-col justify-center items-center px-3">
             <div className='w-full max-w-md sm:p-8 p-3 bg-white rounded-lg border-2 shadow-lg '>
                 <h1 className="text-3xl font-bold mb-8 text-center">Sign Up</h1>
-                <div className="flex flex-col items-center ">
+                <div className="flex flex-col items-center gap-2">
                     <select
                         value={gender}
                         onChange={(e) => setGender(e.target.value)}
@@ -202,7 +202,7 @@ const SignUp = ({ setLoadingBar }: LoadingBarProps) => {
                     <input
                         type="number"
                         placeholder="Phone Number"
-                        value={phone}
+                        // value={phone}
                         onChange={(e) => setPhone(Number(e.target.value))}
                         className="w-full h-12 border border-gray-300 px-4 rounded-md mb-1"
                     />

@@ -26,7 +26,7 @@ const CollectionsList = () => {
                 </ul>
             ) : (
                 <ul className="flex flex-wrap justify-center mx-8 mt-3">
-                    {data?.collections.length! > 1 && data?.collections?.slice(1,6).map((collection, i) => (
+                    {data?.collections.length! > 0 && data?.collections?.slice(0,6).map((collection, i) => (
                         <Link key={i} onClick={() => window.scroll(0, 0)} className="mx-2 mt-2 bg-gray-300 text-gray-600 rounded-md py-1 px-2 font-semibold hover:bg-gray-200" to={`collections/${collection}`}>{collection.toUpperCase()}</Link>
                     ))}
                 </ul>

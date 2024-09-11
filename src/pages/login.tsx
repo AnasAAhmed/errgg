@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 
 // Define Zod schemas
 const emailSchema = z.string().email();
-const passwordSchema = z.string().min(8, "Password must contain 8 or more characters");
+const passwordSchema = z.string().min(8, "Password Required");
 
 const Login = ({ setLoadingBar }: LoadingBarProps) => {
   const dispatch = useDispatch();
@@ -38,13 +38,13 @@ const Login = ({ setLoadingBar }: LoadingBarProps) => {
       const { user } = await signInWithPopup(auth, provider);//getting user from firebase after login
       setLoadingBar(70);
       const res = await login({
-        name: '',//in Login there no of this field thats why i added falsy value
+        name: '',//in Login there no need of this field thats why i added falsy value
         email: user.email!,
-        photo: '',//in Login there no of this field thats why i added falsy value
-        gender: '',//in Login there no of this field thats why i added falsy value
-        phone: 0,//in Login there no of this field thats why i added falsy value
-        role: "",//in Login there no of this field thats why i added falsy value
-        dob: '',//in Login there no of this field thats why i added falsy value
+        photo: '',//in Login there no need of this field thats why i added falsy value
+        gender: '',//in Login there no need of this field thats why i added falsy value
+        phone: 0,//in Login there no need of this field thats why i added falsy value
+        role: "",//in Login there no need of this field thats why i added falsy value
+        dob: '',//in Login there no need of this field thats why i added falsy value
         _id: user.uid,
       });
       setLoadingBar(99);
@@ -64,7 +64,8 @@ const Login = ({ setLoadingBar }: LoadingBarProps) => {
       }
     } catch (error) {
       setLoadingBar(0);
-      toast.error("Sign In Failed");
+      const typedError = error as Error;
+      toast.error(`Login Failed: ${typedError.message}`);
     }
   };
 
@@ -104,16 +105,16 @@ const Login = ({ setLoadingBar }: LoadingBarProps) => {
     } catch (error) {
       setLoadingBar(0);
       const typedError = error as Error;
-      toast.error(`Login Failed: ${typedError.message}`);
+      toast.error(`Login ${typedError.message.replace('Firebase:','').trim()}`);
     }
   };
 
   return (
     <>
-      <div className="h-[700px] flex flex-col justify-center items-center px-3">
+      <div className="h-[700px] mt-8 flex flex-col justify-start items-center px-3">
         <div className='w-full max-w-md sm:p-8 p-3 bg-white rounded-lg border-2 shadow-lg'>
           <h1 className="text-3xl font-bold mb-8 text-center">Login</h1>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center gap-2">
             <button
               onClick={googleLoginHandler}
               className="w-full h-12 bg-white border mt-1 border-gray-300 rounded-md flex items-center justify-center hover:bg-gray-100 transition"

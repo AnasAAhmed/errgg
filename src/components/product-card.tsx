@@ -1,6 +1,7 @@
 import { FaStar } from "react-icons/fa";
 import { server } from "../redux/store";
 import { Link } from "react-router-dom";
+import { slugify } from "../utils/features";
 
 type ProductsProps = {
   productId: string;
@@ -26,7 +27,7 @@ const ProductCard = ({
 
   return (
     <div className="animate-modal">
-      <Link to={`/product/${productId}`} className="mt-8 w-full  sm:w-[220px] flex flex-col gap-2">
+      <Link to={`/product/${slugify(name)}?id=${productId}`} className="mt-8 w-full  sm:w-[220px] flex flex-col gap-2">
         <img src={`${server}/${photo}`} alt={name} className="w-full h-[170px] xsm:h-[220px]  sm:h-[260px] rounded-lg object-cover" />
         <p className="line-clamp-2 min-h-[3rem] text-sm xsm:text-lg w-[90%] font-semibold mx-2">{name}</p>
         <span className="xsm:text-2xl mt-2 font-semibold mx-2">${price}{" "}<span className="text-sm line-through">{cutPrice > 0 ? `$${cutPrice}` : ""}</span></span>

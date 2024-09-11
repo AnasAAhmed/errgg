@@ -37,6 +37,7 @@ const Contact = () => {
                                     type="text"
                                     className="w-full mt-2 p-3 border border-gray-300 rounded"
                                     placeholder="Enter your name"
+                                    required
                                 />
                             </div>
                             <div>
@@ -44,7 +45,7 @@ const Contact = () => {
                                 <input
                                     type="email"
                                     className="w-full mt-2 p-3 border border-gray-300 rounded"
-                                    placeholder="Abc@def.com"
+                                    placeholder="Abc@def.com"required
                                 />
                             </div>
                             <div>
@@ -59,7 +60,7 @@ const Contact = () => {
                                 <label className="block text-lg font-medium">Message</label>
                                 <textarea
                                     className="w-full mt-2 p-3 border border-gray-300 rounded h-32"
-                                    placeholder="Hi! I’d like to ask about..."
+                                    placeholder="Hi! I’d like to ask about..."required
                                 ></textarea>
                             </div>
                             <button

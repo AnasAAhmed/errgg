@@ -109,7 +109,7 @@ const Search = () => {
           </div>
           <div className="flex flex-row">
             <select
-              className="h-9 outline-none px-2 max-sm:rounded-l-lg border-none bg-gray-200"
+              className="h-9 cursor-pointer outline-none px-2 max-sm:rounded-l-lg border-none bg-gray-200"
               value={`${sortField}|${sort}`}
               onChange={handleSortChange}
             >
@@ -123,7 +123,7 @@ const Search = () => {
               <option value="">(None)</option>
             </select>
             <select
-              className=" h-9 px-2 outline-none border-none rounded-r-lg bg-gray-200 "
+              className="cursor-pointer h-9 px-2 outline-none border-none rounded-r-lg bg-gray-200 "
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >

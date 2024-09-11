@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import { ProductDetailsSkeleton } from "../components/loader";
 import RelatedProducts from "../components/RelatedProducts";
 import { useDispatch } from "react-redux";
@@ -22,8 +22,10 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
   const [mainImage, setMainImage] = useState("");
   const [selectedVariantId, setSelectedVariantId] = useState<string>("");
 
-  const params = useParams();
-  const { data, isLoading, isError } = useProductDetailsQuery(params.id!);
+  const [searchParams] = useSearchParams();
+
+  const id = searchParams.get('id');
+  const { data, isLoading, isError } = useProductDetailsQuery(id!);
   const {
     _id: productId,
     price,
@@ -97,13 +99,9 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
   useEffect(() => {
     setLoadingBar(20);
     setLoadingBar(70);
-  }, [params.id]);
+  }, [id]);
 
   useEffect(() => {
-    setLoadingBar(99);
-    setTimeout(() => {
-      setLoadingBar(100);
-    }, 50);
     if (photos && photos.length > 0) {
       setMainImage(photos[0]);
     }
@@ -122,6 +120,7 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
       setSelectedVariantId("");
     }
     window.scroll(0, 0);
+    setLoadingBar(100);
   }, [data]);
 
   if (isError) return <Navigate to={"/404"} />;
@@ -209,7 +208,7 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
                       ))}
                     </div>
                     <div className="flex mb-4">
-                      {availableColors[0]!=='' && availableColors.map((color, index) => (
+                      {availableColors[0] !== '' && availableColors.map((color, index) => (
                         <button
                           key={index}
                           className={`${selectedColor === color ? "ring-4" : ""} border-gray-500 border rounded-full h-6 w-6 mx-1`}

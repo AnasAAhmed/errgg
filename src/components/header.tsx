@@ -97,12 +97,16 @@ const Header = ({ user, cartItemsLength }: PropsType) => {
                     value: "/admin/customer"
                   },
                   {
-                    key: "Create",
+                    key: "Create Product",
                     value: "/admin/product/new"
                   },
                   {
                     key: "Charts",
                     value: "/admin/chart/bar"
+                  },
+                  {
+                    key: "Coupons",
+                    value: "/admin/app/coupon"
                   },
                 ]} />
               {/* )} */}

@@ -10,13 +10,13 @@ import { RootState } from '../redux/store';
 import toast from 'react-hot-toast';
 import { Review } from '../types/types';
 
-type ProductReviews={
+type ProductReviews = {
     productId: string,
-     numOfReviews?: number
-     reviews:Review[];
+    numOfReviews?: number
+    reviews: Review[];
 }
 
-const ProductReviews = ({ productId,reviews, numOfReviews }:ProductReviews) => {
+const ProductReviews = ({ productId, reviews, numOfReviews }: ProductReviews) => {
     const { user } = useSelector((state: RootState) => state.userReducer);
     const [viewAll, setViewAll] = useState(4); // Initial visible reviews
     const [isReviewed, setIsReviewed] = useState(false);
@@ -24,7 +24,7 @@ const ProductReviews = ({ productId,reviews, numOfReviews }:ProductReviews) => {
 
     useEffect(() => {
         if (reviews) {
-            const userReview = reviews.find((review:Review) => review.userId === user?._id);
+            const userReview = reviews.find((review: Review) => review.userId === user?._id);
             setIsReviewed(!!userReview);
         }
     }, [reviews, user]);
@@ -32,7 +32,6 @@ const ProductReviews = ({ productId,reviews, numOfReviews }:ProductReviews) => {
     const handleDeleteReview = async () => {
         try {
             const res = await deleteReview({ userId: user!._id, productId });
-            toast.error("bhag yahan se")
             onlyResponseToast(res);
         } catch (error) {
             console.error('Error deleting review:', error);

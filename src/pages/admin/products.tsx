@@ -10,6 +10,7 @@ import { useAllProductsQuery } from "../../redux/api/productAPI";
 import { RootState, server } from "../../redux/store";
 import { CustomError } from "../../types/api-types";
 import { CopyText } from "../../utils/function";
+import { slugify } from "../../utils/features";
 
 interface DataType {
   photo: ReactElement;
@@ -64,8 +65,8 @@ const Products = () => {
       setRows(
         data.products.map((i) => ({
           photo: <img src={`${server}/${i.photos[0]}`} />,
-          name: <Link to={`/product/${i._id}`} className="text-md font-medium line-clamp-2 hover:text-indigo-500">{i.name}</Link>,
-          productId: <div className="line-clamp-2"><CopyText text={i._id} />...</div>,
+          name: <Link to={`/product/${slugify(i.name)}?id=${i._id}`} className="text-md font-medium line-clamp-2 hover:text-indigo-500">{i.name}</Link>,
+          productId: <div className="truncate w-24"><CopyText text={i._id} />...</div>,
           price: i.price,
           stock: i.stock,
           action: <Link className="text-md font-medium py-1 px-2 rounded-md bg-blue-200 hover:bg-blue-300" to={`/admin/product/${i._id}`}>Manage</Link>,
@@ -91,6 +92,7 @@ const Products = () => {
       <Link to="/admin/product/new" className="fixed right-8 top-20 w-24 gap-2 h-10 flex items-center justify-center rounded-full bg-red-500 text-white hover:opacity-80">
         Create <FaPlus />
       </Link>
+    
     </div>
   );
 };

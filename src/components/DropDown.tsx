@@ -16,15 +16,11 @@ type DropSearchProps = {
 const DropDown = ({ options }: DropSearchProps) => {
   const [open, setOpen] = useState(false);
 
-  const handleMouseEnter = () => setOpen(true);
-  const handleMouseLeave = () => setOpen(false);
-  const toggleOpen = () => setOpen(!open);
-
   return (
-    <div className="relative" onMouseLeave={handleMouseLeave}>
+    <div className="relative"  >
       <button
-        onMouseEnter={handleMouseEnter}
-        onClick={toggleOpen}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setTimeout(() => setOpen(false), 100)}
         className="flex items-center space-x-1 px-2 py-1 font-semibold text-lg rounded-md focus:outline-none focus:ring focus:border-blue-400"
       >
         <span>Dashboard</span>
@@ -36,7 +32,7 @@ const DropDown = ({ options }: DropSearchProps) => {
           className="absolute z-30 animate-modal p-2 w-44 origin-top-lebft bg-white border border-gray-300 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
         >
           {options.map((option, index) => (
-            <Link key={index} to={option.value} className="block w-full rounded-md p-2 text-left text-md font-semibold text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+            <Link key={index} to={option.value} className="block border-none w-full rounded-md p-2 text-left text-md font-semibold text-gray-700 hover:bg-gray-100 hover:text-gray-900">
               {option.key}
             </Link>
           ))}
@@ -51,13 +47,12 @@ export const DropDownAdmin = ({ options }: DropSearchProps) => {
     await window.navigator.clipboard.writeText(coupon);
     toast.success('Text Copied')
   };
-  const handleMouseLeave = () => setOpen(false);
-  const toggleOpen = () => setOpen(!open);
 
   return (
-    <div className="relative" onMouseLeave={handleMouseLeave}>
+    <div className="relative" >
       <button
-        onClick={toggleOpen}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setTimeout(() => setOpen(false), 100)}
         className="flex items-center space-x-1 px-2 py-1 font-semibold text-lg rounded-md "
       >
         <span>Details</span>
@@ -67,9 +62,9 @@ export const DropDownAdmin = ({ options }: DropSearchProps) => {
           className="absolute z-30 animate-modal p-2 w-4s4 origin-top-lebft bg-white border border-gray-300 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
         >
           {options.map((option) => (
-            <div key={option.key} onClick={() => copyText(option.value)} className="cursor-pointer block w-full rounded-md p-2 text-left text-md font-semibold text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+            <abbr title={option.value} key={option.key} onClick={() => copyText(option.value)} className="cursor-pointer no-underline block w-full rounded-md p-2 text-left text-md font-semibold text-gray-700 hover:bg-gray-100 hover:text-gray-900">
               {option.value || 'N/A'}
-            </div>
+            </abbr>
           ))}
         </div>
       )}

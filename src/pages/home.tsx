@@ -53,7 +53,7 @@ const Home = () => {
               text="Premium quality tech at unbeatable prices."
               imgUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmxOruz0L6Y-Zn_Wt-ifVGR5aqKXSpZZg0HA&s"
               shade="gray"
-              link='/collections/tech Heaven'
+              link='/collections/techheaven'
             />
           </Carousel>
         </section>

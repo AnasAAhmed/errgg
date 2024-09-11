@@ -87,7 +87,7 @@ const UserProfile = () => {
     };
 
     return (
-        <div className="flex items-center justify-center sm:mt-24">
+        <div className="flex items-center justify-center sm:mt-12">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
                 <div className="flex justify-between items-center mb-4">
                     <Link to="/" className="text-blue-500 flex items-center">
@@ -159,7 +159,7 @@ const UserProfile = () => {
                         </button>
                         <button
                             type="button"
-                            onClick={() => setIsOpen(true)}
+                            onClick={() => setIsOpen2(true)}
                             className="flex items-center mt-4 xsm:mt-0 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none"
                         >
                             Delete <FaTrash className="ml-2" />
@@ -174,7 +174,7 @@ const UserProfile = () => {
                     </div>
                     <Modal isOpen={isOpen} onClose={closeModal} overLay={true}>
                         <div className="bg-white animate-modal rounded-lg shadow-lg p-6 w-full">
-                            <p className="text-center mb-4">Are you sure you want to update your profile?</p>
+                            <p className="text-center font-semibold text-xl mb-4">Are you sure you want to update your profile?</p>
                             <div className="flex justify-center">
                                 <button
                                     type="submit"
@@ -197,18 +197,16 @@ const UserProfile = () => {
 
                     <div className="bg-white animate-modal rounded-lg shadow-lg p-6 w-full">
                         <p className="text-center font-semibold mb-4">Are you sure you want to delete your account?</p>
-                        <p className="text-center font-bold mb-4 flex items-center gap-2 text-red-500"> Note: Make sure there is no  Pending/Processing Order before deleting account your all data will be lose</p>
+                        <p className="text-center font-semibold uppercase mb-4 flex max-w-96 items-center gap-2 text-red-500"> Note: Make sure there is no  Pending/Processing Order before deleting account your all data will be lose. Your reviews wont be delete & you cant be able to change it after account deletion</p>
 
                         <div className="flex justify-center">
                             <button
-                                type="button"
                                 onClick={deleteHandler}
                                 className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
                             >
                                 {isLoading2 ? <FaSpinner className="animate-spin mx-1" /> : "Yes"}
                             </button>
                             <button
-                                type="button"
                                 onClick={closeModal2}
                                 className="ml-2 flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none"
                             >
