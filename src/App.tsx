@@ -11,7 +11,6 @@ import { auth } from "./firebase";
 import { getUser } from "./redux/api/userAPI";
 import { userExist, userNotExist } from "./redux/reducer/userReducer";
 import { RootState } from "./redux/store";
-import { resetSearches } from "./redux/reducer/searchReducer";
 
 
 const Search = lazy(() => import("./pages/search"));
@@ -59,7 +58,6 @@ const App = () => {
   const [loadingBar, setLoadingBar] = useState<number>(0);
 
   useEffect(() => {
-    dispatch(resetSearches())
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const data = await getUser(user.uid);
