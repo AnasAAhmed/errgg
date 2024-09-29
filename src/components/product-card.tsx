@@ -33,11 +33,11 @@ const ProductCard = ({
     if (name) {
       setNames((prevNames) => {
         const updatedNames = [name, ...prevNames];
-        dispatch(setSearches(updatedNames)); 
         return updatedNames;
       });
+      dispatch(setSearches(names));
     }
-  }, [name, dispatch]);
+  }, []);
   return (
     <div className="animate-modal">
       <Link to={`/product/${slugify(name)}`} className="mt-8 w-full  sm:w-[220px] flex flex-col gap-2">
