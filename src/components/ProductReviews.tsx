@@ -41,8 +41,7 @@ const ProductReviews = ({ productId, reviews, numOfReviews }: ProductReviews) =>
         <div className="container mx-auto p-4">
             <div className="flex flex-col items-center">
                 <h2 className="text-2xl font-semibold mb-4">Product Reviews ({numOfReviews})</h2>
-                <p className="text-sm font-medium text-gray-500">this button can be removed .if want to only customer who odrer this product will be able review it </p>
-            </div>
+                </div>
             <ReviewForm productId={productId} user={user} />
             <div className="md:mx-12 mt-12  ">
                 {!reviews ? (
@@ -53,17 +52,9 @@ const ProductReviews = ({ productId, reviews, numOfReviews }: ProductReviews) =>
                     <>
                         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {reviews!.slice(0, viewAll).map((review, index) => (
-                                <li key={index} className="border pb-4 mb-4 py-3 px-2">
-                                    <div className="flex flex-row justify-between items-center">
-                                        <div className="flex flex-row items-center gap-3">
-                                            <span>
-                                                <img src={review.photo} alt="customer" className="rounded-full h-8 w-8" />
-                                            </span>
-                                            <p><strong>{review.name}</strong></p>
-                                            <span className="text-md">
-                                                <StarRatings rating={review.rating} />
-                                            </span>
-                                        </div>
+                                <li key={index} className="border rounded-md mb-4 py-3 px-2">
+                                    <div className="flex flex-row justify-between">
+                                        <StarRatings rating={review.rating} />
                                         {review.userId === user?._id && (
                                             <div className="flex flex-row items-center">
                                                 <button onClick={handleDeleteReview} className="px-1 text-[0.7rem] sm:text-sm py-1 rounded-md">
@@ -73,8 +64,15 @@ const ProductReviews = ({ productId, reviews, numOfReviews }: ProductReviews) =>
                                             </div>
                                         )}
                                     </div>
-                                    <div className="flex mr-2 mt-3 flex-row justify-between">
-                                        <p>{review.comment}</p>
+                                    <p className='font-sans my-2'>{review.comment}</p>
+                                    <div className="flex flex-row justify-between items-center">
+                                        <div className="flex flex-row items-center gap-3">
+                                            <span>
+                                                <img src={review.photo} alt="customer" className="rounded-full h-8 w-8" />
+                                            </span>
+                                            <p><strong>{review.name}</strong></p>
+
+                                        </div>
                                         <p className="font-bold flex justify-end text-sm w-36">{calculateTimeDifference(review.date)}</p>
                                     </div>
                                 </li>

@@ -40,6 +40,13 @@ export type IOrder = {
   orderItems: IOrderItem[];
 }
 
+export type VariantType = {
+  _id?: string;
+  size?: string ;
+  color?: string;
+  stock: number
+}
+
 export type Review = {
   name: string;
   userId: string;

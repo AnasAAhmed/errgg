@@ -18,7 +18,6 @@ const Coupon = () => {
   const [includeSymbols, setIncludeSymbols] = useState<boolean>(false);
   const [delLoad, setDelLoad] = useState<boolean>(false);
   const [savLoad, setSavLoad] = useState<boolean>(false);
-  const [isCopied, setIsCopied] = useState<boolean>(false);
   const [coupon, setCoupon] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
   const [coupons, setCoupons] = useState<{ _id: string, code: string, amount: number }[]>([]);
@@ -26,7 +25,7 @@ const Coupon = () => {
 
   const copyText = async (coupon: string) => {
     await window.navigator.clipboard.writeText(coupon);
-    setIsCopied(true);
+    toast.success(`Coupon "${coupon}" Copied`)
   };
 
   // Generate the coupon code
@@ -94,7 +93,6 @@ const Coupon = () => {
   };
 
   useEffect(() => {
-    setIsCopied(false);
     fetchCoupons();
   }, [coupon]);
 
@@ -156,7 +154,7 @@ const Coupon = () => {
               <code>
                 {coupon}{" "}
                 <span onClick={() => copyText(coupon)}>
-                  {isCopied ? "Copied" : "Copy"}
+                  Copy
                 </span>{" "}
               </code>
             )}
@@ -175,7 +173,7 @@ const Coupon = () => {
               {coupons.map((c) => (
                 <li key={c._id} className="my-2">
                   code: <span className="cursor-pointer" onClick={() => copyText(c.code)}>
-                    {isCopied ? "Copied" : c.code}
+                    <abbr title="copy" className="no-underline"> {c.code}</abbr>
                   </span>{" "} - amount: {c.amount}{" "}
                   <button className="bg-red-500 my-3 sm:my-0 w-24 mt-2 h-10 text-white text-lg rounded-md mx-2 font-semibold"
                     onClick={() => deleteCoupon(c._id)}

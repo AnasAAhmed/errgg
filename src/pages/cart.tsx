@@ -140,7 +140,7 @@ const Cart = () => {
               )}
 
               <Link
-                to={`${cartItems.length > 0 ? "/shipping" : "/cart"}`}
+                to={`${cartItems.length > 0 && total > 0 ? "/shipping" : "/cart"}`}
                 className={`${cartItems.length > 0 ? "" : "cursor-not-allowed"} mt-6 inline-block bg-indigo-600 text-white text-lg font-medium px-6 py-3 rounded-lg hover:bg-indigo-500 transition-all duration-300`}
               >
                 Checkout

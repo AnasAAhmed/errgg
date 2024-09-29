@@ -11,6 +11,8 @@ import { RiFilterFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 import { FaSearch, FaSpinner } from "react-icons/fa";
 import Footer from "../components/Footer";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const Search = () => {
   const params = useParams()
@@ -20,7 +22,9 @@ const Search = () => {
     isError,
     error,
   } = useCategoriesQuery("");
-
+  const { searches } = useSelector(
+    (state: RootState) => state.searchReducer
+  );
 
   const [searchValue, setSearchValue] = useState("");
   const [search, setSearch] = useState("");
@@ -44,7 +48,6 @@ const Search = () => {
     page,
     price: maxPrice,
   });
-
   const isPrevPage = page > 1;
   const isNextPage = searchedData?.totalPage === page;
 
@@ -96,15 +99,27 @@ const Search = () => {
           Filters <RiFilterFill className="inline-block mb-2" />
         </h2>
         <div className="flex flex-col sm:flex-row mx-3 sm:mx-10 md:mx-20 items-center ">
-          <div className="mb-4 w-full flex flex-row items-center h-9 px-2 border-none dmb-4 sm:mb-0 max-sm:rounded-lg sm:rounded-l-lg bg-gray-200">
+          <div className="mb-4 relative w-full flex flex-row items-center h-9 px-2 border-none dmb-4 sm:mb-0 max-sm:rounded-lg sm:rounded-l-lg bg-gray-200">
             <input
               type="text"
+              list="products"
               placeholder="Search by brand or name..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               className="w-full outline-none  bg-gray-200"
               onKeyDown={handleKeyPressForSearch}
             />
+            <datalist id="products">
+              {searches && searches.map((item, i) => (
+                <option
+                  key={i}
+                  className="px-3 py-2 cursor-pointer hover:bg-accent"
+                  value={item}
+                >
+                  {/* {item.category} */}
+                </option>
+              ))}
+            </datalist>
             <button className="h-full text-gray-600 px-2 bg-gray-100" onClick={() => setSearch(searchValue)}><FaSearch size={"1.2rem"} /></button>
           </div>
           <div className="flex flex-row">

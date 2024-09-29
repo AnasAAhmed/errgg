@@ -1,4 +1,4 @@
-import { Navigate, useSearchParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { ProductDetailsSkeleton } from "../components/loader";
 import RelatedProducts from "../components/RelatedProducts";
 import { useDispatch } from "react-redux";
@@ -6,7 +6,7 @@ import {
   useProductDetailsQuery,
 } from "../redux/api/productAPI";
 import { server } from "../redux/store";
-import { CartItem, LoadingBarProps } from "../types/types";
+import { CartItem, LoadingBarProps, VariantType } from "../types/types";
 import { addToCart } from "../redux/reducer/cartReducer";
 import toast from "react-hot-toast";
 import { useEffect, useState, useRef } from "react";
@@ -15,17 +15,9 @@ import StarRatings from "../components/StarsRatings";
 import Footer from "../components/Footer";
 
 const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
-  const [selectedSize, setSelectedSize] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
-  const [availableColors, setAvailableColors] = useState<string[]>([]);
-  const [variantStock, setVariantStock] = useState<number>(0);
-  const [mainImage, setMainImage] = useState("");
-  const [selectedVariantId, setSelectedVariantId] = useState<string>("");
+  const { slug } = useParams();
 
-  const [searchParams] = useSearchParams();
-
-  const id = searchParams.get('id');
-  const { data, isLoading, isError } = useProductDetailsQuery(id!);
+  const { data, isLoading, isError } = useProductDetailsQuery(slug!);
   const {
     _id: productId,
     price,
@@ -56,7 +48,10 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
     reviews: []
   };
 
+  if (isError) return <Navigate to={"/404"} />;
   const dispatch = useDispatch();
+  const [selectedVariant, setSelectedVariant] = useState<VariantType | null>(null);
+  const [mainImage, setMainImage] = useState("");
 
   const addToCartHandler = (cartItem: CartItem) => {
     if (cartItem.stock < 1) return toast.error("Out of Stock");
@@ -64,68 +59,43 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
     toast.success("Added to cart");
   };
 
+  const uniqueSizes = Array.from(new Set(data?.product.variants.map(variant => variant.size)));
+
+  useEffect(() => {
+    const availableVariant = data?.product.variants.find(variant => variant.stock > 0);
+    if (availableVariant) setSelectedVariant(availableVariant);
+  }, [data?.product]);
+
   const handleSizeChange = (size: string) => {
-    setSelectedSize(size);
-    const colors = variants
-      ?.filter(variant => variant.size === size && variant.stock > 0)
-      .map(variant => variant.color) || [];
-    setAvailableColors(colors);
-    if (colors.length > 0) {
-      setSelectedColor(colors[0]);
-      handleVariantChange(size, colors[0]);
-    } else {
-      setSelectedColor("");
-      setVariantStock(0);
-      setSelectedVariantId("");
-    }
+    const availableVariants = data?.product.variants.filter(v => v.size === size && v.stock > 0);
+    if (availableVariants && availableVariants.length) setSelectedVariant(availableVariants[0]);
+    else setSelectedVariant(null);
   };
 
   const handleColorChange = (color: string) => {
-    setSelectedColor(color);
-    handleVariantChange(selectedSize, color);
-  };
-
-  const handleVariantChange = (size: string, color: string) => {
-    const variant = variants?.find(v => v.size === size && v.color === color);
-    if (variant) {
-      setVariantStock(variant.stock);
-      setSelectedVariantId(variant._id);
-    } else {
-      setVariantStock(0);
-      setSelectedVariantId("");
+    if (selectedVariant) {
+      const variant = data?.product.variants.find(v => v.size === selectedVariant.size && v.color === color);
+      if (variant) setSelectedVariant(variant);
     }
   };
-
+  const c = data?.product.variants.filter(i => i.color !== '');
+  const s = data?.product.variants.filter(i => i.size !== '');
   useEffect(() => {
     setLoadingBar(20);
     setLoadingBar(70);
-  }, [id]);
+  }, [slug]);
 
   useEffect(() => {
     if (photos && photos.length > 0) {
       setMainImage(photos[0]);
     }
-
-    if (variants && variants.length > 0) {
-      const availableVariant = variants.find(variant => variant.stock > 0);
-      if (availableVariant) {
-        setSelectedSize(availableVariant.size);
-        handleSizeChange(availableVariant.size);
-      }
-    } else {
-      setSelectedSize("");
-      setSelectedColor("");
-      setAvailableColors([]);
-      setVariantStock(0);
-      setSelectedVariantId("");
-    }
+    const availableVariant = data?.product.variants.find(variant => variant.stock > 0);
+    if (availableVariant) setSelectedVariant(availableVariant);
     window.scroll(0, 0);
     setLoadingBar(100);
   }, [data]);
 
-  if (isError) return <Navigate to={"/404"} />;
 
-  const uniqueSizes = Array.from(new Set(variants?.map(variant => variant.size) || []));
 
   return (
     <>
@@ -166,15 +136,12 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
                 </div>
 
                 <br />
-                <h3 className="text-lg font-semibold my-2">Description:</h3>
-                <p>{description}</p>
-                <br />
-                {variants?.length > 0 && (
+                {selectedVariant && (
                   <div>
-                    Combination Stock:{" "}
-                    {variantStock > 0 ? (
-                      variantStock < 6 ? (
-                        <span className="text-red-500">Only {variantStock} items left</span>
+                    Variant Stock:{" "}
+                    {selectedVariant.stock > 0 ? (
+                      selectedVariant.stock < 6 ? (
+                        <span className="text-red-500">Only {selectedVariant.stock} items left</span>
                       ) : (
                         <span className="text-green-500">Available</span>
                       )
@@ -196,49 +163,63 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
                   )}
                 </div>
                 <br />
-                {variants?.length > 0 && (
-                  <>
-                    <div className="flex mb-4">
-                      {uniqueSizes.length > 0 && uniqueSizes.map((size, index) => (
-                        <button
-                          key={index}
-                          className={`${selectedSize === size ? "bg-black text-white" : "bg-white text-gray-800"} border border-black text-gray-800 px-2 py-1 mr-2 rounded-md`}
-                          onClick={() => handleSizeChange(size)}
-                        >{size}</button>
-                      ))}
-                    </div>
-                    <div className="flex mb-4">
-                      {availableColors[0] !== '' && availableColors.map((color, index) => (
-                        <button
-                          key={index}
-                          className={`${selectedColor === color ? "ring-4" : ""} border-gray-500 border rounded-full h-6 w-6 mx-1`}
-                          style={{ backgroundColor: color }}
-                          onClick={() => handleColorChange(color)}
-                        ></button>
-                      ))}
-                    </div>
-                    {variantStock === 0 && <span className="text-red-500">Not Available</span>}
-                  </>
+                {/* Size Selection */}
+                {s && s.length > 0 && uniqueSizes.length > 0 && (
+                  <div className="flex mb-4">
+                    {uniqueSizes.map((size, index) => (
+                      <button
+                        key={index}
+                        className={`${selectedVariant?.size === size ? "bg-black text-white" : "bg-white text-gray-800"} border border-black text-gray-800 px-2 py-1 mr-2 rounded-md`}
+                        onClick={() => handleSizeChange(size)}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
                 )}
+
+                {/* Color Selection */}
+                {c && c.length > 0 && selectedVariant && (
+                  <div className="flex mb-4">
+                    {variants
+                      .filter(v => v.size === selectedVariant.size && v.stock > 0)
+                      .map((variant, index) => (
+                        <button
+                          key={index}
+                          className={`${selectedVariant.color === variant.color ? "bg-black text-white" : "bg-white text-gray-800"} border border-black text-gray-800 px-2 py-1 mr-2 rounded-md`}
+                          onClick={() => handleColorChange(variant.color)}
+                        >
+                          {variant.color}
+                        </button>
+                      ))}
+                  </div>
+                )}
+                <h3 className="text-lg font-semibold my-2">Description:</h3>
+                <p>{description}</p>
+                <br />
                 <button
-                  disabled={(variantStock < 1 && variants?.length > 0) || stock < 1}
+                  disabled={
+                    (variants?.length > 0 && (!selectedVariant || selectedVariant.stock < 1)) ||
+                    stock < 1}
                   className='cart-button w-full mt-4 px-4 py-2 bg-yellow-500 rounded-md text-white text-lg font-semibold transition duration-300 ease-in-out hover:bg-yellow-600'
                   onClick={() =>
                     addToCartHandler({
                       productId,
-                      size: selectedSize,
-                      color: selectedColor,
+                      color: selectedVariant?.color,
+                      size: selectedVariant?.size,
                       price,
                       cutPrice,
                       name,
                       photo: photos![0],
                       stock,
                       quantity: 1,
-                      variantId: selectedVariantId
+                      variantId: selectedVariant?._id
                     })
                   }
                 >
-                  {(variantStock < 1 && variants?.length > 0) || stock < 1 ? "Not Available" : "Add to Cart"}
+                  {variants?.length > 0
+                    ? (!selectedVariant || selectedVariant.stock < 1 ? "Not Available" : "Add to Cart")
+                    : (stock > 0 ? "Add to Cart" : "Not Available")}
                 </button>
               </article>
             </>

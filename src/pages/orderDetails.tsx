@@ -139,7 +139,7 @@ const OrderProductCard = ({
       </div>
       <div >
         <ReviewForm user={user} productId={productId} />
-        <Link to={`/product/${productId}`} className="text-sm text-gray-500 mb-4 hover:text-blue-500">Go to Product details to edit review</Link>
+        <Link to={`/product/${slugify(name)}?id=${productId}`} className="text-sm text-gray-500 mb-4 hover:text-blue-500">Go to Product details to edit review</Link>
       </div>
 
     </div>

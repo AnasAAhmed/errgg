@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { BiChevronDown } from "react-icons/bi";
+import { BiChevronRight } from "react-icons/bi";
 import { Link } from "react-router-dom";
 
 type DropSearchProps = {
@@ -24,7 +24,7 @@ const DropDown = ({ options }: DropSearchProps) => {
         className="flex items-center space-x-1 px-2 py-1 font-semibold text-lg rounded-md focus:outline-none focus:ring focus:border-blue-400"
       >
         <span>Dashboard</span>
-        <BiChevronDown className={`transition-all duration-300 ${open && 'rotate-180'}`} />
+        <BiChevronRight className={`transition-all duration-300 ${open && 'rotate-90'}`} />
 
       </button>
       {open && (

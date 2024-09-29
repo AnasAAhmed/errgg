@@ -20,7 +20,8 @@ const Footer = () => {
                     <ul className="text-md md:text-lg ">
                         <li><Link className="text-gray-400" to={"/search/laptop"} onClick={() => window.scroll(0, 0)}>Laptop</Link></li>
                         <li><Link className="text-gray-400" to={"/search/mobile"} onClick={() => window.scroll(0, 0)}>Mobile</Link></li>
-                        <li><Link className="text-gray-400" to={"/search/wearables"} onClick={() => window.scroll(0, 0)}>Wearables</Link></li>
+                        <li><Link className="text-gray-400" to={"/search/men"} onClick={() => window.scroll(0, 0)}>Men</Link></li>
+                        <li><Link className="text-gray-400" to={"/search/women"} onClick={() => window.scroll(0, 0)}>Women</Link></li>
                         <li><Link className="text-gray-400" to={"/search/pc"} onClick={() => window.scroll(0, 0)}>Pc's</Link></li>
                         <li><Link className="text-gray-400" to={"/search/shoe"} onClick={() => window.scroll(0, 0)}>Shoe</Link></li>
                     </ul>

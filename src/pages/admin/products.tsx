@@ -65,11 +65,11 @@ const Products = () => {
       setRows(
         data.products.map((i) => ({
           photo: <img src={`${server}/${i.photos[0]}`} />,
-          name: <Link to={`/product/${slugify(i.name)}?id=${i._id}`} className="text-md font-medium line-clamp-2 hover:text-indigo-500">{i.name}</Link>,
+          name: <Link to={`/product/${slugify(i.name)}`} className="text-md font-medium line-clamp-2 hover:text-indigo-500">{i.name}</Link>,
           productId: <div className="truncate w-24"><CopyText text={i._id} />...</div>,
           price: i.price,
           stock: i.stock,
-          action: <Link className="text-md font-medium py-1 px-2 rounded-md bg-blue-200 hover:bg-blue-300" to={`/admin/product/${i._id}`}>Manage</Link>,
+          action: <Link className="text-md font-medium py-1 px-2 rounded-md bg-blue-200 hover:bg-blue-300" to={`/admin/product/${slugify(i.name)}`}>Manage</Link>,
         }))
       );
   }, [data]);

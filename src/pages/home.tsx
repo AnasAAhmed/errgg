@@ -2,8 +2,6 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import ProductCard from "../components/product-card";
 import { useLatestProductsQuery } from "../redux/api/productAPI";
-import heroImg from '../assets/Ecommerce.png'
-import SummerImg from '../assets/banner2.png'
 import CollectionsList from "../components/CollectionsList";
 import RelatedProducts from "../components/RelatedProducts";
 import { Carousel } from 'react-responsive-carousel'
@@ -17,7 +15,6 @@ import BlogSection from "../components/BlogSection";
 
 const Home = () => {
   const { data, isLoading, isError } = useLatestProductsQuery("");
-
   if (isError) toast.error("Cannot Fetch the Products");
 
   return (
@@ -35,25 +32,25 @@ const Home = () => {
 
           >
             <Banner
-              heading="Elevate Your Style"
-              text=" Discover the latest trends in fashion with our new collection."
-              imgUrl={heroImg}
-              shade="gray"
-              link="/search"
+              heading="Gift Collection "
+              text="Embrace the warmth with gift collection"
+              imgUrl={'https://www.next.co.uk/nxtcms/resource/blob/6139514/32061ca88062e4ed271cce514bbf0cde/130624-hero-gifts-dt-data.jpg'}
+              link="/collections/gift"
+              shade="black"
             />
             <Banner
-              heading="Summer Collection 2024"
-              text="Embrace the warmth with our stylish and comfortable summer wear "
-              imgUrl={SummerImg}
-              shade="gray"
-              link="/collections/summer"
+              heading="Elevate Your Gaming"
+              text=" Discover the latest gaming accessories in our new collection."
+              imgUrl={"https://res.cloudinary.com/dj5q966nb/image/upload/v1719253433/ticeufjqvf6napjhdiee.png"}
+              shade="black"
+              link="/search/accessories"
             />
             <Banner
-              heading="Tech Heaven 2024"
-              text="Premium quality tech at unbeatable prices."
-              imgUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmxOruz0L6Y-Zn_Wt-ifVGR5aqKXSpZZg0HA&s"
-              shade="gray"
-              link='/collections/techheaven'
+              heading="Cosmetics Heaven 2024"
+              text="Premium quality beauty products at unbeatable prices."
+              imgUrl="https://www.next.co.uk/nxtcms/resource/blob/6292750/0aad3fee48413abd53f667d285bf3b42/260924-hero-beauty-dt-data.jpg"
+              shade=""
+              link='/collections/cosmetics'
             />
           </Carousel>
         </section>
@@ -91,17 +88,19 @@ const Home = () => {
             More
           </Link>
         </h1>
-        
+
         <Banner
-          imgUrl="https://img.freepik.com/premium-vector/flat-design-realistic-banner-template_23-2150102691.jpg?w=740"
-          link="/search/laptop"
-          shade="white"
+          imgUrl="https://www.next.co.uk/nxtcms/resource/blob/6268504/4c85a5e35de4844844702816284c4568/11-09-24-hero-home-dt-min-data.jpg"
+          link="/search/furniture"
+          heading="Furniture Collection"
+          text="Comming Soon"
+          shade=""
         />
         <div className="flex flex-col mt-14 items-center">
           {/* if category empty it'll fetch top selling products */}
           <RelatedProducts category={''} heading="Top selling products" />
         </div>
-        <BlogSection/>
+        <BlogSection />
         <Services />
       </div>
       <Footer />

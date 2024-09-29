@@ -67,15 +67,17 @@ export const getLastMonths = () => {
 };
 export const slugify = (title: string) => {
   return title
-    .toLowerCase() // Convert to lowercase
-    .replace(/ /g, "-") // Replace spaces with hyphens
-    .replace(/[^\w-]+/g, ""); // Remove any non-alphanumeric characters except hyphens
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
 };
-
 export const unSlugify = (slug: string) => {
   return slug
   .replace(/-/g, " ")    // Replace hyphens with spaces
-    .replace(/\b\w/g, (char) => char); // Capitalize the first letter of each word
+    .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
 };
 
 
