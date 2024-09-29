@@ -4,15 +4,12 @@ import {
   useCategoriesQuery,
   useSearchProductsQuery,
 } from "../redux/api/productAPI";
-
 import { CustomError } from "../types/api-types";
 import toast from "react-hot-toast";
 import { RiFilterFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 import { FaSearch, FaSpinner } from "react-icons/fa";
 import Footer from "../components/Footer";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
 
 const Search = () => {
   const params = useParams()
@@ -22,9 +19,6 @@ const Search = () => {
     isError,
     error,
   } = useCategoriesQuery("");
-  const { searches } = useSelector(
-    (state: RootState) => state.searchReducer
-  );
 
   const [searchValue, setSearchValue] = useState("");
   const [search, setSearch] = useState("");
@@ -110,13 +104,13 @@ const Search = () => {
               onKeyDown={handleKeyPressForSearch}
             />
             <datalist id="products">
-              {searches && searches.map((item, i) => (
+              {searchedData && searchedData.products.map((item, i) => (
                 <option
                   key={i}
                   className="px-3 py-2 cursor-pointer hover:bg-accent"
-                  value={item}
+                  value={item.name}
                 >
-                  {/* {item.category} */}
+                  {item.category}
                 </option>
               ))}
             </datalist>

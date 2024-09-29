@@ -2,9 +2,6 @@ import { FaStar } from "react-icons/fa";
 import { server } from "../redux/store";
 import { Link } from "react-router-dom";
 import { slugify } from "../utils/features";
-import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import { setSearches } from "../redux/reducer/searchReducer";
 
 type ProductsProps = {
   productId?: string;
@@ -26,18 +23,7 @@ const ProductCard = ({
   ratings,
   sold
 }: ProductsProps) => {
-  const [names, setNames] = useState<string[]>([]);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (name) {
-      setNames((prevNames) => {
-        const updatedNames = [name, ...prevNames];
-        return updatedNames;
-      });
-      dispatch(setSearches(names));
-    }
-  }, []);
+  
   return (
     <div className="animate-modal">
       <Link to={`/product/${slugify(name)}`} className="mt-8 w-full  sm:w-[220px] flex flex-col gap-2">
