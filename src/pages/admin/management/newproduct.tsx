@@ -473,6 +473,7 @@ const NewProduct = () => {
                 type="text"
                 placeholder="Name"
                 value={name}
+                minLength={30}
                 onChange={(e) => setName(e.target.value)}
                 className="border border-gray-300 rounded-md w-[96%] px-3 py-3"
               />

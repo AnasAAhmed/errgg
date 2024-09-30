@@ -19,7 +19,10 @@ const Productmanagement = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { data, isLoading, isError } = useProductDetailsQuery(params.id!);
+  const { data, isLoading, isError } = useProductDetailsQuery({
+    slug: params.slug!,
+    userId: user?.role === 'admin' ? user._id : ''
+  });
 
   const {
     price,
@@ -199,6 +202,7 @@ const Productmanagement = () => {
                   <input
                     type="text"
                     placeholder="Name"
+                    minLength={30}
                     value={nameUpdate}
                     onChange={(e) => setNameUpdate(e.target.value)}
                     className="border border-gray-300 rounded-md w-[96%] px-3 py-3"

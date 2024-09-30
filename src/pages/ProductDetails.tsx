@@ -17,7 +17,7 @@ import Footer from "../components/Footer";
 const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
   const { slug } = useParams();
 
-  const { data, isLoading, isError } = useProductDetailsQuery(slug!);
+  const { data, isLoading, isError } = useProductDetailsQuery({ slug: slug! });
   const {
     _id: productId,
     price,

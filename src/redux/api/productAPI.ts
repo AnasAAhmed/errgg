@@ -71,8 +71,10 @@ export const productAPI = createApi({
       providesTags: ["product"],
     }),
 
-    productDetails: builder.query<ProductResponse, string>({
-      query: (id) => id,
+    productDetails: builder.query<ProductResponse, {slug:string,userId?:string}>({
+      query: ({slug,userId}) => ({
+        url:userId?`${slug}?id=${userId}`:slug
+      }),
       providesTags: ["product"],
     }),
 
