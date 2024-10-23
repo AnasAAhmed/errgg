@@ -15,6 +15,7 @@ import { RootState } from "../redux/store";
 import { NewOrderRequest } from "../types/api-types";
 import { responseToast } from "../utils/features";
 import { FaArrowLeft, FaSpinner } from "react-icons/fa";
+import { BiChevronRight } from "react-icons/bi";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
@@ -76,14 +77,23 @@ const CheckOutForm = () => {
     setIsProcessing(false);
   };
   return (
-    <div className="checkout-container">
-      <form onSubmit={submitHandler}>
-        <PaymentElement />
-        <button type="submit" className="flex justify-center font-semibold" disabled={isProcessing}>
-          {isProcessing ? <FaSpinner className="animate-spin h-[26px] w-[26px]" /> : `Pay $${total}`}
-        </button>
-      </form>
-    </div> 
+    <>
+      <div className="pt-11 font-medium text-xl font-sans flex items-center px-8 sm:px-16">
+        <button className="text-gray-400">cart</button>
+        <BiChevronRight />
+        <button className="text-gray-400">shipping</button>
+        <BiChevronRight />
+        <button >Payment</button>
+      </div>
+      <div className="checkout-container">
+        <form onSubmit={submitHandler}>
+          <PaymentElement />
+          <button type="submit" className="flex justify-center font-semibold" disabled={isProcessing}>
+            {isProcessing ? <FaSpinner className="animate-spin h-[26px] w-[26px]" /> : `Pay $${total}`}
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 

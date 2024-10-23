@@ -29,16 +29,7 @@ const Collections = () => {
                         ) : (
                             <div className="md:flex md:flex-wrap grid grid-cols-2 justify-center gap-4 md:gap-16 ">
                                 {data?.productCollection.map((i) => (
-                                    <ProductCard
-                                        key={i._id}
-                                        productId={i._id}
-                                        name={i.name}
-                                        price={i.price}
-                                        photo={i.photos[0]}
-                                        numOfReviews={i.numOfReviews}
-                                        ratings={i.ratings}
-                                        cutPrice={i.cutPrice}
-                                    />
+                                    <ProductCard key={i._id} product={i}/>
                                 ))}
                             </div>
                         )}

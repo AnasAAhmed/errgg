@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family:sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 400;
   // background-color: #f5f4f4;
@@ -91,9 +91,11 @@ $color3: rgb(0, 104, 136);
     opacity: 1;
   }
 }
+
 .animate-modal {
   animation: upScale 0.3s ease-out forwards;
 }
+
 @keyframes link {
   from {
     // transform: scale(0.97);
@@ -107,9 +109,11 @@ $color3: rgb(0, 104, 136);
     opacity: 1;
   }
 }
+
 .animate-link {
   animation: link 0.2s ease-out forwards;
 }
+
 @keyframes menu {
   from {
     height: 0%;
@@ -117,10 +121,11 @@ $color3: rgb(0, 104, 136);
   }
 
   to {
-   height: 37%;
+    height: 37%;
     opacity: 1;
   }
 }
+
 .animate-menu {
   animation: menu 0.2s ease-out forwards;
 }
@@ -198,6 +203,7 @@ $color3: rgb(0, 104, 136);
     width: 100%;
     background-color: white;
     padding: 1rem;
+    margin-top: 0.5rem;
     z-index: 10;
     overflow-y: auto;
 
@@ -405,100 +411,6 @@ $color3: rgb(0, 104, 136);
   }
 }
 
-
-.dashboard-skeleton {
-  overflow-y: auto;
-  animation: admin-skeleton-loading 1.5s infinite;
-
-  .bar {
-    height: 4rem;
-    @include flex(row, unset);
-    padding: 0 1rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.37);
-  }
-
-  .widget-container {
-    @include flex(row, space-betdween, stretch, 2rem);
-    padding: 2rem 2rem 2rem 0;
-
-    .widget {
-      width: 16rem;
-      height: 9rem;
-      background-color: rgb(221, 221, 221);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.132);
-      padding: 2rem;
-      border-radius: 10px;
-      @include flex(row, space-between, stretch, 0);
-      animation: admin-skeleton-loading 1.5s infinite;
-
-      .widget-circle {
-        position: relative;
-        @include square(5rem);
-        border-radius: 50%;
-        flex: none;
-        display: grid;
-        place-items: center;
-        background-color: rgb(224, 224, 224);
-        animation: admin-skeleton-loading 1.5s infinite;
-      }
-    }
-  }
-
-  .graph-container {
-    @include flex(row, 2rem);
-    padding: 0 2rem 2rem 0;
-
-    .revenue-chart {
-      width: 100%;
-      padding: 1rem 3rem;
-      background-color: rgb(221, 221, 221);
-      height: 42rem;
-      animation: admin-skeleton-loading 1.5s infinite;
-    }
-
-    .dashboard-categories {
-      width: 100%;
-      max-width: 16rem;
-      @include flex(column, center, unset, 0);
-      padding-bottom: 2rem;
-      animation: admin-skeleton-loading 1.5s infinite;
-      background-color: rgb(221, 221, 221);
-
-      .category-item {
-        width: 100%;
-        @include flex(row, space-between);
-        padding: 1rem;
-
-      }
-    }
-  }
-
-  .transaction-container {
-    display: flex;
-    gap: 2rem;
-    // padding: 0 2rem 2rem 0;
-    height: 30rem;
-    animation: admin-skeleton-loading 1.5s infinite;
-
-    .gender-chart {
-      width: 100%;
-      max-width: 20rem;
-      padding: 1rem;
-      position: relative;
-      background-color: rgb(221, 221, 221);
-
-    }
-
-    .transaction-box {
-      width: 100%;
-      padding: 1rem;
-      overflow-x: auto;
-      animation: admin-skeleton-loading 1.5s infinite;
-      background-color: rgb(221, 221, 221);
-
-    }
-  }
-}
 
 @keyframes admin-skeleton-loading {
   0% {

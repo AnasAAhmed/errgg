@@ -1,124 +1,128 @@
 import { KeyboardEvent, useEffect, useState } from "react";
 import ProductCard from "../components/product-card";
-import {
-  useCategoriesQuery,
-  useSearchProductsQuery,
-} from "../redux/api/productAPI";
+import { useCategoriesQuery, useSearchProductsQuery } from "../redux/api/productAPI";
 import { CustomError } from "../types/api-types";
 import toast from "react-hot-toast";
 import { RiFilterFill } from "react-icons/ri";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { FaSearch, FaSpinner } from "react-icons/fa";
 import Footer from "../components/Footer";
 
+const DEFAULT_MAX_PRICE = 100000;
+
 const Search = () => {
-  const params = useParams()
-  const {
-    data: categoriesResponse,
-    isLoading: loadingCategories,
-    isError,
-    error,
-  } = useCategoriesQuery("");
-
-  const [searchValue, setSearchValue] = useState("");
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("");
-  const [sortField, setSortField] = useState('');
-  const [maxPriceValue, setMaxPriceValue] = useState(100000);
-  const [maxPrice, setMaxPrice] = useState(100000);
-  const [category, setCategory] = useState(params.category!);
-  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
+  const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [sort, setSort] = useState(searchParams.get("sort") || "");
+  const [sortField, setSortField] = useState(searchParams.get("sortField") || "");
+  const [maxPriceValue, setMaxPriceValue] = useState(Number(searchParams.get("price")) || DEFAULT_MAX_PRICE);
+  const [maxPrice, setMaxPrice] = useState(Number(searchParams.get("price")) || DEFAULT_MAX_PRICE);
+  const [category, setCategory] = useState(searchParams.get("category") || "");
   const [loading, setLoading] = useState(false);
-  const {
-    isLoading: productLoading,
-    data: searchedData,
-    isError: productIsError,
-    error: productError,
-  } = useSearchProductsQuery({
-    search,
-    sort,
-    sortField,
-    category,
-    page,
-    price: maxPrice,
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
+
+  // Fetch categories
+  const { data: categoriesResponse, isLoading: loadingCategories, isError, error } = useCategoriesQuery("");
+  const { isLoading: productLoading, data: searchedData, isError: productIsError, error: productError } = useSearchProductsQuery({
+    search, sort, sortField, category, page, price: maxPrice,
   });
-  const isPrevPage = page > 1;
-  const isNextPage = searchedData?.totalPage === page;
+
+  const updateSearchParams = () => {
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (sort) params.set("sort", sort);
+    if (sortField) params.set("sortField", sortField);
+    if (category) params.set("category", category);
+    if (maxPrice !== DEFAULT_MAX_PRICE) params.set("price", maxPrice.toString());
+    setSearchParams(params);
+  };
 
   useEffect(() => {
+    updateSearchParams();
     setLoading(true);
-    setPage(1)
-  }, [search, sort, category, maxPrice]);
+  }, [search, sort, sortField, category, maxPrice, page]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 400);
-    window.scroll(0, 0)
-  }, [searchedData])
+    setLoading(false);
+    window.scrollTo(0, 0);
+  }, [searchedData]);
 
-
-
-  const handleKeyPressForMaxPrice = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>, callback: () => void) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // Prevent the default behavior of the Enter key
-      setMaxPrice(maxPriceValue);
-    }
-
-  };
-  const handleKeyPressForSearch = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault(); // Prevent the default behavior of the Enter key
-      setSearch(searchValue);
+      e.preventDefault();
+      setPage(1);
+      callback();
     }
   };
-  const handleSortChange = (e: any) => {
-    const [field, order] = e.target.value.split('|');
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setPage(1);
+    const [field, order] = e.target.value.split("|");
     setSort(order);
     setSortField(field);
   };
-  if (isError) {
-    const err = error as CustomError;
-    toast.error(err.data.message);
-  }
-  if (productIsError) {
-    const err = productError as CustomError;
-    toast.error(err.data.message);
-  }
+
+  const clearFilters = () => {
+    setSearchValue("");
+    setSearch("");
+    setSort("");
+    setSortField("");
+    setCategory("");
+    setMaxPriceValue(DEFAULT_MAX_PRICE);
+    setMaxPrice(DEFAULT_MAX_PRICE);
+    setPage(1);
+    setSearchParams({});
+  };
+
+  const handleError = (error: CustomError) => toast.error(error.data.message);
+
+  if (isError) handleError(error as CustomError);
+  if (productIsError) handleError(productError as CustomError);
 
   return (
     <>
-      <div className="flex flex-col  ">
-        <h2 className="text-center text-3xl font-semibold mt-10 mb-4 mx-2">
+      <div className="flex flex-col px-4">
+        <h2 className="text-center text-2xl font-semibold mt-10 mb-3">
           Filters <RiFilterFill className="inline-block mb-2" />
         </h2>
-        <div className="flex flex-col sm:flex-row mx-3 sm:mx-10 md:mx-20 items-center ">
-          <div className="mb-4 relative w-full flex flex-row items-center h-9 px-2 border-none dmb-4 sm:mb-0 max-sm:rounded-lg sm:rounded-l-lg bg-gray-200">
+          <button
+            onClick={clearFilters}
+            className="mx-1 mb-3 text-lg hover:gray-600"
+          >
+            Clear &times;
+          </button>
+
+        {/* Filter Section */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
+          {/* Search Bar */}
+          <div className="relative flex items-center w-full h-10 bg-gray-100 rounded-lg">
             <input
               type="text"
               list="products"
               placeholder="Search by brand or name..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              className="w-full outline-none  bg-gray-200"
-              onKeyDown={handleKeyPressForSearch}
+              className="w-full h-full px-3 bg-transparent outline-none"
+              onKeyDown={(e) => handleKeyPress(e, () => setSearch(searchValue))}
             />
             <datalist id="products">
-              {searchedData && searchedData.products.map((item, i) => (
-                <option
-                  key={i}
-                  className="px-3 py-2 cursor-pointer hover:bg-accent"
-                  value={item.name}
-                >
-                  {item.category}
-                </option>
+              {searchedData?.products.slice(0, 8).map((item, i) => (
+                <option key={i} value={item.name}>{item.category}</option>
               ))}
             </datalist>
-            <button className="h-full text-gray-600 px-2 bg-gray-100" onClick={() => setSearch(searchValue)}><FaSearch size={"1.2rem"} /></button>
+            <button
+              className="h-full text-gray-600 px-3 bg-gray-200 rounded-r-lg"
+              onClick={() => { setSearch(searchValue); setPage(1); }}
+            >
+              <FaSearch size={"1.2rem"} />
+            </button>
           </div>
-          <div className="flex flex-row">
+
+          {/* Sort and Filter Options */}
+          <div className="flex gap-2">
             <select
-              className="h-9 cursor-pointer outline-none px-2 max-sm:rounded-l-lg border-none bg-gray-200"
+              className="h-10 px-3 bg-gray-100 rounded-lg"
               value={`${sortField}|${sort}`}
               onChange={handleSortChange}
             >
@@ -128,88 +132,80 @@ const Search = () => {
               <option value="sold|desc">Best-Selling</option>
               <option value="createdAt|desc">Latest</option>
               <option value="ratings|desc">Most-Rated</option>
-              <option value="ratings|asc">Less-Rated </option>
-              <option value="">(None)</option>
+              <option value="ratings|asc">Less-Rated</option>
             </select>
+
             <select
-              className="cursor-pointer h-9 px-2 outline-none border-none rounded-r-lg bg-gray-200 "
+              className="h-10 px-3 bg-gray-100 rounded-lg"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
               <option value="">ALL</option>
               {!loadingCategories &&
                 categoriesResponse?.categories.map((i) => (
-                  <option key={i} value={i}>
-                    {i.toUpperCase()}
-                  </option>
+                  <option key={i} value={i}>{i.toUpperCase()}</option>
                 ))}
             </select>
           </div>
         </div>
-        <main className="p-4 flex flex-col items-center ">
-          <h4 className="text-base mb-2">Max Price: {maxPriceValue || ""}</h4>
-          <div className="mb-4 flex flex-col xsm:flex-row items-center">
-            <input
-              type="range"
-              min={1}
-              max={100000}
-              value={maxPriceValue}
-              onKeyDown={handleKeyPressForMaxPrice}
-              onChange={(e) => setMaxPriceValue(Number(e.target.value))}
-              className="w-60 h-[35px]"
-            />
-            <button className="bg-blue-300 px-3 mx-3 text-white rounded-lg" onClick={() => setMaxPrice(maxPriceValue)}>Go</button>
-          </div>
-          <h1 className="text-2xl font-semibold ">Products</h1>
-          <h1 className="text-2xl font-semibold ">{search !== "" && `Result For ${search}`}</h1>
-          <div className="my-2">
+
+        {/* Max Price Filter */}
+        <div className="flex justify-center items-center gap-4 mb-6">
+          <h4 className="text-sm sm:text-lg">Max Price: {maxPriceValue}</h4>
+          <input
+            type="range"
+            min={1}
+            max={DEFAULT_MAX_PRICE}
+            value={maxPriceValue}
+            onKeyDown={(e) => handleKeyPress(e, () => setMaxPrice(maxPriceValue))}
+            onChange={(e) => setMaxPriceValue(Number(e.target.value))}
+            className="w-60 h-4"
+          />
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            onClick={() => setMaxPrice(maxPriceValue)}
+          >
+            Go
+          </button>
+        </div>
+        <h1 className="text-2xl font-semibold mb-6">
+          {search && `Results for "${search}"`}
+        </h1>
+
+        {/* Product Section */}
+        <main className="flex flex-col items-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
             {loading || productLoading ? (
-              <div className="flex items-center justify-center h-[60vh]">
-                <FaSpinner className="animate-spin h-36 w-36 text-gray-500" />
+              <div className="flex items-center justify-center col-span-full min-h-[60vh]">
+                <FaSpinner className="animate-spin h-12 w-12 text-gray-500" />
               </div>
+            ) : searchedData?.products.length ? (
+              searchedData.products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))
             ) : (
-              <div className="md:flex md:flex-wrap grid grid-cols-2 justify-center gap-4 md:gap-16 min-h-[90vh]">
-                {!searchedData?.products || searchedData?.products.length === 0 ? (
-                  <p className="font-bold text-4xl">No products found</p>
-                ) : (
-                  searchedData?.products.map((i) => (
-                    <ProductCard
-                      key={i._id}
-                      productId={i._id}
-                      name={i.name}
-                      price={i.price}
-                      photo={i.photos[0]}
-                      numOfReviews={i.numOfReviews}
-                      ratings={i.ratings}
-                      cutPrice={i.cutPrice}
-                      sold={i.sold}
-                    />
-                  ))
-                )}
-              </div>
+              <p className="text-2xl font-bold col-span-full text-center">No products found</p>
             )}
           </div>
 
-          {searchedData && searchedData.totalPage > 1 && (
-            <article className="flex justify-center items-center mt-4">
+          {searchedData && searchedData?.totalPage > 1 && (
+            <div className="flex justify-center items-center mt-4">
               <button
-                disabled={!isPrevPage}
-                onClick={() => setPage((prev) => prev - 1)}
-                className={`px-4 py-2 ${isPrevPage ? 'bg-violet-500' : 'bg-gray-400'} text-white rounded mr-2`}
+                disabled={page <= 1}
+                onClick={() => setPage(page - 1)}
+                className={`px-4 py-2 ${page > 1 ? 'bg-violet-500' : 'bg-gray-400'} text-white rounded mr-2`}
               >
                 Prev
               </button>
-              <span className="text-base">
-                {page} of {searchedData.totalPage}
-              </span>
+              <span className="text-base">{page} of {searchedData.totalPage}</span>
               <button
-                disabled={isNextPage}
-                onClick={() => setPage((prev) => prev + 1)}
-                className={`px-4 py-2 ${!isNextPage ? 'bg-violet-500' : 'bg-gray-400'} text-white rounded ml-2`}
+                disabled={page >= searchedData.totalPage}
+                onClick={() => setPage(page + 1)}
+                className={`px-4 py-2 ${page < searchedData.totalPage ? 'bg-violet-500' : 'bg-gray-400'} text-white rounded ml-2`}
               >
                 Next
               </button>
-            </article>
+            </div>
           )}
         </main>
       </div>
@@ -219,4 +215,3 @@ const Search = () => {
 };
 
 export default Search;
-

@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import axios from "axios";
 import {
-  AllUsersRequest,
   AllUsersResponse,
   DeleteSingleUserRequest,
   DeleteUserRequest,
@@ -41,13 +40,13 @@ export const userAPI = createApi({
       }),
       invalidatesTags: ["users"],
     }),
-    allUsers: builder.query<AllUsersResponse, AllUsersRequest>({
-      query: ({id,email,searchId}) => {
+    allUsers: builder.query<AllUsersResponse, { id: string, page: string, key: string, query: string }>({
+      query: ({ id, query, key, page }) => {
         let base = `all?id=${id}`;
 
-        if (email)  base += `&email=${email}`;
-        if (searchId)  base += `&searchId=${searchId}`;
-          
+        if (query && key) base += `&query=${query}&key=${key}`;
+        if (page) base += `&page=${page}`;
+
         return base;
       },
       providesTags: ["users"],

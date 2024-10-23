@@ -2,32 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartReducerInitialState } from "../../types/reducer-types";
 import { CartItem, ShippingInfo } from "../../types/types";
 
-const CART_ITEMS_KEY = "cartItems";
-const CART_TIMESTAMP_KEY = "cartTimestamp";
-const CART_EXPIRATION_DAYS = 15;
-
-const loadCartItems = (): CartItem[] => {
-  try {
-    const serializedCartItems = localStorage.getItem(CART_ITEMS_KEY);
-    const timestamp = localStorage.getItem(CART_TIMESTAMP_KEY);
-    if (serializedCartItems && timestamp) {
-      const cartTimestamp = new Date(JSON.parse(timestamp));
-      const now = new Date();
-      const differenceInDays = (now.getTime() - cartTimestamp.getTime()) / (1000 * 3600 * 24);
-      if (differenceInDays < CART_EXPIRATION_DAYS) {
-        return JSON.parse(serializedCartItems);
-      }
-    }
-    return [];
-  } catch (error) {
-    console.error("Could not load cart items from localStorage:", error);
-    return [];
-  }
-};
-
 const initialState: CartReducerInitialState = {
   loading: false,
-  cartItems: loadCartItems(),
+  cartItems: [],
   subtotal: 0,
   tax: 0,
   shippingCharges: 0,
@@ -40,22 +17,6 @@ const initialState: CartReducerInitialState = {
     country: "",
     pinCode: "",
   },
-};
-
-const saveCartItems = (cartItems: CartItem[]) => {
-  try {
-    const serializedCartItems = JSON.stringify(cartItems);
-    const timestamp = JSON.stringify(new Date().toISOString());
-    localStorage.setItem(CART_ITEMS_KEY, serializedCartItems);
-    localStorage.setItem(CART_TIMESTAMP_KEY, timestamp);
-  } catch (error) {
-    console.error("Could not save cart items to localStorage:", error);
-  }
-};
-
-const clearCartItems = () => {
-  localStorage.removeItem(CART_ITEMS_KEY);
-  localStorage.removeItem(CART_TIMESTAMP_KEY);
 };
 
 export const cartReducer = createSlice({
@@ -71,7 +32,6 @@ export const cartReducer = createSlice({
 
       if (index !== -1) state.cartItems[index] = action.payload;
       else state.cartItems.push(action.payload);
-      saveCartItems(state.cartItems);
       state.loading = false;
     },
 
@@ -80,7 +40,6 @@ export const cartReducer = createSlice({
       state.cartItems = state.cartItems.filter(
         (i) => i.productId !== action.payload
       );
-      saveCartItems(state.cartItems);
       state.loading = false;
     },
 
@@ -91,7 +50,7 @@ export const cartReducer = createSlice({
       );
 
       state.subtotal = subtotal;
-      state.shippingCharges = state.subtotal > 20 ? 0 : 50;
+      state.shippingCharges = state.subtotal > 1000 ? 0 : 200;
       state.tax = Math.round(state.subtotal * 0.18);
       state.total =
         state.subtotal + state.tax + state.shippingCharges - state.discount;
@@ -100,13 +59,11 @@ export const cartReducer = createSlice({
     discountApplied: (state, action: PayloadAction<number>) => {
       state.discount = action.payload;
     },
+
     saveShippingInfo: (state, action: PayloadAction<ShippingInfo>) => {
       state.shippingInfo = action.payload;
     },
-    resetCart: () => {
-      clearCartItems();
-      return { ...initialState, cartItems: [] };
-    },
+    resetCart: () => initialState,
   },
 });
 

@@ -13,8 +13,8 @@ import { RootState } from "../../redux/store";
 import { CustomError } from "../../types/api-types";
 import { responseToast } from "../../utils/features";
 import UserModal from "../../components/UserModal";
-import { BsSearch } from "react-icons/bs";
-import { MdOutlineEmail } from "react-icons/md";
+import { useSearchParams } from "react-router-dom";
+import Pagination from "../../components/admin/Pagination";
 
 interface DataType {
   avatar: ReactElement;
@@ -27,7 +27,7 @@ interface DataType {
 }
 
 const columns: Column<DataType>[] = [
-  
+
   {
     Header: "Name",
     accessor: "name",
@@ -56,17 +56,19 @@ const columns: Column<DataType>[] = [
 
 const Customers = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
+  const [searchParams] = useSearchParams();
 
-  const [searchId, setSearchId] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
 
   const { isLoading, data, isError, error } = useAllUsersQuery({
-    id: user?._id,
-    email: email,
-    searchId: searchId
+    id: user!._id,
+    key: searchParams.get("key") || '',
+    query: searchParams.get("query") || '',
+    page: searchParams.get("page") || '',
   });
 
+  const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
   const [rows, setRows] = useState<DataType[]>([]);
 
   const [deleteUser] = useDeleteUserMutation();
@@ -78,8 +80,6 @@ const Customers = () => {
       const res = await deleteUser({ userId, adminUserId: user?._id! });
       responseToast(res, null, "");
       setLoading(false);
-    } else {
-      // User cancelled the deletion, do nothing
     }
   };
 
@@ -91,7 +91,7 @@ const Customers = () => {
 
 
   useEffect(() => {
-    if (data)
+    if (data) {
       setRows(
         data.users.map((i) => ({
           avatar: (
@@ -110,7 +110,7 @@ const Customers = () => {
           action: (
 
             <button onClick={() => deleteHandler(i._id)}>
-              {loading ? <FaSpinner className="animate-spin mr-2" /> : <FaTrash/>}
+              {loading ? <FaSpinner className="animate-spin mr-2" /> : <FaTrash />}
             </button>
           ),
           details: (
@@ -118,35 +118,27 @@ const Customers = () => {
           )
         }))
       );
+      setTotalPages(data.totalPages);
+      setTotalItems(data.totalUsers);
+    }
   }, [data]);
   const Table = TableHOC<DataType>(
     columns,
     rows,
     "dashboard-product-box",
     "Customers",
-    isLoading 
+    isLoading,
+    totalItems,
+    true
   )();
 
   return (
     <div className="admin-container">
       <AdminSidebar />
-
       <main>
-        <div className="bar">
-          <BsSearch size="2rem" />
-          <input type="text"
-            onChange={(e) => setSearchId(e.target.value)}
-            placeholder="Search By id"
-          />
-          <MdOutlineEmail size="3rem" />
-          <input type="email"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Search By email"
-          />
-        </div>
         {Table}
-        {/* {isLoading ? <FaSpinner className="animate-spin h-44 w-44 my-40 mx-auto text-gray-500" /> : Table} */}
-      </main>
+        <Pagination totalPages={totalPages} />
+        </main>
     </div>
   );
 };

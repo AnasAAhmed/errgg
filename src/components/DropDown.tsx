@@ -59,10 +59,10 @@ export const DropDownAdmin = ({ options }: DropSearchProps) => {
       </button>
       {open && (
         <div
-          className="absolute z-30 animate-modal p-2 w-4s4 origin-top-lebft bg-white border border-gray-300 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          className="absolute z-30 animate-modal p-2 origin-top-lebft bg-white border border-gray-300 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
         >
           {options.map((option) => (
-            <abbr title={option.value} key={option.key} onClick={() => copyText(option.value)} className="cursor-pointer no-underline block w-full rounded-md p-2 text-left text-md font-semibold text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+            <abbr title={option.key+': '+option.value} key={option.key} onClick={() => copyText(option.value)} className="cursor-pointer no-underline block w-full rounded-md p-2 text-left text-md font-semibold text-gray-700 hover:bg-gray-100 hover:text-gray-900">
               {option.value || 'N/A'}
             </abbr>
           ))}

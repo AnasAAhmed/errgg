@@ -2,108 +2,85 @@ import React, { useState } from 'react';
 import { User } from "../types/types";
 import { useSelector } from 'react-redux';
 import { RootState } from "../redux/store";
-import { CopyText } from '../utils/function';
 import { Link } from 'react-router-dom';
 import Modal from './Modal';
 
-interface UserModalType {
+interface UserModalProps {
     user: User;
-    logoutHandler?: () => void,
-    heading?: any,
-    children?: React.ReactNode
+    logoutHandler?: () => void;
+    heading?: React.ReactNode;
+    children?: React.ReactNode;
 }
 
-const UserModal = ({ user, logoutHandler, heading, children }: UserModalType) => {
-
-
-    // taking logged in user as currentUser
+const UserModal = ({ user, logoutHandler, heading, children }: UserModalProps) => {
     const { user: currentUser } = useSelector((state: RootState) => state.userReducer);
-
-
     const [isOpen, setIsOpen] = useState(false);
 
     const closeModal = () => setIsOpen(false);
 
-
     return (
         <>
-            <button onClick={()=>setIsOpen(true)} className="focus:outline-none ml-1 ">
+            <button onClick={() => setIsOpen(true)} className="focus:outline-none ml-1">
                 {heading ? (
                     <span className="text-blue-500">{heading}</span>
                 ) : (
-                    <img src={user?.photo} alt="User" className="w-7 h-7 rounded-full" />
+                    <img src={user?.photo} alt="User Avatar" className="w-8 h-8 rounded-full" />
                 )}
             </button>
 
             <Modal isOpen={isOpen} onClose={closeModal} overLay={true}>
-
-                <div className="bg-white p-4 xsm:px-8 rounded-lg shadow-lg animate-modal w-[90vw] sm:w-[60vh] ">
-                    <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-xl font-semibold">Profile</h3>
-                        <button
-                            onClick={closeModal}
-                            className="text-gray-500 text-3xl hover:text-gray-700 focus:outline-none"
-                        >
+                <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] sm:w-[30rem] animate-modal">
+                    <div className="flex  justify-between items-center mb-4">
+                        <h2 className="text-xl font-semibold text-gray-800">Profile</h2>
+                        <button onClick={closeModal} className="text-gray-500 text-2xl hover:text-gray-700">
                             &times;
                         </button>
                     </div>
-                    <div className="flex flex-col items-center">
-                        <img src={user?.photo} alt="User" className="w-16 h-16 rounded-full mb-4" />
-                        <div className="w-full">
-                            <div className="mb-2">
-                                <label className="font-semibold">Name:</label>
-                                <span className="ml-4">{user.name}</span>
-                            </div>
-                            <div className="mb-2">
-                                <label className="font-semibold">Gender:</label>
-                                <span className="ml-4">{user.gender}</span>
 
-                            </div>
-                            <div className="mb-2">
-                                <label className="font-semibold">Email:</label>
-                                <span className="ml-4 ">{user.email}</span>
-                            </div>
-                            {currentUser?.role === "admin" && <div className="mb-2">
-                                <label className="font-semibold">Role:</label>
-                                <span className="ml-4">{user.role}</span>
-                            </div>}
-                            <div className="mb-2">
-                                <label className="font-semibold">Phone:</label>
-                                <span className="ml-4">{user.phone}</span>
-                            </div>
-                            <div className="mb-2">
-                                <label className="font-semibold">DOB:</label>
-                                <span className="ml-4">{user.dob.toString().split('T')[0]}</span>
-                            </div>
-                            {currentUser?.role === "admin" && (
-                                <>
-                                    <div className="mb-2">
-                                        <label className="font-semibold">User-ID:</label>
-                                        <div className="truncate ">
-                                            <CopyText text={user!._id} />
-                                        </div>
-                                    </div>
-
-                                </>
-                            )}
-                        </div>
-
+                    <div className="text-center flex flex-col justify-center items-center">
+                        <img src={user?.photo} alt="User" className="w-16 h-16 rounded-full mb-4 object-cover" />
+                        <p className="text-lg font-medium text-gray-900">{user.name}</p>
+                        <p className="text-gray-600">{user.email}</p>
                     </div>
-                    <div className="flex items-center justify-between w-full">
-                        {logoutHandler &&
-                            <>
-                                <Link to={"/user-profile"} onClick={closeModal} className="mt-4 cursor-pointer bg-indigo-500 text-white px-4 py-1 rounded hover:bg-indigo-600 focus:outline-none">
-                                    Manage
-                                </Link>
-                                <button onClick={logoutHandler} className="mt-4 cursor-pointer bg-red-500 w-[4.9rem] text-white py-1 rounded hover:bg-red-600 focus:outline-none">
-                                    Logout
-                                </button>
-                            </>
-                        }
+
+                    <div className="mt-4 space-y-2 text-left text-gray-700">
+                        <p>
+                            <span className="font-medium">Gender: </span>{user.gender}
+                        </p>
+                        {user.phone && (
+                            <p>
+                                <span className="font-medium">Phone: </span>{user.phone}
+                            </p>
+                        )}
+                        <p>
+                            <span className="font-medium">DOB: </span>{new Date(user.dob).toLocaleDateString()}
+                        </p>
+                        {currentUser?.role === "admin" && (
+                            <p>
+                                <span className="font-medium">Role: </span>{user.role}
+                            </p>
+                        )}
+                    </div>
+
+                    <div className="flex justify-between items-center mt-6">
+                        <Link
+                            to="/user-profile"
+                            onClick={closeModal}
+                            className="text-indigo-500 hover:text-indigo-600 font-medium"
+                        >
+                            Manage Account
+                        </Link>
+                        {logoutHandler && (
+                            <button
+                                onClick={logoutHandler}
+                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none"
+                            >
+                                Logout
+                            </button>
+                        )}
                     </div>
                     {children}
-                </div >
-
+                </div>
             </Modal>
         </>
     );

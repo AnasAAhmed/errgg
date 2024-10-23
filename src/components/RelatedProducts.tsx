@@ -18,28 +18,21 @@ const RelatedProducts = ({ category, heading, filteredProductId }: CategoryProdu
 
   return (
     <div>
-      <h1 className='text-4xl mb-12 flex items-center justify-center'>{heading}</h1>
+      <h1 className='text-4xl my-12 flex items-center justify-center'>{heading}</h1>
       <div className="flex flex-col items-center sm:gap-10 py-8 px-2 sm:px-5">
         {isLoading ? (
           <div className="flex items-center justify-center h-[30rem]">
             <FaSpinner className="animate-spin h-28 w-28 text-gray-500" />
           </div>
         ) : (
-          <main className='md:flex md:flex-wrap grid grid-cols-2 justify-center gap-4 md:gap-16'>
+          <main className='md:flex md:flex-wrap grid grid-cols-2 justify-center gap-4 md:gap-12'>
             {filteredProducts?.length === 0 || data?.products.length === 0 ? (
               <p className="font-bold text-4xl h-[260px]">No Related products found</p>
             ) : (
               filteredProducts?.map((product) => (
                 <ProductCard
-                  key={product._id}
-                  productId={product._id}
-                  name={product.name}
-                  price={product.price}
-                  photo={product.photos[0]}
-                  numOfReviews={product.numOfReviews}
-                  ratings={product.ratings}
-                  cutPrice={product.cutPrice}
-                  sold={product.sold}
+                key={product._id}
+                product={product}
                 />
               ))
             )}
@@ -48,7 +41,7 @@ const RelatedProducts = ({ category, heading, filteredProductId }: CategoryProdu
       </div>
       {heading && (
         <h1 className='text-2xl my-6 flex items-center justify-center'>
-          <Link to={`/search/${category}`} onClick={() => window.scrollTo(0, 0)}>
+          <Link to={`/search?category=${category}`} onClick={() => window.scrollTo(0, 0)}>
             More
           </Link>
         </h1>

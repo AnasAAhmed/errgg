@@ -12,7 +12,7 @@ export const orderApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_SERVER}/api/v1/order/`,
   }),
-  tagTypes: ["orders"],
+  tagTypes: ["orders", "product"],
   endpoints: (builder) => ({
     newOrder: builder.mutation<MessageResponse, NewOrderRequest>({
       query: (order) => ({
@@ -20,7 +20,7 @@ export const orderApi = createApi({
         method: "POST",
         body: order,
       }),
-      invalidatesTags: ["orders"],
+      invalidatesTags: ["orders", "product"],
     }),
     updateOrder: builder.mutation<MessageResponse, UpdateOrderRequest>({
       query: ({ userId, orderId }) => ({
@@ -36,12 +36,24 @@ export const orderApi = createApi({
       }),
       invalidatesTags: ["orders"],
     }),
-    myOrders: builder.query<AllOrdersResponse, string>({
-      query: (id) => `my?id=${id}`,
+    myOrders: builder.query<AllOrdersResponse, { page: string, userId: string }>({
+      query: ({ page, userId }) => {
+        let base = `my?id=${userId}`;
+        if (page) base += `&page=${page}`;
+
+        return base;
+      },
       providesTags: ["orders"],
     }),
-    allOrders: builder.query<AllOrdersResponse, string>({
-      query: (id) => `all?id=${id}`,
+    allOrders: builder.query<AllOrdersResponse, { id: string, page: string, key: string, query: string }>({
+      query: ({ id, query, key, page }) => {
+        let base = `all?id=${id}`;
+
+        if (query && key) base += `&query=${query}&key=${key}`;
+        if (page) base += `&page=${page}`;
+
+        return base;
+      },
       providesTags: ["orders"],
     }),
     orderDetails: builder.query<OrderDetailsResponse, string>({

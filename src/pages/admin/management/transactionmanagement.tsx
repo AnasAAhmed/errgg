@@ -11,7 +11,7 @@ import {
 import { RootState, server } from "../../../redux/store";
 import { Order, OrderItem } from "../../../types/types";
 import { responseToast } from "../../../utils/features";
-import {CopyText} from "../../../utils/function";
+import { CopyText } from "../../../utils/function";
 import { useState } from "react";
 
 const defaultData: Order = {
@@ -31,12 +31,13 @@ const defaultData: Order = {
   orderItems: [],
   user: { name: "", _id: "", email: "", phone: 0 },
   _id: "",
+  createdAt: new Date()
 };
 
 const TransactionManagement = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
-const [loadDel,setLoadDel]=useState(false)
-const [loadUp,setLoadUp]=useState(false)
+  const [loadDel, setLoadDel] = useState(false)
+  const [loadUp, setLoadUp] = useState(false)
   const params = useParams();
   const navigate = useNavigate();
 
@@ -80,66 +81,66 @@ const [loadUp,setLoadUp]=useState(false)
   if (isError) return <Navigate to={"/404"} />;
 
   return (
-   
-    <div className="admin-container flex">
-  <AdminSidebar />
-  <main className="flex flex-col items-start w-full">
-    <Link to={"/admin/transaction"} className="flex items-center text-blue-500 mb-4">
-      <FaArrowLeft className="mr-1" /> Back
-    </Link>
-    {isLoading ? (
-      <Skeleton />
-    ) : (
-      <>
-        <section className="w-full px-2">
-          <h2 className="text-2xl font-bold mb-4">Order Items</h2>
-          <button className="text-white bg-black p-2 rounded-full mb-4" onClick={deleteHandler}>
-          {loadDel ? <FaSpinner className='animate-spin' /> :<FaTrash />} 
-          </button>
-          <div className="space-y-4">
-            {orderItems.map((i) => (
-              <OrderProductCard
-                key={i._id}
-                name={i.name}
-                photo={`${server}/${i.photo}`}
-                productId={i.productId}
-                _id={i._id}
-                quantity={i.quantity}
-                price={i.price}
-                cutPrice={i.cutPrice}
-                size={i.size}
-                color={i.color}
-              />
-            ))}
-          </div>
-        </section>
 
-        <article className="p-8 w-full rounded-lg">
-          <h1 className="text-2xl font-bold mb-4">Order Info</h1>
-          <h5 className="font-bold mb-2">User Info</h5>
-          <p>Name: {name}</p>
-          <CopyText text={_id} heading={"UserId:"} />
-          <p>Email: {email}</p>
-          <CopyText text={phone} heading={"Phone:"} />
-          <p className="text-gray-700">
-            Address: {`${address}, city: ${city}, state: ${state}, country: ${country} pinCode: ${pinCode}`}
-          </p>
-          <h5 className="font-bold mt-4">Amount Info</h5>
-          <p>Subtotal: ${subtotal}</p>
-          <p>Shipping Charges: ${shippingCharges}</p>
-          <p>Tax: ${tax}</p>
-          <p>Discount: ${discount}</p>
-          <p className="font-bold mt-4">Total: ${total}</p>
-          <h5 className="font-bold mt-4">Status Info</h5>
-          <p className={status === "Delivered" ? "text-purple-500" : status === "Shipped" ? "text-green-500" : "text-red-500"}>
-            Status: {status}
-          </p>
-          <button className="bg-blue-500 w-56 h-10 my-11 flex justify-center items-center text-white text-lg rounded-md font-semibold" onClick={updateHandler}>{loadUp ? <FaSpinner className='animate-spin text-2xl mx-3 ' /> : "Process Status"}</button>
-        </article>
-      </>
-    )}
-  </main>
-</div>
+    <div className="admin-container flex">
+      <AdminSidebar />
+      <main className="flex flex-col items-start w-full">
+        <Link to={"/admin/transaction"} className="flex items-center text-blue-500 mb-4">
+          <FaArrowLeft className="mr-1" /> Back
+        </Link>
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          <>
+            <section className="w-full px-2">
+              <h2 className="text-2xl font-bold mb-4">Order Items</h2>
+              <button className="text-white bg-black p-2 rounded-full mb-4" onClick={deleteHandler}>
+                {loadDel ? <FaSpinner className='animate-spin' /> : <FaTrash />}
+              </button>
+              <div className="space-y-4">
+                {orderItems.map((i) => (
+                  <OrderProductCard
+                    key={i._id}
+                    name={i.name}
+                    photo={`${server}/${i.photo}`}
+                    productId={i.productId}
+                    _id={i._id}
+                    quantity={i.quantity}
+                    price={i.price}
+                    cutPrice={i.cutPrice}
+                    size={i.size}
+                    color={i.color}
+                  />
+                ))}
+              </div>
+            </section>
+
+            <article className="p-8 w-full rounded-lg">
+              <h1 className="text-2xl font-bold mb-4">Order Info</h1>
+              <h5 className="font-bold mb-2">User Info</h5>
+              <p>Name: {name}</p>
+              <CopyText text={_id} heading={"UserId:"} />
+              <p>Email: {email}</p>
+              <CopyText text={phone} heading={"Phone:"} />
+              <p className="text-gray-700">
+                Address: {`${address}, city: ${city}, state: ${state}, country: ${country} pinCode: ${pinCode}`}
+              </p>
+              <h5 className="font-bold mt-4">Amount Info</h5>
+              <p>Subtotal: ${subtotal}</p>
+              <p>Shipping Charges: ${shippingCharges}</p>
+              <p>Tax: ${tax}</p>
+              <p>Discount: ${discount}</p>
+              <p className="font-bold mt-4">Total: ${total}</p>
+              <h5 className="font-bold mt-4">Status Info</h5>
+              <p className={status === "Delivered" ? "text-purple-500" : status === "Shipped" ? "text-green-500" : "text-red-500"}>
+                Status: {status}
+              </p>
+              <button className="bg-blue-500 w-56 h-10 my-11 flex justify-center items-center text-white text-lg rounded-md font-semibold" onClick={updateHandler}>{loadUp ? <FaSpinner className='animate-spin text-2xl mx-3 ' /> : "Process Status"}</button>
+            </article>
+          </>
+        )}
+      </main>
+    </div>
 
   );
 };
@@ -154,18 +155,18 @@ const OrderProductCard = ({
   color,
 }: OrderItem) => (
   <div className="flex flex-row justify-between items-center">
-  <img src={photo} className="w-16 h-16 rounded-md mr-1 sm:w-24 sm:h-24" alt={name} />
-  <Link to={`/product/${productId}`} className="line-clamp-2 w-full">{name}</Link>
-  <span>${price} X {quantity} = ${price * quantity}</span>
-  <div className="flex flex-wrap justify-between items-center ml-2">
-    {size !== '' && <span className="text-gray-500 mr-2">Size: {size}</span>}
-    {color !== '' && (
-      <span className="text-gray-500 mr-2">Color:
-        <span className="rounded-full ml-1 px-2 py-0.5" style={{ backgroundColor: color }}></span>
-      </span>
-    )}
+    <img src={photo} className="w-16 h-16 rounded-md mr-1 sm:w-24 sm:h-24" alt={name} />
+    <Link to={`/product/${productId}`} className="line-clamp-2 w-full">{name}</Link>
+    <span>${price} X {quantity} = ${price * quantity}</span>
+    <div className="flex flex-wrap justify-between items-center ml-2">
+      {size !== '' && <span className="text-gray-500 mr-2">Size: {size}</span>}
+      {color !== '' && (
+        <span className="text-gray-500 mr-2">Color:
+          <span className="rounded-full ml-1 px-2 py-0.5" style={{ backgroundColor: color }}></span>
+        </span>
+      )}
+    </div>
   </div>
-</div>
 
 );
 

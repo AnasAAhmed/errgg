@@ -74,8 +74,6 @@ export type Product = {
     stock: number;
    _id: string;
   }];
-  // sizes: Array<{ size: string; stock: number }>;
-  // colors: Array<{ color: string; stock: number }>;
   photos: string[];
   _id: string;
   reviews: []
@@ -120,6 +118,7 @@ export type Order = {
     phone: number;
   };
   _id: string;
+  createdAt: Date;
 };
 
 type CountAndChange = {

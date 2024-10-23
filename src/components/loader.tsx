@@ -20,7 +20,7 @@ export const Skeleton = ({ width = "unset", length = 3 }: SkeletonProps) => {
   ));
 
   return (
-    <div className="skeleton-loader" style={{ width :width}}>
+    <div className="skeleton-loader" style={{ width: width }}>
       {skeletions}
     </div>
   );
@@ -30,7 +30,7 @@ export const Skeleton = ({ width = "unset", length = 3 }: SkeletonProps) => {
 export const ProductDetailsSkeleton = () => {
   return (
     <>
-     <section className="sec1 flex-1 flex-col md:flex-row flex flex-shrink-0 w-full md:w-72 mr-10 mb-10">
+      <section className="sec1 flex-1 flex-col md:flex-row flex flex-shrink-0 w-full md:w-72 mr-10 mb-10">
         <div className="flex justify-center flex-col gap-3 w-full">
           <div className="w-full h-[300px] md:h-[400px] bg-gray-200 animate-pulse rounded-lg"></div>
           <div className="flex gap-2 overflow-auto">
@@ -66,7 +66,7 @@ export const ProductDetailsSkeleton = () => {
 }
 export const DashboardSkeleton = () => {
   return (
-    <div className="admin-conftainer">
+    <div>
       <main className="dashboard-skeleton">
         <section className="widget-container">
           {Array.from({ length: 4 }).map((_, index) => (
@@ -76,20 +76,20 @@ export const DashboardSkeleton = () => {
 
         <section className="graph-container">
           <div className="revenue-chart">
-            <div className="chart-skeleton"></div> 
+            <div className="chart-skeleton"></div>
           </div>
 
           <div className="dashboard-categories">
-            <div className="categories-skeleton"></div> 
+            <div className="categories-skeleton"></div>
           </div>
         </section>
 
         <section className="transaction-container">
           <div className="gender-chart">
-            <div className="gender-chart-skeleton"></div> 
+            <div className="gender-chart-skeleton"></div>
           </div>
           <div className="transaction-box">
-            <div className="transaction-skeleton"></div> 
+            <div className="transaction-skeleton"></div>
           </div>
         </section>
       </main>
@@ -100,7 +100,7 @@ export const DashboardSkeleton = () => {
 const WidgetSkeleton = () => {
   return (
     <article className="widget widget-skeleton">
-      <div className="widget-info-skeleton"></div> 
+      <div className="widget-info-skeleton"></div>
       <div className="widget-circle-skeleton"></div>
     </article>
   );

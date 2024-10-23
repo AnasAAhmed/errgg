@@ -41,8 +41,15 @@ export const productAPI = createApi({
       }, // Fetch latest products by collection
       providesTags: ["product"],
     }),
-    allProducts: builder.query<AllProductsResponse, string>({
-      query: (id) => `admin-products?id=${id}`,
+    allProducts: builder.query<AllProductsResponse, { id: string, page: string, key: string, query: string }>({
+      query: ({ id, query, key, page }) => {
+        let base = `admin-products?id=${id}`;
+
+        if (query && key) base += `&query=${query}&key=${key}`;
+        if (page) base += `&page=${page}`;
+
+        return base;
+      },
       providesTags: ["product"],
     }),
     categories: builder.query<CategoriesResponse, string>({
@@ -58,7 +65,7 @@ export const productAPI = createApi({
       SearchProductsResponse,
       SearchProductsRequest
     >({
-      query: ({ price, search, sort, category, page ,sortField}) => {
+      query: ({ price, search, sort, category, page, sortField }) => {
         let base = `all?search=${search}&page=${page}`;
 
         if (sortField) base += `&sortField=${sortField}`;
@@ -71,9 +78,9 @@ export const productAPI = createApi({
       providesTags: ["product"],
     }),
 
-    productDetails: builder.query<ProductResponse, {slug:string,userId?:string}>({
-      query: ({slug,userId}) => ({
-        url:userId?`${slug}?id=${userId}`:slug
+    productDetails: builder.query<ProductResponse, { slug: string, userId?: string }>({
+      query: ({ slug, userId }) => ({
+        url: userId ? `${slug}?id=${userId}` : slug
       }),
       providesTags: ["product"],
     }),

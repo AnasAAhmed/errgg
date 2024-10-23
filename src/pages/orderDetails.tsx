@@ -1,12 +1,7 @@
 import { Link, Navigate, useParams } from "react-router-dom";
 import { Skeleton } from "../components/loader";
-import {
-  useOrderDetailsQuery,
-} from "../redux/api/orderAPI";
-import {
-  RootState,
-  server
-} from "../redux/store";
+import { useOrderDetailsQuery } from "../redux/api/orderAPI";
+import { RootState, server } from "../redux/store";
 import { Order, OrderItem } from "../types/types";
 import { FaArrowLeft } from "react-icons/fa";
 import ReviewForm from "../components/ReviewForm";
@@ -30,15 +25,12 @@ const defaultData: Order = {
   orderItems: [],
   user: { name: "", _id: "", email: "", phone: 0 },
   _id: "",
+  createdAt: new Date()
 };
 
 const OrderDetails = () => {
-
   const params = useParams();
-  //   const navigate = useNavigate();
   const { isLoading, data, isError } = useOrderDetailsQuery(params.id!);
-
-
 
   const {
     shippingInfo: { address, city, state, country, pinCode },
@@ -51,22 +43,23 @@ const OrderDetails = () => {
     discount,
     shippingCharges,
   } = data?.order || defaultData;
+
   if (isError) return <Navigate to={"/404"} />;
 
   return (
-    <div className="user-container ">
-      <Link to={"/orders"} className="flex items-center text-blue-500 mb-4">
-        <FaArrowLeft className="mr-1" /> Back
+    <div className="user-container px-4 lg:px-0 py-8">
+      <Link to={"/orders"} className="flex items-center text-blue-600 mb-8 hover:underline">
+        <FaArrowLeft className="mr-2" /> Back to Orders
       </Link>
 
-      <main className="flex flex-col items-start">
+      <main className="flex flex-col items-start space-y-12">
         {isLoading ? (
           <Skeleton />
         ) : (
           <>
-            <section className="w-full px-2 md:px-8 ">
-              <h2 className="text-2xl font-bold mb-4">Order Items</h2>
-              <div className="">
+            <section className="w-full">
+              <h2 className="text-3xl font-semibold mb-6">Order Items</h2>
+              <div className="space-y-6">
                 {orderItems.map((i) => (
                   <OrderProductCard
                     key={i._id}
@@ -84,26 +77,44 @@ const OrderDetails = () => {
               </div>
             </section>
 
-            <article className="p-8">
-              <h1 className="text-2xl font-bold mb-4">Order Info</h1>
-              <h5 className="font-bold mb-2">User Info</h5>
-              <p>Name: {name}</p>
-              <p>Email: {email}</p>
-              <p>Phone: {phone}</p>
-              <p>
-                Address: {`${address}, city: ${city}, state: ${state}, country: ${country} pinCode: ${pinCode}`}
-              </p>
-              <h5 className="font-bold mt-4">Amount Info</h5>
-              <p>Subtotal: {subtotal}</p>
-              <p>Shipping Charges: {shippingCharges}</p>
-              <p>Tax: {tax}</p>
-              <p>Discount: {discount}</p>
-              <p className="font-bold mt-4">Total: {total}</p>
-              <h5 className="font-bold mt-4">Status Info</h5>
-              <p className={status === "Delivered" ? "text-purple-500" : status === "Shipped" ? "text-green-500" : "text-red-500"}>
-                Status: {status}
-              </p>
-            </article>
+            <section className="w-full bg-gray-50 p-6 rounded-lg shadow-md">
+              <h1 className="text-3xl font-semibold mb-4">Order Info</h1>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <h5 className="font-semibold mb-2">User Info</h5>
+                  <p className="text-gray-600">Name: {name}</p>
+                  <p className="text-gray-600">Email: {email}</p>
+                  <p className="text-gray-600">Phone: {phone}</p>
+                  <p className="text-gray-600">
+                    Address: {`${address}, ${city}, ${state}, ${country} - ${pinCode}`}
+                  </p>
+                </div>
+
+                <div>
+                  <h5 className="font-semibold mb-2">Amount Info</h5>
+                  <p className="text-gray-600">Subtotal: ${subtotal.toFixed(2)}</p>
+                  <p className="text-gray-600">Shipping Charges: ${shippingCharges.toFixed(2)}</p>
+                  <p className="text-gray-600">Tax: ${tax.toFixed(2)}</p>
+                  <p className="text-gray-600">Discount: ${discount.toFixed(2)}</p>
+                  <p className="font-semibold text-lg mt-4">Total: ${total.toFixed(2)}</p>
+                </div>
+
+                <div>
+                  <h5 className="font-semibold mb-2">Status Info</h5>
+                  <p
+                    className={`text-lg ${status === "Delivered"
+                        ? "text-green-500"
+                        : status === "Shipped"
+                          ? "text-blue-500"
+                          : "text-red-500"
+                      }`}
+                  >
+                    Status: {status}
+                  </p>
+                </div>
+              </div>
+            </section>
           </>
         )}
       </main>
@@ -111,38 +122,44 @@ const OrderDetails = () => {
   );
 };
 
-const OrderProductCard = ({
-  name,
-  photo,
-  price,
-  quantity,
-  productId,
-  size,
-  color,
-}: OrderItem) => {
+const OrderProductCard = ({ name, photo, price, quantity, productId, size, color }: OrderItem) => {
   const { user } = useSelector((state: RootState) => state.userReducer);
+
   return (
-
-
-
-    <div className="flex flex-col xsm:flex-row justify-between items-center border-b">
-      <img src={photo} className="w-16 h-16 rounded-md mr-1 xsm:w-24 xsm:h-24" alt={name} />
-      <Link to={`/product/${slugify(name)}?id=${productId}`} className="line-clamp-2 max-xsm:text-center w-[60%]">{name}</Link>
-      <span>
-        ${price} X {quantity} =${price * quantity}
+    <div className="flex flex-col md:flex-row items-center justify-between border-b py-4">
+      <img
+        src={photo}
+        className="w-20 h-20 rounded-md object-cover mb-4 md:mb-0"
+        alt={name}
+      />
+      <Link
+        to={`/product/${slugify(name)}?id=${productId}`}
+        className="flex-1 text-gray-700 hover:text-blue-600 transition w-full md:w-auto md:pl-4"
+      >
+        {name}
+      </Link>
+      <span className="text-gray-700 font-medium">
+        ${price} x {quantity} = <span className="font-semibold">${(price * quantity).toFixed(2)}</span>
       </span>
-      <div className="flex flex-wrap justify-between items-center ml-2">
-        {size !== undefined && <span className="text-gray-500 mr-1">Size: {size}</span>}
-
-        {color !== undefined && <span className="text-gray-500 ">Color:<span className="rounded-full ml-2 px-[11px] py-[0.5px] " style={{ backgroundColor: color }}></span></span>}
-
+      <div className="flex flex-col md:flex-row items-center space-x-4">
+        {size && <span className="text-sm text-gray-500">Size: {size}</span>}
+        {color && (
+          <span className="flex items-center text-sm text-gray-500">
+            Color: <span className="w-4 h-4 ml-2 rounded-full" style={{ backgroundColor: color }}></span>
+          </span>
+        )}
       </div>
-      <div >
+      <div className="mt-4 md:mt-0">
         <ReviewForm user={user} productId={productId} />
-        <Link to={`/product/${slugify(name)}?id=${productId}`} className="text-sm text-gray-500 mb-4 hover:text-blue-500">Go to Product details to edit review</Link>
+        <Link
+          to={`/product/${slugify(name)}?id=${productId}`}
+          className="text-xs text-gray-500 hover:text-blue-500"
+        >
+          Edit Review
+        </Link>
       </div>
-
     </div>
   );
 };
-export default OrderDetails
+
+export default OrderDetails;

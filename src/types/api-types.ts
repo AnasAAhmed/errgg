@@ -26,8 +26,11 @@ export type MessageResponse = {
 
 export type AllUsersResponse = {
   success: boolean;
+  totalPages: number;
+  totalUsers: number;
   users: User[];
 };
+
 export type AllUsersRequest = {
   email?: string;
   id?: string;
@@ -41,6 +44,8 @@ export type UserResponse = {
 
 export type AllProductsResponse = {
   success: boolean;
+  totalPages: number;
+  totalProducts: number;
   products: Product[];
 };
 export type CollectionProductsResponse = {
@@ -67,7 +72,7 @@ export type SearchProductsRequest = {
   category: string;
   search: string;
   sort: string;
-  sortField:string
+  sortField: string
 };
 export type ProductResponse = {
   success: boolean;
@@ -80,7 +85,22 @@ export type ReviewsResponse = {
 
 export type AllOrdersResponse = {
   success: boolean;
+  totalOrders: number;
+  totalPages: number;
   orders: Order[];
+};
+export type Notification = {
+  _id: string;
+  message: string;
+  adminMessage: string;
+  orderId: string;
+  userId: string;
+  status: string;
+  isAdmin: string;
+};
+export type MyNotificationResponse = {
+  message: string;
+  notifications: Notification[]
 };
 export type OrderDetailsResponse = {
   success: boolean;
@@ -132,7 +152,7 @@ export type ReviewRequest = {
   comment: string;
   email: string;
   name: string;
-  photo:string;
+  photo: string;
   userId: string;
 };
 

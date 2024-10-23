@@ -9,7 +9,6 @@ import {
   calculatePrice,
   discountApplied,
   removeCartItem,
-  resetCart,
 } from "../redux/reducer/cartReducer";
 import { RootState, server } from "../redux/store";
 import { CartItem } from "../types/types";
@@ -76,19 +75,6 @@ const Cart = () => {
   useEffect(() => {
     dispatch(calculatePrice());
   }, [cartItems, dispatch]);
-
-  // Clear cart if expired
-  useEffect(() => {
-    const timestamp = localStorage.getItem("cartTimestamp");
-    if (timestamp) {
-      const cartTimestamp = new Date(JSON.parse(timestamp));
-      const now = new Date();
-      const differenceInDays = (now.getTime() - cartTimestamp.getTime()) / (1000 * 3600 * 24);
-      if (differenceInDays >= 6) {
-        dispatch(resetCart());
-      }
-    }
-  }, [dispatch]);
 
   return (
     <>

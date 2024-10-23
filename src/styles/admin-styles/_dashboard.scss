@@ -1,6 +1,6 @@
 .dashboard {
   overflow-y: auto;
-
+  padding-left:2.4rem;
   .widget-container {
     @include flex(row, space-between, stretch, 2rem);
     padding: 2rem 2rem 2rem 0;

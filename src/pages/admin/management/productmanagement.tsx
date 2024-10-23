@@ -320,7 +320,7 @@ const Productmanagement = () => {
                   {photos.map((photo, index) => (
                     <img key={index} src={`${server}/${photo}`} alt="Product" className="w-24 border-2 h-24 object-cover" />
                   ))}
-                  <span className="absolute top-1 bg-blue-500 text-white rounded-full px-2 text-xs">Old</span>
+                  <span className="absolute top-1 bg-blue-500 text-white rounded-full px-2 text-xs">Current</span>
                 </div>
 
                 <div className="flex flex-wrap">

@@ -1,12 +1,13 @@
 import { ReactElement, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Column } from "react-table";
 import TableHOC from "../components/admin/TableHOC";
 import { useMyOrdersQuery } from "../redux/api/orderAPI";
 import { RootState } from "../redux/store";
 import { CustomError } from "../types/api-types";
+import Pagination from "../components/admin/Pagination";
 
 type DataType = {
   _id: string;
@@ -46,11 +47,15 @@ const column: Column<DataType>[] = [
 
 const Orders = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
+  const [searchParams] = useSearchParams();
 
-  const { isLoading, data, isError, error } = useMyOrdersQuery(user?._id!);
+  const { isLoading, data, isError, error } = useMyOrdersQuery({
+    userId: user?._id!, page: searchParams.get("page") || '',
+  });
 
   const [rows, setRows] = useState<DataType[]>([]);
-
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
   if (isError) {
     const err = error as CustomError;
     toast.error(err.data.message);
@@ -80,6 +85,8 @@ const Orders = () => {
           action: <Link className="text-md font-medium py-1 px-2 rounded-md bg-blue-200 hover:bg-blue-300" to={`/order/${i._id}`}>Details</Link>,
         }))
       );
+      setTotalPages(data.totalPages);
+      setTotalItems(data.totalOrders);
     }
   }, [data]);
 
@@ -88,11 +95,16 @@ const Orders = () => {
     rows,
     "dashboard-product-box",
     "My Orders",
-    isLoading
+    isLoading,
+    totalItems,
+
   )();
   return (
     <div className="min-h-[90vh] mx-24">
-      {Table}
+     <main>{Table}
+        <Pagination totalPages={totalPages} />
+
+      </main>
     </div>
   );
 };

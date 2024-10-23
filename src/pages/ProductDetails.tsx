@@ -61,10 +61,6 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
 
   const uniqueSizes = Array.from(new Set(data?.product.variants.map(variant => variant.size)));
 
-  useEffect(() => {
-    const availableVariant = data?.product.variants.find(variant => variant.stock > 0);
-    if (availableVariant) setSelectedVariant(availableVariant);
-  }, [data?.product]);
 
   const handleSizeChange = (size: string) => {
     const availableVariants = data?.product.variants.filter(v => v.size === size && v.stock > 0);
@@ -80,6 +76,9 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
   };
   const c = data?.product.variants.filter(i => i.color !== '');
   const s = data?.product.variants.filter(i => i.size !== '');
+  const uniqueColors = Array.from(new Set(data?.product.variants.map(variant => variant.color)));
+  const colorsOfVariantThatisNot0 = selectedVariant && data?.product.variants.filter(v => v.size === selectedVariant.size && v.stock > 0);
+
   useEffect(() => {
     setLoadingBar(20);
     setLoadingBar(70);
@@ -100,12 +99,12 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
   return (
     <>
       <div>
-        <main className="flex flex-col md:flex-row px-6 md:px-12 lg:px-44 justify-center mt-8">
+        <main className="flex flex-col md:flex-row px-6 md:px-12 lg:px-44 items-start justify-center mt-8">
           {isLoading ? (
             <ProductDetailsSkeleton />
           ) : (
             <>
-              <section className="sec1 flex-1 flex-col md:flex-row flex flex-shrink-0 w-full md:w-72 mr-10 mb-10">
+              <section className="flex-1 flex-col md:flex-row flex flex-shrink-0 w-full md:w-72 mr-10 mb-10">
                 <div className="flex justify-center flex-col gap-3 w-full">
                   <ImageZoom src={`${server}/${mainImage}`} alt={name} />
                   <div className="flex gap-2 overflow-auto">
@@ -181,17 +180,15 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
                 {/* Color Selection */}
                 {c && c.length > 0 && selectedVariant && (
                   <div className="flex mb-4">
-                    {variants
-                      .filter(v => v.size === selectedVariant.size && v.stock > 0)
-                      .map((variant, index) => (
-                        <button
-                          key={index}
-                          className={`${selectedVariant.color === variant.color ? "bg-black text-white" : "bg-white text-gray-800"} border border-black text-gray-800 px-2 py-1 mr-2 rounded-md`}
-                          onClick={() => handleColorChange(variant.color)}
-                        >
-                          {variant.color}
-                        </button>
-                      ))}
+                    {uniqueColors.map((color, index) => (
+                      <button
+                        key={index}
+                        className={`${colorsOfVariantThatisNot0?.find(v => v.color === color) ? '' : 'line-through'} ${selectedVariant.color === color ? "bg-black text-white" : "bg-white text-gray-800"} line-througsh border border-black text-gray-800 px-2 py-1 mr-2 rounded-md`}
+                        onClick={() => handleColorChange(color)}
+                      >
+                        {color}
+                      </button>
+                    ))}
                   </div>
                 )}
                 <h3 className="text-lg font-semibold my-2">Description:</h3>
@@ -211,7 +208,7 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
                       cutPrice,
                       name,
                       photo: photos![0],
-                      stock,
+                      stock: data!.product.variants!.length > 0 ? selectedVariant!.stock : data!.product.stock,
                       quantity: 1,
                       variantId: selectedVariant?._id
                     })
@@ -225,11 +222,11 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
             </>
           )}
         </main>
+        <div className="flex justify-center items-center">
+          {category && <RelatedProducts filteredProductId={productId} category={category} heading="Related Products" />}
+        </div>
         <div>
           <ProductReview reviews={reviews} numOfReviews={numOfReviews} productId={productId} />
-        </div>
-        <div className="flex justify-center items-center">
-          <RelatedProducts filteredProductId={productId} category={category} heading="Related Products" />
         </div>
       </div>
       <Footer />

@@ -42,9 +42,8 @@ const BlogPostList = ({ className = "" }:BlogPostListType) => {
       </div>
       <div className="w-[24.563rem] flex flex-col sm:items-start justify-start gap-[2.562rem] sm:min-w-[24.563rem] max-w-full text-[1.5rem] text-black mq450:gap-[1.25rem] mq800:min-w-full mq1150:flex-1">
         <div className="self-stretch bg-white flex flex-col items-end justify-start pt-[1.375rem] px-[2.562rem] pb-[3.812rem] box-border gap-[2.625rem] max-w-full z-[1] mq450:gap-[1.313rem] mq800:pt-[1.25rem] mq800:pb-[2.5rem] mq800:box-border">
-          <div className="w-[24.563rem] h-[33.563rem] relative bg-white hidden max-w-full" />
-          <div className="self-stretch rounded-3xs bg-white flex flex-row items-start justify-end py-[0.937rem] px-[0.625rem] z-[1] border-[1px] border-solid border-darkgray">
-            <div className="h-[3.625rem] w-[19.438rem] relative rounded-3xs bg-white box-border hidden border-[1px] border-solid border-darkgray" />
+          <div className="self-stretch flex flex-row items-center justify-end border rounded-md px-2">
+            <input type="text" className="h-[3.625rem] w-[19.438rem] relative bg-white outline-none" />
             <img
               className="h-[1.5rem] w-[1.5rem] relative overflow-hidden shrink-0 z-[1]"
               alt=""

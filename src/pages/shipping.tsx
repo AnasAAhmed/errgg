@@ -1,9 +1,9 @@
 import axios from "axios";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { BiArrowBack } from "react-icons/bi";
+import { BiChevronRight } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { saveShippingInfo } from "../redux/reducer/cartReducer";
 import { RootState, server } from "../redux/store";
 import Footer from "../components/Footer";
@@ -66,12 +66,19 @@ const Shipping = () => {
 
   return (
     <>
+      <div className="pt-11 font-medium text-xl font-sans flex items-center px-8 sm:px-16">
+        <Link to={'/cart'} className="text-gray-400">cart</Link>
+        <BiChevronRight />
+        <Link to={'/shipping'}>shipping</Link>
+        <BiChevronRight />
+        <button disabled className="text-gray-400">Payment</button>
+      </div>
       <div className="flex justify-center min-h-[80vh]">
-        <button className="back-btn " onClick={() => navigate("/cart")}>
+        {/* <button className="back-btn " onClick={() => navigate("/cart")}>
           <BiArrowBack />
-        </button>
+        </button> */}
 
-        <form onSubmit={submitHandler} className="flex flex-col items-center mt-6 justify-stretch py-8 px-4 w-full max-w-[450px]">
+        <form onSubmit={submitHandler} className="flex flex-col items-center justify-stretch py-6 px-4 w-full max-w-[450px]">
           <h1 className="text-4xl font-semibold mb-8 text-center">Shipping Address</h1>
 
           <input
@@ -125,7 +132,7 @@ const Shipping = () => {
             onChange={changeHandler}
           />
 
-          <button type="submit" disabled={isLoading} className={`py-3 px-6 rounded-lg upperscase text-xl  font-semibold bg-blue-500 text-white shadow-md transition duration-300 ease-in-out hover:opacity-80 ${isLoading&& "animate-pulse"}`}>{isLoading ? "Proccessing...": "Pay Now"}</button>
+          <button type="submit" disabled={isLoading} className={`py-3 px-6 rounded-lg upperscase text-xl  font-semibold bg-blue-500 text-white shadow-md transition duration-300 ease-in-out hover:opacity-80 ${isLoading && "animate-pulse"}`}>{isLoading ? "Proccessing..." : "Pay Now"}</button>
         </form>
       </div>
       <Footer />

@@ -45,7 +45,7 @@ const CartItem = ({
             </Link>
             {!size ? "" : <span className="text-gray-500 ">Size: {size}</span>}
 
-            {!color ? "" : <span className="text-gray-500 ">Colour:<span className="rounded-full ml-2 px-[11px] py-[0.5px] " style={{ backgroundColor: color }}></span></span>}
+            {!color ? "" : <div className="text-gray-500 flex">Colour:<p className="rounded-full border border-black ml-2 w-6 h-6" style={{ backgroundColor: color }}></p></div>}
 
             {/* {!variantId  ?"" :<span className="text-gray-500 ">variantId: {variantId}</span>} */}
             <p className="text-gray-500">{`${stock < 6 ? `Only ${stock} items left` : ""}`}</p>

@@ -40,7 +40,7 @@ const ProductReviews = ({ productId, reviews, numOfReviews }: ProductReviews) =>
     return (
         <div className="container mx-auto p-4">
             <div className="flex flex-col items-center">
-                <h2 className="text-2xl font-semibold mb-4">Product Reviews ({numOfReviews})</h2>
+                <h2 className="text-2xl font-semibold mb-4">This Product Reviews ({numOfReviews})</h2>
                 </div>
             <ReviewForm productId={productId} user={user} />
             <div className="md:mx-12 mt-12  ">
