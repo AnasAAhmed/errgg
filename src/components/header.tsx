@@ -32,7 +32,7 @@ const Header = ({ user, cartItemsLength, adminNotification }: PropsType) => {
   const closeModal = () => setIsOpen(false);
 
   const handleClick = (scrollTop = false) => {
-    // if (scrollTop) window.scrollTo({ top: 0, behavior: "smooth" });
+    if (scrollTop) window.scrollTo({ top: 0, behavior: "smooth" });
     setIsOpen(false);
   };
 
