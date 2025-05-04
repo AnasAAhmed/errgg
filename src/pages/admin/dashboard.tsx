@@ -26,8 +26,8 @@ const Dashboard = () => {
     <div className="admin-container">
       <AdminSidebar />
       <main className="dashboard">
-        {isLoading ? (
-         <DashboardSkeleton/>
+        {!data || isLoading ? (
+          <DashboardSkeleton />
         ) : (
           <>
             <section className="widget-container">
@@ -88,6 +88,23 @@ const Dashboard = () => {
                       />
                     );
                   })}
+                </div>
+                <div className="dashboard-categories">
+                  <h2>Collections</h2>
+                  <div>
+                    {stats.collectionsCount.map((i) => {
+                      const [heading, value] = Object.entries(i)[0];
+                      return (
+                        <CategoryItem
+                          key={heading}
+                          value={value}
+                          isCollections={true}
+                          heading={heading}
+                          color={`hsl(${value * 4}, ${value}%, 50%)`}
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </section>
@@ -172,9 +189,10 @@ interface CategoryItemProps {
   color: string;
   value: number;
   heading: string;
+  isCollections?: boolean;
 }
 
-const CategoryItem = ({ color, value, heading }: CategoryItemProps) => (
+const CategoryItem = ({ color, value, heading, isCollections = false }: CategoryItemProps) => (
   <div className="category-item">
     <h5>{heading}</h5>
     <div>
@@ -185,7 +203,7 @@ const CategoryItem = ({ color, value, heading }: CategoryItemProps) => (
         }}
       ></div>
     </div>
-    <span>{value}%</span>
+    <span>{value}{isCollections ? '' : '% '}</span>
   </div>
 );
 

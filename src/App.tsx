@@ -12,13 +12,16 @@ import { getUser } from "./redux/api/userAPI";
 import { userExist, userNotExist } from "./redux/reducer/userReducer";
 import { RootState } from "./redux/store";
 import { io } from "socket.io-client";
+import ProductDetails from "./pages/ProductDetails";
+import Collections from "./pages/Collections";
+import Search from "./pages/search";
 
 
-const Search = lazy(() => import("./pages/search"));
+// const Search = lazy(() => import("./pages/search"));
 const UserProfile = lazy(() => import("./pages/UserProfile"));
-const Collections = lazy(() => import("./pages/Collections"));
+// const Collections = lazy(() => import("./pages/Collections"));
 const Cart = lazy(() => import("./pages/cart"));
-const ProductDetails = lazy(() => import("./pages/ProductDetails"));
+// const ProductDetails = lazy(() => import("./pages/ProductDetails"));
 const Shipping = lazy(() => import("./pages/shipping"));
 const Login = lazy(() => import("./pages/login"));
 const SignUp = lazy(() => import("./pages/SignUp"));
@@ -47,7 +50,7 @@ const ProductManagement = lazy(
 const TransactionManagement = lazy(
   () => import("./pages/admin/management/transactionmanagement")
 );
-const socket = io('http://localhost:4000',{
+const socket = io('http://localhost:4000', {
   transports: ['websocket'],
 });
 
@@ -85,92 +88,93 @@ const App = () => {
     };
   }, [user]);
 
-  return (loading ? (
-    <Loader />
-  ) :
+  return (
+    loading ? (
+      <Loader />
+    ) :
 
 
-    <Router>
-      <Header cartItemsLength={cartItemsLength} user={user} adminNotification={adminNotification} />
-      <div className={`h-[3px] fixed top-0 z-50 ${loadingBar === 100 ? "hidden" : ""} bg-blue-500 animate-pulse transition-all duration-400 ease-out`} style={{ width: `${loadingBar}%` }}></div>
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/search/:category" element={<Search />} />
-          <Route path="/collections/:collection" element={<Collections />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/product/:slug" element={<ProductDetails setLoadingBar={setLoadingBar} />} />
+      <Router>
+        <Header cartItemsLength={cartItemsLength} user={user} adminNotification={adminNotification} />
+        <div className={`h-[3px] fixed top-0 z-50 ${loadingBar === 100 ? "hidden" : ""} bg-blue-500 animate-pulse transition-all duration-400 ease-out`} style={{ width: `${loadingBar}%` }}></div>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/search/:category" element={<Search />} />
+            <Route path="/collections/:collection" element={<Collections />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/product/:slug" element={<ProductDetails setLoadingBar={setLoadingBar} />} />
 
-          {/* Not logged In Route */}
-          <Route
-            path="/login"
-            element={
-              <ProtectedRoute isAuthenticated={user ? false : true}>
-                <Login setLoadingBar={setLoadingBar} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/sign-up"
-            element={
-              <ProtectedRoute isAuthenticated={user ? false : true}>
-                <SignUp setLoadingBar={setLoadingBar} />
-              </ProtectedRoute>
-            }
-          />
-          {/* Logged In User Routes */}
-          <Route
-            element={<ProtectedRoute isAuthenticated={user ? true : false} />}
-          >
-            <Route path="/shipping" element={<Shipping />} />
-            <Route path="/user-profile" element={<UserProfile />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/order/:id" element={<OrderDetails />} />
-            <Route path="/pay" element={<Checkout />} />
-          </Route>
-          {/* Admin Routes */}
-          {/* <Route
-          element={
-            <ProtectedRoute
-              isAuthenticated={true}
-              adminOnly={true}
-              admin={user?.role === "admin" ? true : false}
+            {/* Not logged In Route */}
+            <Route
+              path="/login"
+              element={
+                <ProtectedRoute isAuthenticated={user ? false : true}>
+                  <Login setLoadingBar={setLoadingBar} />
+                </ProtectedRoute>
+              }
             />
-          }
-        > */}
+            <Route
+              path="/sign-up"
+              element={
+                <ProtectedRoute isAuthenticated={user ? false : true}>
+                  <SignUp setLoadingBar={setLoadingBar} />
+                </ProtectedRoute>
+              }
+            />
+            {/* Logged In User Routes */}
+            <Route
+              element={<ProtectedRoute isAuthenticated={user ? true : false} />}
+            >
+              <Route path="/shipping" element={<Shipping />} />
+              <Route path="/user-profile" element={<UserProfile />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/order/:id" element={<OrderDetails />} />
+              <Route path="/pay" element={<Checkout />} />
+            </Route>
+            {/* Admin Routes */}
+            <Route
+              element={
+                <ProtectedRoute // Admin security code is commented out in this component so vivstor can view dashborad
+                  isAuthenticated={user ? true : false}
+                  adminOnly={true}
+                  admin={user?.role === "admin" ? true : false}
+                />
+              }
+            >
 
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/product" element={<Products />} />
-          <Route path="/admin/customer" element={<Customers />} />
-          <Route path="/admin/transaction" element={<Transaction />} />
-          <Route path="/admin/reviews" element={<Reviews />} />
-          {/* Charts */}
-          <Route path="/admin/chart/bar" element={<Barcharts />} />
-          <Route path="/admin/chart/pie" element={<Piecharts />} />
-          <Route path="/admin/chart/line" element={<Linecharts />} />
-          {/* Apps */}
-          <Route path="/admin/app/coupon" element={<Coupon />} />
-          <Route path="/admin/app/stopwatch" element={<Stopwatch />} />
+              <Route path="/admin/dashboard" element={<Dashboard />} />
+              <Route path="/admin/product" element={<Products />} />
+              <Route path="/admin/customer" element={<Customers />} />
+              <Route path="/admin/transaction" element={<Transaction />} />
+              <Route path="/admin/reviews" element={<Reviews />} />
+              {/* Charts */}
+              <Route path="/admin/chart/bar" element={<Barcharts />} />
+              <Route path="/admin/chart/pie" element={<Piecharts />} />
+              <Route path="/admin/chart/line" element={<Linecharts />} />
+              {/* Apps */}
+              <Route path="/admin/app/coupon" element={<Coupon />} />
+              <Route path="/admin/app/stopwatch" element={<Stopwatch />} />
 
-          {/* Management */}
-          <Route path="/admin/product/new" element={<NewProduct />} />
+              {/* Management */}
+              <Route path="/admin/product/new" element={<NewProduct />} />
 
-          <Route path="/admin/product/:slug" element={<ProductManagement />} />
+              <Route path="/admin/product/:slug" element={<ProductManagement />} />
 
-          <Route
-            path="/admin/transaction/:id"
-            element={<TransactionManagement />}
-          />
-          {/* </Route> */}
+              <Route
+                path="/admin/transaction/:id"
+                element={<TransactionManagement />}
+              />
+            </Route>
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-      <Toaster position="bottom-center" />
-    </Router>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+        <Toaster position="bottom-center" />
+      </Router>
 
   );
 };

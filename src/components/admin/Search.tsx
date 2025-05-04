@@ -1,13 +1,11 @@
 import { FormEvent, useState } from 'react'
-import toast from 'react-hot-toast';
-import { BiChevronRight, BiLoader, BiRefresh, BiSearch } from 'react-icons/bi';
+import { BiChevronRight, BiSearch } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 
 
 const Search = ({ item }: { item: string }) => {
     const router = useNavigate();
     const [query, setQuery] = useState('');
-    const [load, setLoad] = useState(false);
 
     const itemName = item === 'Products' ? 'product' : item === 'Transactions' ? 'transaction' : 'customer'
 
@@ -36,11 +34,7 @@ const Search = ({ item }: { item: string }) => {
             router(`/admin/${itemName}`);
         }
     };
-    const handleRefresh = () => {
-        setLoad(true)
-        window.location.reload();
-        toast.success('Refreshed');
-    }
+
     return (
         <form onSubmit={handleSearch} className="flex items-center flex-col sm:flex-row gap-3">
             {key === 'price' || key === 'phone' ? (
@@ -71,9 +65,7 @@ const Search = ({ item }: { item: string }) => {
                 <abbr title="Search" className='no-underline'><BiSearch /></abbr>
             </button>
             <DropDown currentValue={key} setSearchValue={setKey} values={values}></DropDown>
-            <button type='button' onClick={handleRefresh}>
-                <abbr title="Refresh" className='no-underline'>{load ? <BiLoader className='animate-spin' /> : <BiRefresh />}</abbr>
-            </button>
+           
             {query && <p>Result For ({query})</p>}
         </form>
     )

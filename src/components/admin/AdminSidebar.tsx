@@ -17,6 +17,7 @@ import {
 import {FaStar} from 'react-icons/fa'
 import { Link, Location, useLocation } from "react-router-dom";
 import { IconType } from "react-icons";
+import { pageTitle } from "../../utils/features";
 
 const AdminSidebar = () => {
   const location = useLocation();
@@ -25,7 +26,12 @@ const AdminSidebar = () => {
   const [phoneActive, setPhoneActive] = useState<boolean>(
     window.innerWidth < 1100
   );
+useEffect(() => {
+    document.title = pageTitle(location.pathname);
 
+  }, [location]);
+
+ 
   const resizeHandler = () => {
     setPhoneActive(window.innerWidth < 1100);
   };

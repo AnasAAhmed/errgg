@@ -7,11 +7,11 @@ import moment from "moment";
 
 type ResType =
   | {
-      data: MessageResponse;
-    }
+    data: MessageResponse;
+  }
   | {
-      error: FetchBaseQueryError | SerializedError;
-    };
+    error: FetchBaseQueryError | SerializedError;
+  };
 
 export const responseToast = (
   res: ResType,
@@ -76,8 +76,14 @@ export const slugify = (title: string) => {
 };
 export const unSlugify = (slug: string) => {
   return slug
-  .replace(/-/g, " ")    // Replace hyphens with spaces
+    .replace(/-/g, " ")    // Replace hyphens with spaces
     .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
 };
+export const pageTitle = (title: string) => {
+  return title
+    .replace(/\//g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
+};
+
 
 

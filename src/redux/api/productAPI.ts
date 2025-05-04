@@ -31,11 +31,15 @@ export const productAPI = createApi({
       query: ({ category }) => `category-top?category=${category}`, // Fetch latest products by category
       providesTags: ["product"],
     }),
-    latestCollectionsProducts: builder.query<CollectionProductsResponse, { collection: string, limit?: number }>({
-      query: ({ collection, limit }) => {
-        let base = `allcollections/${collection}`;
+    latestCollectionsProducts: builder.query<CollectionProductsResponse, { price?:number;page?: number; sort?: string; sortField?: string; color?: string; size?: string; collection: string, limit?: number }>({
+      query: ({ collection, color, page, sort, size, sortField,price }) => {
+        let base = `allcollections/${collection}?page=${page || 1}`;
 
-        if (limit) base += `&limit=${limit}`;
+        if (color) base += `&color=${color}`;
+        if (price) base += `&price=${price}`;
+        if (sort) base += `&sort=${sort}`;
+        if (sortField) base += `&sortField=${sortField}`;
+        if (size) base += `&size=${size}`;
 
         return base;
       }, // Fetch latest products by collection
@@ -65,10 +69,12 @@ export const productAPI = createApi({
       SearchProductsResponse,
       SearchProductsRequest
     >({
-      query: ({ price, search, sort, category, page, sortField }) => {
+      query: ({ price, search, sort, category, page, sortField, color, size }) => {
         let base = `all?search=${search}&page=${page}`;
 
         if (sortField) base += `&sortField=${sortField}`;
+        if (color) base += `&color=${color}`;
+        if (size) base += `&size=${size}`;
         if (price) base += `&price=${price}`;
         if (sort) base += `&sort=${sort}`;
         if (category) base += `&category=${category}`;

@@ -1,25 +1,22 @@
 import { MdEmail } from "react-icons/md";
 import Footer from "../components/Footer";
 import Services from "../components/Services";
+import Banner from "../components/Banner";
+import { BiCurrentLocation, BiPhone } from "react-icons/bi";
+import { FaClock } from "react-icons/fa";
 
 const Contact = () => {
     return (
         <>
             <div className="w-full bg-white overflow-hidden text-left text-black font-poppins">
-                <div className="relative w-full h-[300px]  sm:h-[400px] md:h-[600px] bg-cover bg-center" style={{ backgroundImage: `url(./contactBanner.jpg)` }}>
-                    <div className="absolute inset-0 to-transparent opacity-60"></div>
-                    <div className="relative z-5 flex flex-col items-center justify-center h-full text-center text-white px-6 md:px-12 lg:px-24">
-                        <h1 className="text-3xl sm:text-5xl font-bold mb-6 leading-tight">
-                            Contact
-                        </h1>
-                        <p className="text-2xl sm:text-3xl mb-10 font-semibold">
-                            24/7 Service available
-                        </p>
-                        <button onClick={()=>window.scroll(0,700)} className="bg-white text-black font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
-                            Contact
-                        </button>
-                    </div>
-                </div>
+
+                <Banner
+                    imgUrl="/contactBanner.jpg"
+                    heading="Contact"
+                    text="  24/7 Service available"
+                    btnText="Contact"
+                    shade=""
+                />
                 <div className="flex flex-col items-center py-16 px-4">
                     <h1 className="text-3xl font-semibold">Get In Touch With Us</h1>
                     <p className="text-center text-gray-500 mt-4 mb-8 max-w-xl">
@@ -44,7 +41,7 @@ const Contact = () => {
                                 <input
                                     type="email"
                                     className="w-full mt-2 p-3 border border-gray-300 rounded"
-                                    placeholder="Abc@def.com"required
+                                    placeholder="Abc@def.com" required
                                 />
                             </div>
                             <div>
@@ -59,7 +56,7 @@ const Contact = () => {
                                 <label className="block text-lg font-medium">Message</label>
                                 <textarea
                                     className="w-full mt-2 p-3 border border-gray-300 rounded h-32"
-                                    placeholder="Hi! I’d like to ask about..."required
+                                    placeholder="Hi! I’d like to ask about..." required
                                 ></textarea>
                             </div>
                             <button
@@ -82,11 +79,7 @@ const ContactContainer = () => {
     return (
         <div className="w-full lg:w-1/2 flex flex-col gap-6 p-8 rounded shadow-md bg-white">
             <div className="flex items-center gap-4">
-                <img
-                    src="https://figma-to-code-ecom-design.vercel.app/vector1.svg"
-                    alt="Address icon"
-                    className="w-8 h-8"
-                />
+                <BiCurrentLocation size={'1.7rem'} />
                 <div>
                     <h3 className="text-lg font-medium">Address</h3>
                     <p className="text-gray-600">
@@ -95,11 +88,7 @@ const ContactContainer = () => {
                 </div>
             </div>
             <div className="flex items-center gap-4">
-                <img
-                    src="https://figma-to-code-ecom-design.vercel.app/bxsphone.svg"
-                    alt="Phone icon"
-                    className="w-8 h-8"
-                />
+                <BiPhone size={'1.7rem'} />
                 <div>
                     <h3 className="text-lg font-medium">Phone</h3>
                     <p className="text-gray-600">Mobile: +(84) 546-6789</p>
@@ -107,18 +96,14 @@ const ContactContainer = () => {
                 </div>
             </div>
             <div className="flex items-center gap-4">
-                <MdEmail className="w-8 h-8" />
+                <MdEmail size={'1.7rem'} />
                 <div>
                     <h3 className="text-lg font-medium">Email</h3>
                     <p className="text-gray-600">example@gmail.com</p>
                 </div>
             </div>
             <div className="flex items-center gap-4">
-                <img
-                    src="https://figma-to-code-ecom-design.vercel.app/biclockfill.svg"
-                    alt="Clock icon"
-                    className="w-8 h-8"
-                />
+                <FaClock size={'1.7rem'} />
                 <div>
                     <h3 className="text-lg font-medium">Working Time</h3>
                     <p className="text-gray-600">Monday-Friday: 9:00 - 22:00</p>

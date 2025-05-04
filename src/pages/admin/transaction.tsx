@@ -56,7 +56,7 @@ const Transaction = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
   const [searchParams] = useSearchParams();
 
-  const { isLoading, data, isError, error } = useAllOrdersQuery({
+  const { isLoading, data, isError, error,refetch } = useAllOrdersQuery({
     id: user!._id,
     key: searchParams.get("key") || '',
     query: searchParams.get("query") || '',
@@ -126,7 +126,8 @@ const Transaction = () => {
     "Transactions",
     isLoading,
     totalItems,
-    true
+    true,
+    refetch
   )();
   return (
     <div className="admin-container">

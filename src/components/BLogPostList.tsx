@@ -1,10 +1,12 @@
 import { CSSProperties, useMemo } from "react";
+import { BiSearch } from "react-icons/bi";
+import { FaCalendar, FaTags, FaUser } from "react-icons/fa";
 
 export type BlogPostListType = {
   className?: string;
 };
 
-const BlogPostList = ({ className = "" }:BlogPostListType) => {
+const BlogPostList = ({ className = "" }: BlogPostListType) => {
   return (
     <div
       className={`w-[77.688rem] flex flex-col md:flex-row items-start justify-start gap-[1.875rem] max-w-full text-left text-[1rem] text-darkgray font-poppins mq1150:flex-wrap ${className}`}
@@ -12,12 +14,12 @@ const BlogPostList = ({ className = "" }:BlogPostListType) => {
       <div className="flex-1 flex flex-col items-start justify-start pt-[1.375rem] px-[0rem] pb-[0rem] box-border max-w-full mq800:min-w-full">
         <div className="self-stretch flex flex-col items-start justify-start gap-[3.375rem] max-w-full z-[1] mq450:gap-[1.688rem]">
           <GroupComponent13
-            previewImages="https://figma-to-code-ecom-design.vercel.app/rectangle-68@2x.png"
+            previewImages="/blog1.png"
             wood="Wood"
             goingAllInWithMillennialD="Going all-in with millennial design"
           />
           <GroupComponent13
-            previewImages="https://figma-to-code-ecom-design.vercel.app/rectangle-68-1@2x.png"
+            previewImages="/blog2.png"
             wood="Handmade"
             goingAllInWithMillennialD="Exploring new ways of decorating"
             propWidth="24.563rem"
@@ -28,7 +30,7 @@ const BlogPostList = ({ className = "" }:BlogPostListType) => {
             propMinWidth2="5.688rem"
           />
           <GroupComponent13
-            previewImages="https://figma-to-code-ecom-design.vercel.app/rectangle-68-2@2x.png"
+            previewImages="/blog3.png"
             wood="Wood"
             goingAllInWithMillennialD="Handmade pieces that took time to make"
             propWidth="unset"
@@ -44,11 +46,8 @@ const BlogPostList = ({ className = "" }:BlogPostListType) => {
         <div className="self-stretch bg-white flex flex-col items-end justify-start pt-[1.375rem] px-[2.562rem] pb-[3.812rem] box-border gap-[2.625rem] max-w-full z-[1] mq450:gap-[1.313rem] mq800:pt-[1.25rem] mq800:pb-[2.5rem] mq800:box-border">
           <div className="self-stretch flex flex-row items-center justify-end border rounded-md px-2">
             <input type="text" className="h-[3.625rem] w-[19.438rem] relative bg-white outline-none" />
-            <img
-              className="h-[1.5rem] w-[1.5rem] relative overflow-hidden shrink-0 z-[1]"
-              alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/akariconssearch-1.svg"
-            />
+            <BiSearch title="Search Icon" className="h-[1.5rem] w-[1.5rem] relative overflow-hidden shrink-0 z-[1]" />
+
           </div>
           <div className="w-[18.688rem] flex flex-row items-start justify-end py-[0rem] px-[1.5rem] box-border">
             <div className="flex-1 flex flex-col items-start justify-start gap-[2.062rem] mq450:gap-[1rem]">
@@ -114,7 +113,7 @@ const BlogPostList = ({ className = "" }:BlogPostListType) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/rectangle-69@2x.png"
+              src="/blog1.png"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">
@@ -132,7 +131,7 @@ const BlogPostList = ({ className = "" }:BlogPostListType) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/rectangle-69-1@2x.png"
+              src="/blog3.png"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">
@@ -150,7 +149,7 @@ const BlogPostList = ({ className = "" }:BlogPostListType) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/rectangle-69-2@2x.png"
+              src="/blog5.png"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">
@@ -168,7 +167,7 @@ const BlogPostList = ({ className = "" }:BlogPostListType) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/rectangle-69-3@2x.png"
+              src="/blog4.png"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">
@@ -186,7 +185,7 @@ const BlogPostList = ({ className = "" }:BlogPostListType) => {
               className="h-[5rem] w-[5rem] relative rounded-3xs object-cover z-[1]"
               loading="lazy"
               alt=""
-              src="https://figma-to-code-ecom-design.vercel.app/rectangle-69-4@2x.png"
+              src="/blog2.png"
             />
             <div className="flex-1 flex flex-col items-start justify-end pt-[0rem] px-[0rem] pb-[0.437rem]">
               <div className="self-stretch flex flex-col items-start justify-start gap-[0.312rem]">
@@ -207,153 +206,141 @@ const BlogPostList = ({ className = "" }:BlogPostListType) => {
 
 
 export type GroupComponent13Type = {
-    className?: string;
-    previewImages?: string;
-    wood?: string;
-    goingAllInWithMillennialD?: string;
-  
-    /** Style props */
-    propWidth?: CSSProperties["width"];
-    propFlex?: CSSProperties["flex"];
-    propMinWidth?: CSSProperties["minWidth"];
-    propFlex1?: CSSProperties["flex"];
-    propMinWidth1?: CSSProperties["minWidth"];
-    propMinWidth2?: CSSProperties["minWidth"];
-  };
-  
-  const GroupComponent13 = ({
-    className = "",
-    previewImages,
-    wood,
-    goingAllInWithMillennialD,
-    propWidth,
-    propFlex,
-    propMinWidth,
-    propFlex1,
-    propMinWidth1,
-    propMinWidth2,
-  }:GroupComponent13Type) => {
-    const postCategoriesStyle: CSSProperties = useMemo(() => {
-      return {
-        width: propWidth,
-      };
-    }, [propWidth]);
-  
-    const dateIconsStyle: CSSProperties = useMemo(() => {
-      return {
-        flex: propFlex,
-        minWidth: propMinWidth,
-      };
-    }, [propFlex, propMinWidth]);
-  
-    const tagIconsStyle: CSSProperties = useMemo(() => {
-      return {
-        flex: propFlex1,
-        minWidth: propMinWidth1,
-      };
-    }, [propFlex1, propMinWidth1]);
-  
-    const woodStyle: CSSProperties = useMemo(() => {
-      return {
-        minWidth: propMinWidth2,
-      };
-    }, [propMinWidth2]);
-  
-    return (
-      <div
-        className={`self-stretch flex flex-col items-start justify-start pt-[0rem] px-[0rem] pb-[4.125rem] box-border gap-[1.062rem] max-w-full text-left text-[1rem] text-darkgray font-poppins mq450:h-auto mq450:pb-[1.75rem] mq450:box-border mq1150:pb-[2.688rem] mq1150:box-border ${className}`}
-      >
-        <div className="self-stretch flex flex-row items-start justify-start box-border max-w-full">
-          <img
-            className="h-[31.25rem] flex-1 relative rounded-3xl max-w-full overflow-hidden object-cover"
-            loading="lazy"
-            alt=""
-            src={previewImages}
-          />
-        </div>
-        <div className="self-stretch flex flex-col items-start justify-start pt-[0rem] px-[0rem] pb-[0.812rem] box-border gap-[0.75rem] max-w-full shrink-0">
-          <div className="flex flex-col items-start justify-start gap-[0.937rem] max-w-full">
+  className?: string;
+  previewImages?: string;
+  wood?: string;
+  goingAllInWithMillennialD?: string;
+
+  /** Style props */
+  propWidth?: CSSProperties["width"];
+  propFlex?: CSSProperties["flex"];
+  propMinWidth?: CSSProperties["minWidth"];
+  propFlex1?: CSSProperties["flex"];
+  propMinWidth1?: CSSProperties["minWidth"];
+  propMinWidth2?: CSSProperties["minWidth"];
+};
+
+const GroupComponent13 = ({
+  className = "",
+  previewImages,
+  wood,
+  goingAllInWithMillennialD,
+  propWidth,
+  propFlex,
+  propMinWidth,
+  propFlex1,
+  propMinWidth1,
+  propMinWidth2,
+}: GroupComponent13Type) => {
+  const postCategoriesStyle: CSSProperties = useMemo(() => {
+    return {
+      width: propWidth,
+    };
+  }, [propWidth]);
+
+  const dateIconsStyle: CSSProperties = useMemo(() => {
+    return {
+      flex: propFlex,
+      minWidth: propMinWidth,
+    };
+  }, [propFlex, propMinWidth]);
+
+  const tagIconsStyle: CSSProperties = useMemo(() => {
+    return {
+      flex: propFlex1,
+      minWidth: propMinWidth1,
+    };
+  }, [propFlex1, propMinWidth1]);
+
+  const woodStyle: CSSProperties = useMemo(() => {
+    return {
+      minWidth: propMinWidth2,
+    };
+  }, [propMinWidth2]);
+
+  return (
+    <div
+      className={`self-stretch flex flex-col items-start justify-start pt-[0rem] px-[0rem] pb-[4.125rem] box-border gap-[1.062rem] max-w-full text-left text-[1rem] text-darkgray font-poppins mq450:h-auto mq450:pb-[1.75rem] mq450:box-border mq1150:pb-[2.688rem] mq1150:box-border ${className}`}
+    >
+      <div className="self-stretch flex flex-row items-start justify-start box-border max-w-full">
+        <img
+          className="h-[31.25rem] flex-1 relative rounded-3xl max-w-full overflow-hidden object-cover"
+          loading="lazy"
+          alt=""
+          src={previewImages}
+        />
+      </div>
+      <div className="self-stretch flex flex-col items-start justify-start pt-[0rem] px-[0rem] pb-[0.812rem] box-border gap-[0.75rem] max-w-full shrink-0">
+        <div className="flex flex-col items-start justify-start gap-[0.937rem] max-w-full">
+          <div
+            className="flex flex-row items-start justify-start gap-[2.187rem] max-w-full mq450:flex-wrap mq450:gap-[1.063rem]"
+            style={postCategoriesStyle}
+          >
+            <div className="flex flex-row items-start justify-start gap-[0.437rem]">
+              <div className="flex flex-col items-start justify-start pt-[0.125rem] px-[0rem] pb-[0rem]">
+                <FaUser title="User icon" className="w-[1.25rem] h-[1.25rem] relative overflow-hidden shrink-0" />
+              </div>
+              <div className="relative inline-block min-w-[3.313rem]">
+                Admin
+              </div>
+            </div>
             <div
-              className="flex flex-row items-start justify-start gap-[2.187rem] max-w-full mq450:flex-wrap mq450:gap-[1.063rem]"
-              style={postCategoriesStyle}
+              className="flex flex-row items-start justify-start gap-[0.687rem]"
+              style={dateIconsStyle}
             >
-              <div className="flex flex-row items-start justify-start gap-[0.437rem]">
-                <div className="flex flex-col items-start justify-start pt-[0.125rem] px-[0rem] pb-[0rem]">
-                  <img
-                    className="w-[1.25rem] h-[1.25rem] relative overflow-hidden shrink-0"
-                    loading="lazy"
-                    alt=""
-                    src="https://figma-to-code-ecom-design.vercel.app/dashiconsadminusers.svg"
-                  />
-                </div>
-                <div className="relative inline-block min-w-[3.313rem]">
-                  Admin
-                </div>
-              </div>
-              <div
-                className="flex flex-row items-start justify-start gap-[0.687rem]"
-                style={dateIconsStyle}
-              >
-                <img
-                  className="h-[1.25rem] w-[1.25rem] relative overflow-hidden shrink-0"
-                  alt=""
-                  src="https://figma-to-code-ecom-design.vercel.app/uiscalender.svg"
-                />
-                <div className="relative inline-block min-w-[5.625rem]">
-                  14 Oct 2022
-                </div>
-              </div>
-              <div
-                className="flex flex-row items-start justify-start gap-[0.437rem]"
-                style={tagIconsStyle}
-              >
-                <img
-                  className="h-[1.5rem] w-[1.5rem] relative overflow-hidden shrink-0 min-h-[1.5rem]"
-                  loading="lazy"
-                  alt=""
-                  src="https://figma-to-code-ecom-design.vercel.app/citag.svg"
-                />
-                <div
-                  className="relative inline-block min-w-[2.938rem]"
-                  style={woodStyle}
-                >
-                  {wood}
-                </div>
+              <FaCalendar title="User icon" className="w-[1.25rem] h-[1.25rem] relative overflow-hidden shrink-0" />
+
+              <div className="relative inline-block min-w-[5.625rem]">
+                14 Oct 2022
               </div>
             </div>
-            <div className="flex flex-row items-start justify-start py-[0rem] pr-[0rem] pl-[0.187rem] text-[1.875rem] text-black">
-              <h2 className="m-0 relative text-inherit font-medium font-inherit mq450:text-[1.125rem] mq800:text-[1.5rem]">
-                {goingAllInWithMillennialD}
-              </h2>
+            <div
+              className="flex flex-row items-start justify-start gap-[0.437rem]"
+              style={tagIconsStyle}
+            >
+              <FaTags title="User icon" className="w-[1.25rem] h-[1.25rem] relative overflow-hidden shrink-0" />
+
+              <div
+                className="relative inline-block min-w-[2.938rem]"
+                style={woodStyle}
+              >
+                {wood}
+              </div>
             </div>
           </div>
-          <div className="self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0rem] pl-[0.187rem] box-border max-w-full text-justify text-[0.938rem]">
-            <div className="flex-1 relative leading-[150%] inline-block max-w-full">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Mus
-              mauris vitae ultricies leo integer malesuada nunc. In nulla posuere
-              sollicitudin aliquam ultrices. Morbi blandit cursus risus at
-              ultrices mi tempus imperdiet. Libero enim sed faucibus turpis in.
-              Cursus mattis molestie a iaculis at erat. Nibh cras pulvinar mattis
-              nunc sed blandit libero. Pellentesque elit ullamcorper dignissim
-              cras tincidunt. Pharetra et ultrices neque ornare aenean euismod
-              elementum.
-            </div>
+          <div className="flex flex-row items-start justify-start py-[0rem] pr-[0rem] pl-[0.187rem] text-[1.875rem] text-black">
+            <h2 className="m-0 relative text-inherit font-medium font-inherit mq450:text-[1.125rem] mq800:text-[1.5rem]">
+              {goingAllInWithMillennialD}
+            </h2>
           </div>
         </div>
-        <div className="w-[5.938rem] flex flex-row items-start justify-start py-[0rem] px-[0.187rem] box-border text-justify text-black">
-          <div className="flex-1 flex flex-col items-start justify-start gap-[0.75rem]">
-            <div className="relative inline-block min-w-[5.563rem]">
-              Read more
-            </div>
-            <div className="self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.312rem] pl-[0.375rem]">
-              <div className="h-[0.063rem] flex-1 relative box-border border-t-[1px] border-solid border-black" />
-            </div>
+        <div className="self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0rem] pl-[0.187rem] box-border max-w-full text-justify text-[0.938rem]">
+          <div className="flex-1 relative leading-[150%] inline-block max-w-full">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Mus
+            mauris vitae ultricies leo integer malesuada nunc. In nulla posuere
+            sollicitudin aliquam ultrices. Morbi blandit cursus risus at
+            ultrices mi tempus imperdiet. Libero enim sed faucibus turpis in.
+            Cursus mattis molestie a iaculis at erat. Nibh cras pulvinar mattis
+            nunc sed blandit libero. Pellentesque elit ullamcorper dignissim
+            cras tincidunt. Pharetra et ultrices neque ornare aenean euismod
+            elementum.
           </div>
         </div>
       </div>
-    );
-  };
+      <div className="w-[5.938rem] flex flex-row items-start justify-start py-[0rem] px-[0.187rem] box-border text-justify text-black">
+        <div className="flex-1 flex flex-col items-start justify-start gap-[0.75rem]">
+          <div className="relative inline-block min-w-[5.563rem]">
+            Read more
+          </div>
+          <div className="self-stretch flex flex-row items-start justify-start py-[0rem] pr-[0.312rem] pl-[0.375rem]">
+            <div className="h-[0.063rem] flex-1 relative box-border border-t-[1px] border-solid border-black" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 
 export default BlogPostList;

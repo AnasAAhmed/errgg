@@ -53,7 +53,7 @@ const Products = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
   const [searchParams] = useSearchParams();
 
-  const { isLoading, isError, error, data } = useAllProductsQuery({
+  const { isLoading, isError, error, data,refetch } = useAllProductsQuery({
     id: user!._id,
     key: searchParams.get("key") || '',
     query: searchParams.get("query") || '',
@@ -93,13 +93,15 @@ const Products = () => {
     "Products",
     isLoading,
     totalItems,
-    true
+    true,
+    refetch
   )();
 
   return (
     <div className="admin-container">
       <AdminSidebar />
       <main >
+       
         {Table}
         <Pagination totalPages={totalPages} />
       </main>

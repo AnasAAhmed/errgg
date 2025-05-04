@@ -42,7 +42,7 @@ export type IOrder = {
 
 export type VariantType = {
   _id?: string;
-  size?: string ;
+  size?: string;
   color?: string;
   stock: number
 }
@@ -59,6 +59,7 @@ export type Review = {
 
 export type Product = {
   name: string;
+  slug: string;
   price: number;
   cutPrice: number;
   description: string;
@@ -72,7 +73,7 @@ export type Product = {
     size: string;
     color: string;
     stock: number;
-   _id: string;
+    _id: string;
   }];
   photos: string[];
   _id: string;
@@ -138,6 +139,7 @@ type LatestTransaction = {
 
 export type Stats = {
   categoryCount: Record<string, number>[];
+  collectionsCount: Record<string, number>[];
   changePercent: CountAndChange;
   count: CountAndChange;
   chart: {

@@ -59,7 +59,7 @@ const Customers = () => {
   const [searchParams] = useSearchParams();
 
 
-  const { isLoading, data, isError, error } = useAllUsersQuery({
+  const { isLoading, data, isError, error ,refetch} = useAllUsersQuery({
     id: user!._id,
     key: searchParams.get("key") || '',
     query: searchParams.get("query") || '',
@@ -129,7 +129,8 @@ const Customers = () => {
     "Customers",
     isLoading,
     totalItems,
-    true
+    true,
+    refetch
   )();
 
   return (

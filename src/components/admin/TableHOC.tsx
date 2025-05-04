@@ -11,6 +11,7 @@ import {
 } from "react-table";
 import { Skeleton } from "../loader";
 import Search from "./Search";
+import { BiLoader } from "react-icons/bi";
 
 function TableHOC<T extends Object>(
   columns: Column<T>[],
@@ -20,6 +21,7 @@ function TableHOC<T extends Object>(
   isLoading: boolean = false,
   totalItems?: number,
   isSearch: boolean = false,
+  refetch?: () => void,
 ) {
   return function HOC() {
     const options: TableOptions<T> = {
@@ -48,7 +50,9 @@ function TableHOC<T extends Object>(
       <div className={containerClassname}>
         <h2 className="heading">{heading} ({totalItems})</h2>
         {isSearch && <Search item={heading} />}
-
+        {refetch && <button type='button' className="py-3" onClick={() => refetch()}>
+          <abbr title="Refresh" className='no-underline py-3'>{isLoading ? <BiLoader className='animate-spin' /> : 'Refresh'}</abbr>
+        </button>}
         <table className="table" {...getTableProps()}>
           <thead>
             {headerGroups.map((headerGroup) => (

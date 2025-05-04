@@ -11,14 +11,37 @@ import Footer from "../components/Footer";
 import { FaSpinner } from "react-icons/fa";
 import Banner from "../components/Banner";
 import BlogSection from "../components/BlogSection";
+import { useEffect, useRef, useState } from "react";
 
 const Home = () => {
   const { data, isLoading, isError } = useLatestProductsQuery("");
-  if (isError) toast.error("Cannot Fetch the Products");
+  const textRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (textRef.current) {
+      observer.observe(textRef.current);
+    }
+
+    return () => {
+      if (textRef.current) {
+        observer.unobserve(textRef.current);
+      }
+    };
+  }, []);
+  if (isError) toast.error("Cannot Fetch the Products");
   return (
     <>
-      <div>
+      <div >
         <section className="relative">
           <Carousel
             showArrows={false}
@@ -26,29 +49,34 @@ const Home = () => {
             showStatus={false}
             showThumbs={false}
             interval={3000}
+            // animationHandler={'fade'}
             infiniteLoop={true}
             autoPlay={true}
           >
             <Banner
-              heading="Gift Collection"
-              text="Embrace the warmth with gift collection"
-              imgUrl="https://www.next.co.uk/nxtcms/resource/blob/6139514/32061ca88062e4ed271cce514bbf0cde/130624-hero-gifts-dt-data.jpg"
-              link="/collections/gift"
-              shade="black"
-            />
-            <Banner
-              heading="Elevate Your Gaming"
-              text="Discover the latest gaming accessories in our new collection."
-              imgUrl="https://res.cloudinary.com/dj5q966nb/image/upload/v1719253433/ticeufjqvf6napjhdiee.png"
-              link="/search/accessories"
-              shade="black"
-            />
-            <Banner
-              heading="Cosmetics Heaven 2024"
-              text="Premium quality beauty products at unbeatable prices."
-              imgUrl="https://www.next.co.uk/nxtcms/resource/blob/6292750/0aad3fee48413abd53f667d285bf3b42/260924-hero-beauty-dt-data.jpg"
-              link="/collections/cosmetics"
+              // heading="Gift Collection"
+              // text="Embrace the warmth with gift collection"
+              imgUrl="https://res.cloudinary.com/dvnef4cyd/image/upload/v1745933317/imaginify/vprt1ius82jfdw5yictw.jpg"
+              link="/collections/summer"
+              // textPositionH="end"
+              textPositionV="end"
               shade=""
+            />
+            <Banner
+              heading="Elevate Your Accessories Game"
+              text="Discover the latest day-to-day accessories in our new collection."
+              imgUrl="https://res.cloudinary.com/dvnef4cyd/image/upload/v1745932760/imaginify/k2b8hdz9xluixuotk8m2.jpg"
+              link="/collections/accessories"
+              shade="black"
+            />
+            <Banner
+              heading="Women's Collection 2025"
+              textColor="white"
+              textPositionH="start"
+              text="From elegant dresses to everyday basics, our women’s collection blends style, comfort, and confidence."
+              imgUrl="https://res.cloudinary.com/dvnef4cyd/image/upload/v1745933152/imaginify/jdbzqxf6i6oxu6cdapv0.jpg"
+              link="/collections/women"
+              shade="black"
             />
           </Carousel>
         </section>
@@ -57,8 +85,8 @@ const Home = () => {
           <CollectionsList />
         </section>
 
-        <section className="py-10">
-          <h1 className="text-3xl font-semibold text-center mb-8">Latest Products</h1>
+        <section ref={textRef} className="py-10">
+          <h1 className={`${isVisible ? 'opacity-100 animate-fadeInUp ' : 'opacity-0'} text-3xl font-semibold text-center mb-8`}>Latest Products</h1>
           <div className="flex flex-col items-center py-8 px-2 sm:px-5">
             {isLoading ? (
               <div className="flex items-center justify-center h-[30rem]">
@@ -70,14 +98,14 @@ const Home = () => {
                   <p className="font-bold text-2xl h-[260px]">No products found</p>
                 ) : (
                   data?.products.map((product) => (
-                    <ProductCard key={product._id} product={product} />
+                    <ProductCard key={product._id}  product={product} />
                   ))
                 )}
               </div>
             )}
           </div>
           <div className="text-center">
-            <Link to="/search" className="text-blue-500 font-medium hover:underline">
+            <Link to="/search" className={`${isVisible ? 'opacity-100 animate-fadeInUp ' : 'opacity-0'} text-blue-500 font-medium hover:underline`}>
               View More Products
             </Link>
           </div>
@@ -85,22 +113,22 @@ const Home = () => {
 
         <section className="my-10">
           <Banner
-            imgUrl="https://www.next.co.uk/nxtcms/resource/blob/6268504/4c85a5e35de4844844702816284c4568/11-09-24-hero-home-dt-min-data.jpg"
-            link="/search/furniture"
-            heading="Furniture Collection"
-            text="Coming Soon"
+            imgUrl="/banner.jpg"
+            link="/collections/watch"
+            textPositionH="center"
+            textPositionV="end"
             shade=""
           />
         </section>
-        <section className="py-14">
+        <section className="py-s">
           <RelatedProducts category={''} heading="Top Selling Products" />
         </section>
 
-        <section className="py-14">
+        <section className="py-s8">
           <BlogSection />
         </section>
 
-        <section className="py-14 bg-white">
+        <section className="py-s14 bg-white">
           <Services />
         </section>
 

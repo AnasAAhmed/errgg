@@ -20,7 +20,7 @@ const DropDown = ({ options }: DropSearchProps) => {
     <div className="relative"  >
       <button
         onFocus={() => setOpen(true)}
-        onBlur={() => setTimeout(() => setOpen(false), 100)}
+        onBlur={() => setTimeout(() => setOpen(false), 180)}
         className="flex items-center space-x-1 px-2 py-1 font-semibold text-lg rounded-md focus:outline-none focus:ring focus:border-blue-400"
       >
         <span>Dashboard</span>
@@ -52,7 +52,7 @@ export const DropDownAdmin = ({ options }: DropSearchProps) => {
     <div className="relative" >
       <button
         onFocus={() => setOpen(true)}
-        onBlur={() => setTimeout(() => setOpen(false), 100)}
+        onBlur={() => setTimeout(() => setOpen(false), 170)}
         className="flex items-center space-x-1 px-2 py-1 font-semibold text-lg rounded-md "
       >
         <span>Details</span>

@@ -8,7 +8,11 @@
   font-weight: 400;
   // background-color: #f5f4f4;
 }
-
+.picture{
+  cursor: -moz-zoom-in; 
+  cursor: -webkit-zoom-in; 
+  cursor: zoom-in;
+}
 * {
   margin: 0;
   padding: 0;
@@ -397,7 +401,6 @@ $color3: rgb(0, 104, 136);
 
 .loader {
   width: 100%;
-  height: 85vh;
   @include flex;
 
   >div {

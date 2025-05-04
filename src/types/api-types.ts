@@ -51,6 +51,8 @@ export type AllProductsResponse = {
 export type CollectionProductsResponse = {
   success: boolean;
   productCollection: Product[];
+  totalPages: number;
+
 };
 
 export type CategoriesResponse = {
@@ -69,6 +71,8 @@ export type SearchProductsResponse = AllProductsResponse & {
 export type SearchProductsRequest = {
   price: number;
   page: number;
+  color: string;
+  size: string;
   category: string;
   search: string;
   sort: string;

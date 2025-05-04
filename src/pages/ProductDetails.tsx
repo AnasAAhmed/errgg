@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ProductDetailsSkeleton } from "../components/loader";
 import RelatedProducts from "../components/RelatedProducts";
 import { useDispatch } from "react-redux";
@@ -48,7 +48,6 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
     reviews: []
   };
 
-  if (isError) return <Navigate to={"/404"} />;
   const dispatch = useDispatch();
   const [selectedVariant, setSelectedVariant] = useState<VariantType | null>(null);
   const [mainImage, setMainImage] = useState("");
@@ -80,11 +79,16 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
   const colorsOfVariantThatisNot0 = selectedVariant && data?.product.variants.filter(v => v.size === selectedVariant.size && v.stock > 0);
 
   useEffect(() => {
+    if (isError) return;
+
     setLoadingBar(20);
     setLoadingBar(70);
+    setLoadingBar(90);
   }, [slug]);
 
   useEffect(() => {
+    if (isError) return;
+
     if (photos && photos.length > 0) {
       setMainImage(photos[0]);
     }
@@ -95,6 +99,7 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
   }, [data]);
 
 
+  // if (isError) return <Navigate to={"/404"} />;
 
   return (
     <>
@@ -123,7 +128,7 @@ const ProductDetails = ({ setLoadingBar }: LoadingBarProps) => {
                 </div>
               </section>
               <article className="sec2 flex-1 w-full md:w-96">
-                <p className="min-h-12 text-2xl font-semibold mb-4">{name}</p>
+                <p className="min-h-12 capitalize text-2xl font-semibold mb-4">{name}</p>
                 <h3 className="text-2xl">
                   ${price}
                   <span className="text-lg line-through text-red-500">{cutPrice > 0 ? `$${cutPrice}` : ""}</span>
@@ -263,7 +268,7 @@ const ImageZoom = ({ src, alt }: ImageZoomProps) => {
   return (
     <>
       <div
-        className="relative w-full h-[400px] max-md:hidden"
+        className="relative picture w-full h-[400px] max-md:hidden"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseMove={handleMouseMove}

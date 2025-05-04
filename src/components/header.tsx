@@ -1,15 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaSearch, FaShoppingBag } from "react-icons/fa";
 import { User } from "../types/types";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import toast from "react-hot-toast";
 import UserModal from "./UserModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiMenuLine } from "react-icons/ri";
 import Modal from "./Modal";
 import DropDown from "./DropDown";
 import Notifications from "./Noftifications";
+import { pageTitle } from "../utils/features";
 
 interface PropsType {
   user?: User | null;
@@ -19,7 +20,8 @@ interface PropsType {
 
 const Header = ({ user, cartItemsLength, adminNotification }: PropsType) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
   const logoutHandler = async () => {
     try {
       await signOut(auth);
@@ -28,6 +30,42 @@ const Header = ({ user, cartItemsLength, adminNotification }: PropsType) => {
       toast.error("Sign Out Failed");
     }
   };
+  const location = useLocation();
+
+  useEffect(() => {
+
+    document.title = pageTitle(
+      location.pathname.startsWith('/product') ?
+        location.pathname.slice(8) + ' | E-commerce Store By Anas Ahmed' :
+        location.pathname === '/' ?
+          'E-commerce Store By Anas Ahmed' :
+          location.pathname + ' | E-commerce Store By Anas Ahmed'
+    );
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (location.pathname !== '/' && metaDesc) {
+      metaDesc.setAttribute("content", location.pathname.startsWith('/product') ?
+        'Get the ' + location.pathname.slice(8) : location.pathname + " page at E-commerce made by Anas-Ahmed with Reactjs, Nodejs, Frontend/Backend Caching strategies");
+    }
+  }, [location]);
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      if (scrollTop > 50) {
+        if (scrollTop > lastScrollY) {
+          setScrolled(false);
+        } else {
+          setScrolled(true);
+        }
+        setLastScrollY(scrollTop);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const closeModal = () => setIsOpen(false);
 
@@ -40,7 +78,7 @@ const Header = ({ user, cartItemsLength, adminNotification }: PropsType) => {
 
   return (
     <header
-      className={`flex max-sm:sticky bg-white transition-all duration-500 top-0 w-full z-50 items-center justify-between px-4 py-2 shadow-md`}
+      className={`${scrolled ? 'top-0 fixed shadow-md bg-white' : 'absolutse bg-transparent'} flex bg-white transition-all duration-500 w-full z-50 items-center justify-between px-4 py-2 shadow-md`}
     >
       {/* Logo */}
       <h1 className="text-2xl font-bold">
