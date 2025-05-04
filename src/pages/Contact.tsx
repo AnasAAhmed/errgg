@@ -11,7 +11,7 @@ const Contact = () => {
             <div className="w-full bg-white overflow-hidden text-left text-black font-poppins">
 
                 <Banner
-                    imgUrl="/contactBanner.jpg"
+                    imgUrl="/contactBanner.avif"
                     heading="Contact"
                     text="  24/7 Service available"
                     btnText="Contact"

@@ -16,7 +16,9 @@ const NewProduct = () => {
   const [collections, SetCollections] = useState<string>("");
   const [price, setPrice] = useState<number>(1000);
   const [cutPrice, setCutPrice] = useState<number>(0);
-  const [description, setDescription] = useState<string>("");
+  const [weight, setWeight] = useState<number>(0.3);
+  const [dimensions, setDimensions] = useState<{ length: number; width: number; height: number } | null>(null);
+  const [description, setDescription] = useState<string>('');
   const [stock, setStock] = useState<number>(1);
   const [variants, setVariants] = useState<Array<{ color: string; size: string; stock: number }>>([]);
   const [photoPrevs, setPhotoPrevs] = useState<string[]>([]);
@@ -59,7 +61,15 @@ const NewProduct = () => {
     newVariants[index] = { ...newVariants[index], [key]: value };
     setVariants(newVariants);
   };
-
+  const handleDimensionsChange = (key: 'width' | 'length' | 'height', value: number) => {
+    setDimensions((prev) => {
+      const base = prev ?? { length: 0, width: 0, height: 0 };
+      return {
+        ...base,
+        [key]: value,
+      };
+    });
+  };
   const addVariant = () => {
     setVariants([...variants, { color: "", size: "", stock: 0 }]);
   };
@@ -93,6 +103,8 @@ const NewProduct = () => {
     formData.set("cutPrice", cutPrice.toString());
     formData.set("description", description);
     formData.set("stock", stock.toString());
+    formData.set("weight", weight.toString());
+    formData.set("dimensions", JSON.stringify(dimensions));
     formData.set("category", category);
     formData.set("collections", collections);
     photos.forEach((file) => {
@@ -249,6 +261,44 @@ const NewProduct = () => {
               >
                 Add More
               </button>
+            </div>
+            <div>
+              <label className="font-semibold text-sm sm:text-lg block">Dimensions</label>
+              <div className="flex items-center gap-2 mb-2">
+                <input
+                  type="number"
+                  placeholder="height"
+                  value={dimensions?.height}
+                  onChange={(e) => handleDimensionsChange('height', Number(e.target.value))}
+                  className="border border-gray-300 rounded-md w-[30%] px-3 py-2"
+                />
+                <input
+                  type="number"
+                  placeholder="length"
+                  value={dimensions?.length}
+                  onChange={(e) => handleDimensionsChange('length', Number(e.target.value))}
+                  className="border border-gray-300 rounded-md w-[30%] px-3 py-2"
+                />
+                <input
+                  type="number"
+                  placeholder="width"
+                  value={dimensions?.width}
+                  onChange={(e) => handleDimensionsChange('width', Number(e.target.value))}
+                  className="border border-gray-300 rounded-md w-[20%] px-3 py-2"
+                />
+              </div>
+
+            </div>
+            <div>
+              <label htmlFor="weight" className="font-semibold text-sm sm:text-lg block">Weight</label>
+              <input
+                id="weight"
+                type="text"
+                placeholder="Product estimated weight"
+                value={weight}
+                onChange={(e) => setWeight(Number(e.target.value))}
+                className="border border-gray-300 rounded-md w-[96%] px-3 py-3"
+              />
             </div>
             <div>
               <label className="font-semibold text-sm sm:text-lg block">Images</label>

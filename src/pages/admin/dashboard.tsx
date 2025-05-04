@@ -16,17 +16,17 @@ const { last6Months: months } = getLastMonths();
 const Dashboard = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const { isLoading, data, isError } = useStatsQuery(user?._id!);
+  const { isLoading, data, isError } = useStatsQuery(user?._id ?? "");
 
-  const stats = data?.stats!;
-
+  const stats = data?.stats ?? null;
+  
   if (isError) return <Navigate to={"/"} />;
 
   return (
     <div className="admin-container">
       <AdminSidebar />
       <main className="dashboard">
-        {!data || isLoading ? (
+        {!stats || isLoading ? (
           <DashboardSkeleton />
         ) : (
           <>

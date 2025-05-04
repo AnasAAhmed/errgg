@@ -56,7 +56,7 @@ const Home = () => {
             <Banner
               // heading="Gift Collection"
               // text="Embrace the warmth with gift collection"
-              imgUrl="https://res.cloudinary.com/dvnef4cyd/image/upload/v1745933317/imaginify/vprt1ius82jfdw5yictw.jpg"
+              imgUrl="/home-banner.avif"
               link="/collections/summer"
               // textPositionH="end"
               textPositionV="end"

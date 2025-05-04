@@ -9,7 +9,7 @@ const Blog = () => {
         <>
             <div>
                 <Banner
-                    imgUrl="/blog5.png"
+                    imgUrl="/blog5.avif"
                     heading="Blog"
                     text=" Discover and Explore our latest blogs."
                     // textPositionH="center"

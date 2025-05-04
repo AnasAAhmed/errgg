@@ -66,6 +66,8 @@ const Banner = ({
         className="relative z-5 flex flex-col h-full text-center px-6 md:px-12 lg:px-24"
       >
         <h1
+          style={{ textAlign: textPositionH }}
+
           className={`text-3xl sm:text-5xl font-bold mb-6 leading-tight transition-opacity duration-700 ease-out
             ${isVisible ? 'opacity-100 animate-fadeIn delay-[100ms]' : 'opacity-0'}`}
         >
@@ -98,7 +100,7 @@ const Banner = ({
               className={`${isVisible
                 ? 'opacity-100 animaste-fadeIn delay-[500ms]'
                 : 'opacity-0'
-                } bg-white text-black font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out`}
+                } bg-white max-sm:text-center  text-black font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out`}
             >
               {btnText || 'Shop Now'}
             </div>
