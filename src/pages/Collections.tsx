@@ -1,7 +1,6 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import { useLatestCollectionsProductsQuery } from "../redux/api/productAPI";
 import toast from "react-hot-toast";
-import { FaSpinner } from "react-icons/fa";
 import ProductCard from "../components/product-card";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
