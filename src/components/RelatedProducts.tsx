@@ -1,8 +1,8 @@
 import { useLatestCategoryProductsQuery } from '../redux/api/productAPI';
 import ProductCard from './product-card';
 import { Link } from 'react-router-dom';
-import { FaSpinner } from 'react-icons/fa';
 import { useEffect, useRef, useState } from 'react';
+import { Loader1 } from './loader';
 
 type CategoryProductsProps = {
   category: string;
@@ -44,9 +44,8 @@ const RelatedProducts = ({ category, heading, filteredProductId }: CategoryProdu
       <h1 className={`${isVisible ? 'opacity-100 animate-fadeInUp ' : 'opacity-0'} text-4xl my-12 flex items-center justify-center`}>{heading}</h1>
       <div className="flex flex-col items-center sm:gap-10 py-8 px-2 sm:px-5">
         {isLoading ? (
-          <div className="flex items-center justify-center h-[30rem]">
-            <FaSpinner className="animate-spin h-28 w-28 text-gray-500" />
-          </div>
+                       <Loader1/>
+         
         ) : (
           <main className='md:flex md:flex-wrap grid grid-cols-2 justify-center gap-4 md:gap-12'>
             {filteredProducts?.length === 0 || data?.products.length === 0 ? (

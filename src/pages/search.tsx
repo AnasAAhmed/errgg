@@ -5,8 +5,9 @@ import { CustomError } from "../types/api-types";
 import toast from "react-hot-toast";
 import { RiFilterFill } from "react-icons/ri";
 import { useSearchParams } from "react-router-dom";
-import { FaSearch, FaSpinner } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import Footer from "../components/Footer";
+import { Loader1 } from "../components/loader";
 
 const DEFAULT_MAX_PRICE = 100000;
 
@@ -220,13 +221,10 @@ const Search = () => {
 
         {/* Product Section */}
         <main className="flex flex-col items-center">
+        {loading || productLoading &&<Loader1/>}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
-            {loading || productLoading ? (
-              <div className="flex items-center justify-center col-span-full min-h-[60vh]">
-                <FaSpinner className="animate-spin h-12 w-12 text-gray-500" />
-              </div>
-            ) : searchedData?.products.length ? (
-              searchedData.products.map((product) => (
+            {!loading || !productLoading && searchedData?.products.length ? (
+              searchedData?.products.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))
             ) : (

@@ -6,6 +6,7 @@ import ProductCard from "../components/product-card";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import { RiFilterFill } from "react-icons/ri";
+import { Loader1 } from "../components/loader";
 
 
 const Collections = () => {
@@ -162,9 +163,7 @@ const Collections = () => {
             <div className="min-h-[100vh]">
 
                 {loading || isLoading ? (
-                    <div className="flex items-center justify-center h-[30.4rem]">
-                        <FaSpinner className="animate-spin h-36 w-36 text-gray-500" />
-                    </div>
+                    <Loader1/>
                 ) : (
                     <div className="flex flex-col gap-10 py-8 px-5">
                         {!data?.productCollection || data?.productCollection.length === 0 ? (

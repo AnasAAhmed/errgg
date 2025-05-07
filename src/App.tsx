@@ -74,7 +74,6 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    // Only subscribe to the event when the user is an admin
     if (user && user.role === 'admin') {
       socket.on('adminNotification', (data) => {
         console.log('New Order Notification:', data);

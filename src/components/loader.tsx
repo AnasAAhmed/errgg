@@ -50,6 +50,52 @@ const Loader = () => {
 
 export default Loader;
 
+export const Loader1=()=>{
+  const [isOffline, setIsOffline] = useState(false);
+  const [hasTimedOut, setHasTimedOut] = useState(false);
+
+  useEffect(() => {
+    const handleOffline = () => setIsOffline(true);
+    const handleOnline = () => setIsOffline(false);
+
+    window.addEventListener("offline", handleOffline);
+    window.addEventListener("online", handleOnline);
+
+    // Also handle long load (e.g., server warming up)
+    const timeout = setTimeout(() => {
+      if (!navigator.onLine) {
+        setIsOffline(true);
+      } else {
+        setHasTimedOut(true);
+      }
+    }, 20000); // 20 seconds fallback for connection/server issues
+
+    return () => {
+      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener("online", handleOnline);
+      clearTimeout(timeout);
+    };
+  }, []);
+  return (
+    <main className="min-h-[30vh] gap-3 flex flex-col justify-center items-center text-center px-4">
+      {!isOffline && <section className="loader flex flex-col justify-center items-center text-center px-4">
+        <div></div>
+      </section>}
+
+      <span className="text-xl font-semibold mb-4">
+        {isOffline ? "No internet connection" : "Warming up..."}
+      </span>
+
+      <p className="max-w-md text-sm text-gray-500">
+        {isOffline
+          ? "Please check your internet connection and try again."
+          : hasTimedOut
+            ? "This might be taking longer than usual. The server could be cold or there's a network issue."
+            : "This project is hosted on Render's free tier, which puts the server to sleep after a minute of inactivity. It may take up to 1 minute to wake up — thank you for your patience!"}
+      </p>
+    </main>
+  );
+}
 
 interface SkeletonProps {
   width?: string;

@@ -8,10 +8,10 @@ import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Services from "../components/Services";
 import Footer from "../components/Footer";
-import { FaSpinner } from "react-icons/fa";
 import Banner from "../components/Banner";
 import BlogSection from "../components/BlogSection";
 import { useEffect, useRef, useState } from "react";
+import { Loader1 } from "../components/loader";
 
 const Home = () => {
   const { data, isLoading, isError } = useLatestProductsQuery("");
@@ -89,9 +89,7 @@ const Home = () => {
           <h1 className={`${isVisible ? 'opacity-100 animate-fadeInUp ' : 'opacity-0'} text-3xl font-semibold text-center mb-8`}>Latest Products</h1>
           <div className="flex flex-col items-center py-8 px-2 sm:px-5">
             {isLoading ? (
-              <div className="flex items-center justify-center h-[30rem]">
-                <FaSpinner className="animate-spin h-28 w-28 text-gray-500" />
-              </div>
+              <Loader1/>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-12">
                 {!data?.products || data?.products.length === 0 ? (
